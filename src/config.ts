@@ -1,5 +1,4 @@
-export const JafJwtKey = 'jaf-jwt'
-export const JafSpotifyStateKey = 'jaf-token'
+export const JafToken = 'jaf-jwt'
 export const BaseApiUrl = 'https://jdkru13pp5.execute-api.ap-southeast-2.amazonaws.com/v1/'
 export const BaseSpotifyApiUrl = 'https://accounts.spotify.com/'
 export const SpotifyClientId = '678f8fa942f640deaad0fa4f8005c98d'

@@ -1,3 +1,3 @@
-export interface TokenResponseData {
+export interface TokenResponse {
   token: string
 }
