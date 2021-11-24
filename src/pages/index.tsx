@@ -4,10 +4,12 @@ import { JafToken } from "../config"
 import "../main.css"
 
 const IndexPage = () => {
-  const jwt = localStorage.getItem(JafToken)
-  if (!jwt) {
-    navigate('/login')
-  }
+  React.useEffect(() => {
+    const jwt = localStorage.getItem(JafToken)
+    if (!jwt) {
+      navigate('/login')
+    }
+  }, [])
   return (
     <main>
       <title>Home Page</title>

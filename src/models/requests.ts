@@ -1,8 +1,6 @@
 export interface LoginRequestData {
   email: string
   password: string
-  passwordConfirm?: string
-  spotifyCode?: string
 }
 export interface RegisterRequestData {
   email: string
@@ -10,9 +8,8 @@ export interface RegisterRequestData {
   passwordConfirm: string
   spotifyCode: string
 }
-export interface SpotifyCodeRequest {
+export interface SpotifyCodeRequest extends TokenRequest {
   code: string
-  token: string
 }
 
 export interface TokenRequest {

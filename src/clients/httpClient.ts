@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios'
-import { LoginFormType } from '../components/jafAuth'
 import { BaseApiUrl, BaseSpotifyApiUrl, JafToken, SpotifyClientId, SpotifyScopes } from '../config'
 import { LoginRequestData, RegisterRequestData, SpotifyCodeRequest, TokenRequest } from '../models/requests'
 import { TokenResponse } from '../models/responses'
@@ -46,7 +45,7 @@ class HttpClient {
   }
 
   get startUrl() {
-    return BaseSpotifyApiUrl + new URLSearchParams({
+    return BaseSpotifyApiUrl + 'authorize?' + new URLSearchParams({
       response_type: 'code',
       client_id: SpotifyClientId,
       scope: SpotifyScopes,
