@@ -82,7 +82,7 @@ const Login = (props: LoginProps) => {
           await doRegister()
           break
       }
-      navigate('/')
+      navigate('/profile')
       setLoading(false)
     } catch (e) {
       setLoading(false)

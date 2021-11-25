@@ -4,9 +4,8 @@ import "../main.css"
 import authService from "../services/authService"
 
 const ProfilePage = () => {
-  console.log('auhtService', authService.loggedInUser)
   if (!authService.isLoggedIn) {
-    // navigate('/login')
+    navigate('/login')
     return null
   }
   return (
