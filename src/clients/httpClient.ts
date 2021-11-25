@@ -1,57 +1,34 @@
 import axios, { AxiosResponse } from 'axios'
-import { BaseApiUrl, BaseSpotifyApiUrl, JafToken, SpotifyClientId, SpotifyScopes } from '../config'
-import { LoginRequestData, RegisterRequestData, SpotifyCodeRequest, TokenRequest } from '../models/requests'
-import { TokenResponse } from '../models/responses'
+import { BaseApiUrl } from '../config'
+import { LoginRequestData, RegisterRequestData, TokenRequest } from '../models/requests'
+import { IAuthResponse, ITokenResponse } from '../models/responses'
 
-class HttpClient {
+export default class HttpClient {
   constructor() {}
 
-  async validateToken(data: TokenRequest): Promise<string> {
-    const r: AxiosResponse<TokenResponse> = await axios({
+  async validateToken(data: TokenRequest): Promise<IAuthResponse> {
+    const r: AxiosResponse<IAuthResponse> = await axios({
       method: 'post',
       url: BaseApiUrl + 'token/validate',
       data
     })
-    localStorage.setItem(JafToken, r.data.token)
-    return r.data.token
+    return r.data
   }
 
-  async login(data: LoginRequestData): Promise<string> {
-    const r: AxiosResponse<TokenResponse> = await axios({
+  async login(data: LoginRequestData): Promise<IAuthResponse> {
+    const r: AxiosResponse<IAuthResponse> = await axios({
       method: 'post',
       url: BaseApiUrl + 'login',
       data
     })
-    localStorage.setItem(JafToken, r.data.token)
-    return r.data.token
+    return r.data
   }
-  async register(data: RegisterRequestData): Promise<string> {
-    const r: AxiosResponse<TokenResponse> = await axios({
+  async register(data: RegisterRequestData): Promise<IAuthResponse> {
+    const r: AxiosResponse<IAuthResponse> = await axios({
       method: 'post',
       url: BaseApiUrl + 'register',
       data
     })
-    localStorage.setItem(JafToken, r.data.token)
-    return r.data.token
-  }
-
-  async submitSpotifyCode(data: SpotifyCodeRequest): Promise<string> {
-    const r: AxiosResponse<TokenResponse> = await axios({
-      method: 'post',
-      url: BaseApiUrl + 'spotify/code',
-      data,
-    })
-    return r.data.token
-  }
-
-  get startUrl() {
-    return BaseSpotifyApiUrl + 'authorize?' + new URLSearchParams({
-      response_type: 'code',
-      client_id: SpotifyClientId,
-      scope: SpotifyScopes,
-      redirect_uri: window.location.origin + '/login',
-    })
+    return r.data
   }
 }
-
-export default new HttpClient()

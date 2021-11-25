@@ -1,11 +1,11 @@
 
 import * as React from "react"
 import "../main.css"
-import httpClient from "../clients/httpClient"
 import { LoginRequestData, RegisterRequestData, TokenRequest } from "../models/requests"
 import SpotifyStart from "../components/spotifyStart"
 import { navigate } from "gatsby-link"
 import { JafToken } from "../config"
+import authService from "../services/authService"
 
 export interface LoginProps {}
 
@@ -31,16 +31,26 @@ const Login = (props: LoginProps) => {
   const [loginFormType, setLoginFormType] = React.useState<LoginFormType>(
     spotifyCode ? LoginFormType.register : LoginFormType.login
   )
+  const [expiryTimeout, setExpiryTimeout] = React.useState<NodeJS.Timeout | null>()
 
+  if (spotifyCode) {
+    // todo: can't find docs on how long actual expiry is
+    const codeParamExpiry = 5 * 60 * 1000
+    const to = setTimeout(() => {
+      console.error('Spotify callback code expired')
+      navigate('/login')
+    }, codeParamExpiry)
+    setExpiryTimeout(to)
+  }
 
   async function validateJwt(token): Promise<void> {
     try {
       const postData: TokenRequest = { token }
       setLoading(true)
-      await httpClient.validateToken(postData)
+      await authService.validateToken(postData)
       setLoading(false)
       // redirect to some page
-      navigate('/')
+      navigate('/profile')
     } catch (e) {
       setLoading(false)
       console.error(e)
@@ -58,6 +68,9 @@ const Login = (props: LoginProps) => {
   }
 
   async function submitForm(e: React.FormEvent) {
+    if (expiryTimeout) {
+      clearTimeout(expiryTimeout)
+    }
     setLoading(true)
     e.preventDefault()
     try {
@@ -79,7 +92,7 @@ const Login = (props: LoginProps) => {
   }
   async function doLogin(): Promise<void> {
     const postData: LoginRequestData = { email, password }
-    await httpClient.login(postData)
+    await authService.login(postData)
   }
   async function doRegister(): Promise<void> {
     if (!spotifyCode) {
@@ -91,7 +104,7 @@ const Login = (props: LoginProps) => {
       passwordConfirm,
       spotifyCode,
     }
-    await httpClient.register(postData)
+    await authService.register(postData)
   }
 
   return (
