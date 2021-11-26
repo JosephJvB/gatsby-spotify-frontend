@@ -14,10 +14,13 @@ body {
 }
 .container {
   width: 350px;
-  padding: 0 15px;
   display: flex;
   margin: 0 auto;
   flex-direction: column;
+}
+.flexRow {
+  display: flex;
+  flex-direction: row;
 }
 section {
   display: flex;
@@ -49,7 +52,7 @@ section {
   background-color: red;
   position: absolute;
   top: -4px;
-  right: -4px;
+  left: -4px;
 }
 header {
   display: flex;
@@ -70,10 +73,12 @@ input {
   border-radius: 3px;
   padding: 0 10px;
   margin: 10px 0;
+  width: 310px;
 }
 .loginForm {
   display: flex;
   flex-direction: column;
+  min-width: 250px;
 }
 .submitButton {
   /* background-color: #1db954; */
@@ -83,12 +88,12 @@ input {
   height: 35px;
   width: 80px;
   border-radius: 15px;
-  margin: 0 auto 30px auto;
+  margin: 15px auto 30px auto;
 }
 .profileSection {
   min-height: 50px;
   border: solid 1px white;
-  width: 300px;
+  width: 345px;
   margin: 20px auto 0 auto;
   border-radius: 5px;
   display: flex;
@@ -106,4 +111,11 @@ input {
 }
 .sectionList li {
   margin-top: 10px;
+}
+.loginFooter {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  margin: 20px 0;
+  text-align: center;
 }

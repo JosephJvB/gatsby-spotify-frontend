@@ -7,7 +7,7 @@ import ProfilePicture, { ProfilePicSize } from './profilePicture'
 const Header = () => {
   return (
     <header>
-      <div className="container">
+      <div className="container flexRow">
         <ProfilePicture size={ProfilePicSize.thumbnail} />
         { authService.loggedInUser &&
           <span className="notifsContainer">

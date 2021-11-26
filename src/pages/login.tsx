@@ -1,6 +1,5 @@
 
 import * as React from "react"
-import "../main.css"
 import { LoginRequestData, RegisterRequestData, TokenRequest } from "../models/requests"
 import SpotifyStart from "../components/spotifyStart"
 import { navigate } from "gatsby-link"
@@ -8,6 +7,7 @@ import { JafToken } from "../config"
 import authService from "../services/authService"
 import Header from "../components/header"
 import ProfilePicture, { ProfilePicSize } from "../components/profilePicture"
+import "../main.css"
 
 export interface LoginProps {}
 
@@ -34,6 +34,7 @@ const Login = (props: LoginProps) => {
     spotifyCode ? LoginFormType.register : LoginFormType.login
   )
   const [expiryTimeout, setExpiryTimeout] = React.useState<NodeJS.Timeout | null>()
+  const [formError, setFormError] = React.useState('')
   React.useEffect(() => {
     const jafJwt = localStorage.getItem(JafToken)
     if (jafJwt) {
@@ -105,6 +106,10 @@ const Login = (props: LoginProps) => {
     if (!spotifyCode) {
       return
     }
+    if (password != passwordConfirm) {
+      setFormError('Passwords do not match')
+      return
+    }
     const postData: RegisterRequestData = {
       email,
       password,
@@ -113,15 +118,14 @@ const Login = (props: LoginProps) => {
     }
     await authService.register(postData)
   }
-
   return (
     <>
       <Header />
       <main className="container">
         <section>
-          <ProfilePicture size={ProfilePicSize.full} />
-        </section>
-        <section>
+        {/* <section> */}
+          <ProfilePicture size={ProfilePicSize.full} center={true} />
+        {/* </section> */}
           { loading && <p>Logging you in, please wait</p>}
           { !loading && 
             <form className="loginForm" onSubmit={e => submitForm(e)}>
@@ -135,29 +139,37 @@ const Login = (props: LoginProps) => {
                 <input name="passwordField" type="password" placeholder="enter password"
                   onChange={e => setPassword(e.target.value)}/>
               </div>
-              {loginFormType == LoginFormType.register && <div className="formElement">
-                <label htmlFor="passwordFieldConfirm">Confirm password</label>
-                <input name="passwordFieldConfirm" type="password" placeholder="enter password again"
-                  onChange={e => setPasswordConfirm(e.target.value)} />
-              </div>}
+              { loginFormType == LoginFormType.register &&
+                <div className="formElement">
+                  <label htmlFor="passwordFieldConfirm">Confirm password</label>
+                  <input name="passwordFieldConfirm" type="password" placeholder="enter password again"
+                    onChange={e => setPasswordConfirm(e.target.value)} />
+                </div>
+                }
               <button className="submitButton" type="submit">Submit</button>
             </form>
           }
-          { loginFormType == LoginFormType.login && !spotifyCode
-            && <SpotifyStart />
-          }
-          { loginFormType == LoginFormType.login && !!spotifyCode
-            && <div>
-              <p>Don't have an account? <a onClick={changeLoginFormType}>Register here</a></p>
-            </div>
-          }
-          { loginFormType == LoginFormType.register
-            && <div>
-              <p>Already have an account? <a onClick={changeLoginFormType}>Login here</a></p>
-            </div>
-          }
         </section>
       </main>
+      <footer className="loginFooter">
+        { loginFormType == LoginFormType.login && !spotifyCode &&
+          <SpotifyStart />
+        }
+        { loginFormType == LoginFormType.login && !!spotifyCode &&
+          <div>
+            <a onClick={changeLoginFormType}>
+              <p>Don't have an account? Register here</p>
+            </a>
+          </div>
+        }
+        { loginFormType == LoginFormType.register &&
+          <div>
+            <a onClick={changeLoginFormType}>
+              <p>Already have an account? Login here</p>
+            </a>
+          </div>
+        }
+      </footer>
     </>
   )
 }

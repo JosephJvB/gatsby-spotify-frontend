@@ -20,11 +20,10 @@ const ProfilePage = () => {
     <>
       <Header />
       {/* <Modals /> */}
-      <main style={{justifyContent: 'center'}}>
-        <title>Profile</title>
-        <div style={{margin: '30px auto'}}>
-          <ProfilePicture size={ProfilePicSize.full}/>
-        </div>
+      <main>
+        <section>
+          <ProfilePicture size={ProfilePicSize.full} center={true} />
+        </section>
         <p style={{textAlign: 'center'}}>{authService.loggedInUser.displayName}</p>
         <div className="profileSection" style={{marginTop: '50px'}}>
           <p onClick={e => setTracksOpen(!tracksOpen)}>My top tracks</p>
