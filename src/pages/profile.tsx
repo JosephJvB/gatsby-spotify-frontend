@@ -1,6 +1,7 @@
 import { navigate } from "gatsby-link"
 import * as React from "react"
 import Header from "../components/header"
+import Modals from "../components/modals"
 import ProfilePicture, { ProfilePicSize } from "../components/profilePicture"
 import "../main.css"
 import { ISpotifyTrack } from "../models/spotifyApi"
@@ -24,10 +25,10 @@ const ProfilePage = () => {
   async function loadTopTypes() {
     setLoading(true)
     try {
-      const [tracks, artists] = await Promise.all([
-        spotifyService.loadTopTracks(authService.loggedInUser.token)
-      ])
-      setTopTracks(tracks)
+      // const [tracks, artists] = await Promise.all([
+        // spotifyService.loadTopTracks(authService.loggedInUser.token)
+      // ])
+      // setTopTracks(tracks)
       // setTopArtists(artists)
     } catch (e) {
       console.error(e)
@@ -38,6 +39,7 @@ const ProfilePage = () => {
   return (
     <>
       <Header />
+      {/* <Modals /> */}
       <main style={{justifyContent: 'center'}}>
         <title>Profile</title>
         <div style={{margin: '30px auto'}}>

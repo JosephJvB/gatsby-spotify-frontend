@@ -4,7 +4,6 @@ import { faBell } from '@fortawesome/free-solid-svg-icons'
 import authService from '../services/authService'
 import ProfilePicture, { ProfilePicSize } from './profilePicture'
 
-
 const Header = () => {
   return (
     <header>
