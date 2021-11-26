@@ -6,7 +6,6 @@ import SpotifyStart from "../components/spotifyStart"
 import { navigate } from "gatsby-link"
 import { JafToken } from "../config"
 import authService from "../services/authService"
-import spotifyService from "../services/spotifyService"
 import Header from "../components/header"
 import ProfilePicture, { ProfilePicSize } from "../components/profilePicture"
 
@@ -24,8 +23,6 @@ const Login = (props: LoginProps) => {
     const jafJwt = localStorage.getItem(JafToken)
     if (jafJwt) {
       validateJwt(jafJwt)
-    } else if (spotifyCode) {
-      // loadProfile(spotifyCode)
     }
   }, [])
 
@@ -120,44 +117,46 @@ const Login = (props: LoginProps) => {
   return (
     <>
       <Header />
-      <main>
-        <div style={{margin: '30px auto'}}>
+      <main className="container">
+        <section>
           <ProfilePicture size={ProfilePicSize.full} />
-        </div>
-        { loading && <p>Logging you in, please wait</p>}
-        { !loading && 
-          <form onSubmit={e => submitForm(e)}>
-            <div className="formElement">
-              <label htmlFor="emailField">email</label>
-              <input name="emailField" type="email" placeholder="enter email"
-                onChange={e => setEmail(e.target.value)}/>
+        </section>
+        <section>
+          { loading && <p>Logging you in, please wait</p>}
+          { !loading && 
+            <form className="loginForm" onSubmit={e => submitForm(e)}>
+              <div className="formElement">
+                <label htmlFor="emailField">Email</label>
+                <input name="emailField" type="email" placeholder="enter email"
+                  onChange={e => setEmail(e.target.value)}/>
+              </div>
+              <div className="formElement">
+                <label htmlFor="passwordField">Password</label>
+                <input name="passwordField" type="password" placeholder="enter password"
+                  onChange={e => setPassword(e.target.value)}/>
+              </div>
+              {loginFormType == LoginFormType.register && <div className="formElement">
+                <label htmlFor="passwordFieldConfirm">Confirm password</label>
+                <input name="passwordFieldConfirm" type="password" placeholder="enter password again"
+                  onChange={e => setPasswordConfirm(e.target.value)} />
+              </div>}
+              <button className="submitButton" type="submit">Submit</button>
+            </form>
+          }
+          { loginFormType == LoginFormType.login && !spotifyCode
+            && <SpotifyStart />
+          }
+          { loginFormType == LoginFormType.login && !!spotifyCode
+            && <div>
+              <p>Don't have an account? <a onClick={changeLoginFormType}>Register here</a></p>
             </div>
-            <div className="formElement">
-              <label htmlFor="passwordField">password</label>
-              <input name="passwordField" type="password" placeholder="enter password"
-                onChange={e => setPassword(e.target.value)}/>
+          }
+          { loginFormType == LoginFormType.register
+            && <div>
+              <p>Already have an account? <a onClick={changeLoginFormType}>Login here</a></p>
             </div>
-            {loginFormType == LoginFormType.register && <div className="formElement">
-              <label htmlFor="passwordFieldConfirm">confirm password</label>
-              <input name="passwordFieldConfirm" type="password" placeholder="enter password again"
-                onChange={e => setPasswordConfirm(e.target.value)} />
-            </div>}
-            <button type="submit">Submit</button>
-          </form>
-        }
-        { loginFormType == LoginFormType.login && !spotifyCode
-          && <SpotifyStart />
-        }
-        { loginFormType == LoginFormType.login && !!spotifyCode
-          && <div>
-            <p>Don't have an account? <a onClick={changeLoginFormType}>Register here</a></p>
-          </div>
-        }
-        { loginFormType == LoginFormType.register
-          && <div>
-            <p>Already have an account? <a onClick={changeLoginFormType}>Login here</a></p>
-          </div>
-        }
+          }
+        </section>
       </main>
     </>
   )

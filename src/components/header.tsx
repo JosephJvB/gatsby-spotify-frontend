@@ -7,13 +7,15 @@ import ProfilePicture, { ProfilePicSize } from './profilePicture'
 const Header = () => {
   return (
     <header>
-      <ProfilePicture size={ProfilePicSize.thumbnail} />
-      { authService.loggedInUser &&
-        <span className="notifsContainer">
-          <FontAwesomeIcon className="notifs" icon={faBell} />
-          <span className="notifsActive"></span>
-        </span>
-      }
+      <div className="container">
+        <ProfilePicture size={ProfilePicSize.thumbnail} />
+        { authService.loggedInUser &&
+          <span className="notifsContainer">
+            <FontAwesomeIcon className="notifs" icon={faBell} />
+            <span className="notifsActive"></span>
+          </span>
+        }
+      </div>
     </header>
   )
 }

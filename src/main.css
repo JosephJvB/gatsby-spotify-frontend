@@ -1,29 +1,28 @@
 
 /* Try do mobile first styles */
 /* spotify green: #1db954 */
+body, p  {
+  margin: 0;
+}
 body {
   display: flex;
-  margin: 0;
-  height: 100vh;
-  width: 100vw;
   background-color: rgba(18,18,18, 1);
   color: rgba(240,240,240,1);
 }
 #___gatsby {
   width: 100%;
 }
-p {
-  margin: 0;
-}
-main {
+.container {
+  width: 350px;
+  padding: 0 15px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-header,main,.container {
-  /* display: flex; */
-  max-width: 350px;
   margin: 0 auto;
+  flex-direction: column;
+}
+section {
+  display: flex;
+  margin: 30px auto;
+  flex-direction: column;
 }
 .profileImg {
   height: auto;
@@ -55,11 +54,36 @@ header,main,.container {
 header {
   display: flex;
   flex-direction: row;
-  padding: 15px 20px;
+  padding: 15px 0;
   height: 35px;
   box-shadow: green 1px 1px 10px 2px;
-  /* border-bottom: 1px solid grey; */
   font-size: 22px;
+}
+.formElement {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+input {
+  border: none;
+  height: 30px;
+  border-radius: 3px;
+  padding: 0 10px;
+  margin: 10px 0;
+}
+.loginForm {
+  display: flex;
+  flex-direction: column;
+}
+.submitButton {
+  /* background-color: #1db954; */
+  border: solid 2.5px rgba(240, 240, 240, 1);
+  background-color: rgba(18,18,18, 1);
+  color: rgba(240, 240, 240, 1);
+  height: 35px;
+  width: 80px;
+  border-radius: 15px;
+  margin: 0 auto 30px auto;
 }
 .profileSection {
   min-height: 50px;
@@ -82,12 +106,4 @@ header {
 }
 .sectionList li {
   margin-top: 10px;
-}
-.modalContainer {
-  height: 100vh;
-  width: 100vw;
-  z-index: 10;
-}
-.modalBody {
-  z-index: 11;
 }
