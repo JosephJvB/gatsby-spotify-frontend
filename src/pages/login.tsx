@@ -6,6 +6,9 @@ import SpotifyStart from "../components/spotifyStart"
 import { navigate } from "gatsby-link"
 import { JafToken } from "../config"
 import authService from "../services/authService"
+import spotifyService from "../services/spotifyService"
+import Header from "../components/header"
+import ProfilePicture, { ProfilePicSize } from "../components/profilePicture"
 
 export interface LoginProps {}
 
@@ -15,14 +18,16 @@ export enum LoginFormType {
 }
 
 const Login = (props: LoginProps) => {
+  const searchParams = new URLSearchParams(window.location.search)
+  const spotifyCode = searchParams.get('code')
   React.useEffect(() => {
     const jafJwt = localStorage.getItem(JafToken)
     if (jafJwt) {
       validateJwt(jafJwt)
+    } else if (spotifyCode) {
+      // loadProfile(spotifyCode)
     }
   }, [])
-  const searchParams = new URLSearchParams(window.location.search)
-  const spotifyCode = searchParams.get('code')
 
   const [loading, setLoading] = React.useState(false)
   const [email, setEmail] = React.useState('')
@@ -32,16 +37,21 @@ const Login = (props: LoginProps) => {
     spotifyCode ? LoginFormType.register : LoginFormType.login
   )
   const [expiryTimeout, setExpiryTimeout] = React.useState<NodeJS.Timeout | null>()
-
-  if (spotifyCode) {
-    // todo: can't find docs on how long actual expiry is
-    const codeParamExpiry = 5 * 60 * 1000
-    const to = setTimeout(() => {
-      console.error('Spotify callback code expired')
-      navigate('/login')
-    }, codeParamExpiry)
-    setExpiryTimeout(to)
-  }
+  React.useEffect(() => {
+    const jafJwt = localStorage.getItem(JafToken)
+    if (jafJwt) {
+      validateJwt(jafJwt)
+    }
+    if (spotifyCode) {
+      // todo: can't find docs on how long actual expiry is
+      const codeParamExpiry = 5 * 60 * 1000
+      const to = setTimeout(() => {
+        console.error('Spotify callback code expired')
+        navigate('/login')
+      }, codeParamExpiry)
+      setExpiryTimeout(to)
+    }
+  }, [])
 
   async function validateJwt(token): Promise<void> {
     try {
@@ -109,42 +119,46 @@ const Login = (props: LoginProps) => {
 
   return (
     <>
-      { loading
-        ? <p>Logging you in, please wait</p>
-        : <>
-            <form onSubmit={e => submitForm(e)}>
-              <div className="formElement">
-                <label htmlFor="emailField">email</label>
-                <input name="emailField" type="email" placeholder="enter email"
-                  onChange={e => setEmail(e.target.value)}/>
-              </div>
-              <div className="formElement">
-                <label htmlFor="passwordField">password</label>
-                <input name="passwordField" type="password" placeholder="enter password"
-                  onChange={e => setPassword(e.target.value)}/>
-              </div>
-              {loginFormType == LoginFormType.register && <div className="formElement">
-                <label htmlFor="passwordFieldConfirm">confirm password</label>
-                <input name="passwordFieldConfirm" type="password" placeholder="enter password again"
-                  onChange={e => setPasswordConfirm(e.target.value)} />
-              </div>}
-              <button type="submit">Submit</button>
-            </form>
-            { loginFormType == LoginFormType.login && !spotifyCode
-              && <SpotifyStart />
-            }
-            { loginFormType == LoginFormType.login && !!spotifyCode
-              && <div>
-                <p>Don't have an account? <a onClick={changeLoginFormType}>Register here</a></p>
-              </div>
-            }
-            { loginFormType == LoginFormType.register
-              && <div>
-                <p>Already have an account? <a onClick={changeLoginFormType}>Login here</a></p>
-              </div>
-            }
-        </>
-      }
+      <Header />
+      <main>
+        <div style={{margin: '30px auto'}}>
+          <ProfilePicture size={ProfilePicSize.full} />
+        </div>
+        { loading && <p>Logging you in, please wait</p>}
+        { !loading && 
+          <form onSubmit={e => submitForm(e)}>
+            <div className="formElement">
+              <label htmlFor="emailField">email</label>
+              <input name="emailField" type="email" placeholder="enter email"
+                onChange={e => setEmail(e.target.value)}/>
+            </div>
+            <div className="formElement">
+              <label htmlFor="passwordField">password</label>
+              <input name="passwordField" type="password" placeholder="enter password"
+                onChange={e => setPassword(e.target.value)}/>
+            </div>
+            {loginFormType == LoginFormType.register && <div className="formElement">
+              <label htmlFor="passwordFieldConfirm">confirm password</label>
+              <input name="passwordFieldConfirm" type="password" placeholder="enter password again"
+                onChange={e => setPasswordConfirm(e.target.value)} />
+            </div>}
+            <button type="submit">Submit</button>
+          </form>
+        }
+        { loginFormType == LoginFormType.login && !spotifyCode
+          && <SpotifyStart />
+        }
+        { loginFormType == LoginFormType.login && !!spotifyCode
+          && <div>
+            <p>Don't have an account? <a onClick={changeLoginFormType}>Register here</a></p>
+          </div>
+        }
+        { loginFormType == LoginFormType.register
+          && <div>
+            <p>Already have an account? <a onClick={changeLoginFormType}>Login here</a></p>
+          </div>
+        }
+      </main>
     </>
   )
 }
