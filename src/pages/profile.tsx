@@ -16,10 +16,11 @@ const ProfilePage = () => {
   }
   const [tracksOpen, setTracksOpen] = React.useState(false)
   const [artistsOpen, setArtistsOpen] = React.useState(false)
-  const scrollAfter = (id: string, ms = 350) => {
+  const scrollAfter = (id: string, ms = 340) => {
+    const mainPanel = document.querySelector('main')
     setTimeout(() => {
       const y = document.getElementById(id).offsetTop - 50
-      window.scrollTo({
+      mainPanel.scrollTo({
         top: y,
         left: 0,
         behavior: 'smooth',
