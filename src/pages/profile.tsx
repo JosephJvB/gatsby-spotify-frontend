@@ -40,7 +40,7 @@ const ProfilePage = () => {
       <Header />
       <main>
         <section>
-          <ProfilePicture size={ProfilePicSize.full} center={true} />
+          <ProfilePicture size={ProfilePicSize.full} hCenter={true} />
         </section>
         {/* <p style={{textAlign: 'center'}}>{authService.loggedInUser.displayName}</p> */}
         <div className="profileSection" style={{marginTop: '30px'}}>

@@ -7,8 +7,8 @@ const Footer = () => {
   const [profileMenuOpen, setProfileMenuOpen] = React.useState(false)
   return (
     <footer>
-      <div className="container flexRow" style={{margin: 'auto'}}>
-        <ProfilePicture size={ProfilePicSize.thumbnail} />
+      <div className="container flexRow" style={{height: '100%'}}>
+        <ProfilePicture size={ProfilePicSize.thumbnail} vCenter={true} />
         <div className="dotMenu">
           <span className="menuDot"></span>
           <span className="menuDot"></span>

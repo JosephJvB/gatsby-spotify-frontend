@@ -123,7 +123,7 @@ const Login = (props: LoginProps) => {
       <Header />
       <main className="container">
         <section>
-          <ProfilePicture size={ProfilePicSize.full} center={true} spin={loading} />
+          <ProfilePicture size={ProfilePicSize.full} hCenter={true} spin={loading} />
           <form className="loginForm" onSubmit={e => submitForm(e)}>
             <div className="formElement">
               <label htmlFor="emailField">Email</label>

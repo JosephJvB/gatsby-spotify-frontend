@@ -15,7 +15,8 @@ const sizes: { [key: string]: ISize } = {
 }
 export interface IProfilePictureProps {
   size?: ProfilePicSize
-  center?: boolean
+  vCenter?: boolean
+  hCenter?: boolean
   spin?: boolean
 }
 
@@ -28,7 +29,13 @@ const ProfilePicture = (props: IProfilePictureProps) => {
   const r = Math.floor(Math.random() * emptyColourPairs.length)
   const { color, backgroundColor } = emptyColourPairs[r]
   const border = props.size == ProfilePicSize.full && 'solid 2.5px rgba(240, 240, 240, 1)'
-  const margin = props.center ? '0 auto' : ''
+  let margin = ''
+  if (props.vCenter || props.hCenter) {
+    margin = [
+      props.vCenter ? 'auto' : '0',
+      props.hCenter ? 'auto' : '0',
+    ].join(' ')
+  }
   const pfpStyle = {
     width: size.bg,
     height: size.bg,
