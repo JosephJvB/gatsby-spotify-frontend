@@ -123,32 +123,30 @@ const Login = (props: LoginProps) => {
       <Header />
       <main className="container">
         <section>
-        {/* <section> */}
-          <ProfilePicture size={ProfilePicSize.full} center={true} />
-        {/* </section> */}
-          { loading && <p>Logging you in, please wait</p>}
-          { !loading && 
-            <form className="loginForm" onSubmit={e => submitForm(e)}>
+          <ProfilePicture size={ProfilePicSize.full} center={true} spin={loading} />
+          <form className="loginForm" onSubmit={e => submitForm(e)}>
+            <div className="formElement">
+              <label htmlFor="emailField">Email</label>
+              <input name="emailField" type="email" placeholder="enter email"
+                disabled={loading}
+                onChange={e => setEmail(e.target.value)}/>
+            </div>
+            <div className="formElement">
+              <label htmlFor="passwordField">Password</label>
+              <input name="passwordField" type="password" placeholder="enter password"
+                disabled={loading}
+                onChange={e => setPassword(e.target.value)}/>
+            </div>
+            { loginFormType == LoginFormType.register &&
               <div className="formElement">
-                <label htmlFor="emailField">Email</label>
-                <input name="emailField" type="email" placeholder="enter email"
-                  onChange={e => setEmail(e.target.value)}/>
+                <label htmlFor="passwordFieldConfirm">Confirm password</label>
+                <input name="passwordFieldConfirm" type="password" placeholder="enter password again"
+                  disabled={loading}
+                  onChange={e => setPasswordConfirm(e.target.value)} />
               </div>
-              <div className="formElement">
-                <label htmlFor="passwordField">Password</label>
-                <input name="passwordField" type="password" placeholder="enter password"
-                  onChange={e => setPassword(e.target.value)}/>
-              </div>
-              { loginFormType == LoginFormType.register &&
-                <div className="formElement">
-                  <label htmlFor="passwordFieldConfirm">Confirm password</label>
-                  <input name="passwordFieldConfirm" type="password" placeholder="enter password again"
-                    onChange={e => setPasswordConfirm(e.target.value)} />
-                </div>
-                }
-              <button className="submitButton" type="submit">Submit</button>
-            </form>
-          }
+              }
+            <button className="submitButton" type="submit">Submit</button>
+          </form>
         </section>
       </main>
       <footer className="loginFooter">

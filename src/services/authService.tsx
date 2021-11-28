@@ -14,8 +14,13 @@ class AuthService {
     return !!this.loggedInUser
   }
   async validateToken(data: TokenRequest): Promise<void> {
-    this.loggedInUser = await this.http.validateToken(data)
-    localStorage.setItem(JafToken, this.loggedInUser.token)
+    try {
+      this.loggedInUser = await this.http.validateToken(data)
+      localStorage.setItem(JafToken, this.loggedInUser.token)
+    } catch (e) {
+      localStorage.removeItem(JafToken)
+      throw e
+    }
   }
   async login(data: LoginRequestData): Promise<void> {
     this.loggedInUser = await this.http.login(data)

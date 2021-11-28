@@ -1,6 +1,8 @@
 
 /* Try do mobile first styles */
 /* spotify green: #1db954 */
+html { height: 100%; overflow: auto; }
+body { height: 100%; }
 body, p  {
   margin: 0;
 }
@@ -11,6 +13,7 @@ body {
 }
 #___gatsby {
   width: 100%;
+  height: 100%;
 }
 .container {
   width: 350px;
@@ -24,7 +27,7 @@ body {
 }
 section {
   display: flex;
-  margin: 30px auto;
+  margin: 30px 0;
   flex-direction: column;
 }
 .profileImg {
@@ -73,7 +76,6 @@ input {
   border-radius: 3px;
   padding: 0 10px;
   margin: 10px 0;
-  width: 310px;
 }
 .loginForm {
   display: flex;
@@ -99,23 +101,62 @@ input {
   display: flex;
   flex-direction: column;
 }
-.profileSection p {
-  width: 100%;
-  margin: 20px 15px 0 15px;
+.itemsTitle {
+  margin: 18px 0 0 10px;
 }
 .sectionList {
   list-style: none;
   padding-inline-start: 0;
   margin: 0 15px;
   margin-bottom: 20px;
+  max-height: 0;
+  transition: margin 0.20s ease-out, max-height 0.33s ease-out;
+  overflow: hidden;
 }
-.sectionList li {
+.sectionListOpen {
+  margin: 15px;
+  max-height: 1000px;
+  transition: margin 0.20s ease-out, max-height 0.33s ease-in;
+}
+.topItem {
   margin-top: 10px;
+  display: flex;
 }
+.topItem p {
+  margin: 0;
+}
+.itemText {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#menu:hover #list {
+  max-height: 500px;
+  transition: max-height 0.25s ease-in;
+}
+
 .loginFooter {
   width: 100%;
   position: absolute;
   bottom: 0;
   margin: 20px 0;
   text-align: center;
+}
+.imageRotate {
+  -webkit-animation:spin 3s linear infinite;
+  -moz-animation:spin 3s linear infinite;
+  animation:spin 3s linear infinite;
+}
+@-moz-keyframes spin { 
+  100% { -moz-transform: rotate(360deg); } 
+}
+@-webkit-keyframes spin { 
+  100% { -webkit-transform: rotate(360deg); } 
+}
+@keyframes spin { 
+  100% { 
+      -webkit-transform: rotate(360deg); 
+      transform:rotate(360deg); 
+  } 
 }

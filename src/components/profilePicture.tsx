@@ -16,6 +16,7 @@ const sizes: { [key: string]: ISize } = {
 export interface IProfilePictureProps {
   size?: ProfilePicSize
   center?: boolean
+  spin?: boolean
 }
 
 const emptyColourPairs = [
@@ -47,20 +48,21 @@ const ProfilePicture = (props: IProfilePictureProps) => {
     margin,
     // border,
   }
+  const spinClass = props.spin ? 'imageRotate ' : ''
   return (
     <>
       { !authService.loggedInUser &&
-        <img className="profileImg" style={spottyStyle} src="/static/spotify.svg" alt="spotify icon logo" />
+        <img className={`${spinClass}profileImg`} style={spottyStyle} src="/static/spotify.svg" alt="spotify icon logo" />
       }
       { authService.loggedInUser && authService.loggedInUser.displayPicture &&
         <img height="375" width="375"
           style={pfpStyle}
-          className="profileImg"
+          className={`${spinClass}profileImg`}
           src={authService.loggedInUser.displayPicture}
           alt="user spotify profile picture" />
       }
       { authService.loggedInUser && !authService.loggedInUser.displayPicture &&
-        <div className="profileImg emptyProfileImg" style={emptyStyle}>
+        <div className={`${spinClass}profileImg emptyProfileImg`} style={emptyStyle}>
           <p style={{fontSize: size.font}}>{authService.loggedInUser?.displayName.substr(0, 1)}</p>
         </div>
       }
