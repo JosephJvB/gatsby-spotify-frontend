@@ -31,6 +31,7 @@ const ProfilePicture = (props: IProfilePictureProps) => {
   const margin = props.center ? '0 auto' : ''
   const pfpStyle = {
     width: size.bg,
+    height: size.bg,
     border,
     margin,
   }

@@ -11,7 +11,7 @@ body {
   background-color: rgba(18,18,18, 1);
   color: rgba(240,240,240,1);
 }
-#___gatsby {
+#___gatsby,#gatsby-focus-wrapper {
   width: 100%;
   height: 100%;
 }
@@ -27,7 +27,6 @@ body {
 }
 section {
   display: flex;
-  margin: 30px 0;
   flex-direction: column;
 }
 .profileImg {
@@ -58,12 +57,13 @@ section {
   left: -4px;
 }
 header {
-  display: flex;
-  flex-direction: row;
-  padding: 15px 0;
-  height: 35px;
-  box-shadow: green 1px 1px 10px 2px;
-  font-size: 22px;
+  /* display: flex; */
+  /* flex-direction: row; */
+  /* padding: 15px 0; */
+  height: 30px;
+  /* height: 35px; */
+  /* box-shadow: green 1px 1px 10px 2px; */
+  /* font-size: 22px; */
 }
 .formElement {
   display: flex;
@@ -135,13 +135,34 @@ input {
   max-height: 500px;
   transition: max-height 0.25s ease-in;
 }
-
-.loginFooter {
+footer {
   width: 100%;
   position: absolute;
-  bottom: 0;
-  margin: 20px 0;
+  bottom: 20px;
+  height: 65px;
+  /* border: solid 1px white; */
+  display: flex;
+  background-color: rgba(18,18,18, 1);
+}
+.loginFooter {
   text-align: center;
+}
+.dotMenu {
+  height: 35px;
+  width: 35px;
+  margin: 0 0 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  /* border: solid 1px; */
+}
+.menuDot {
+  border-radius: 20px;
+  height: 6.5px;
+  width: 6.5px;
+  background-color: rgba(240,240,240,1);
+  display: flex;
+  margin: auto 0;
 }
 .imageRotate {
   -webkit-animation:spin 3s linear infinite;

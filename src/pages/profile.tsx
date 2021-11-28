@@ -1,5 +1,6 @@
 import { navigate } from "gatsby-link"
 import * as React from "react"
+import Footer from "../components/footer"
 
 import Header from "../components/header"
 import ProfilePicture, { ProfilePicSize } from "../components/profilePicture"
@@ -65,6 +66,7 @@ const ProfilePage = () => {
           { artistsOpen && authService.loggedInUser.topArtists.length == 0 && <p>No artists loaded</p> }
         </div>
       </main>
+      <Footer />
     </>
   )
 }
