@@ -30,7 +30,6 @@ const Login = (props: LoginProps) => {
   const [formError, setFormError] = React.useState('')
   React.useEffect(() => {
     const token = localStorage.getItem(JafToken)
-    console.log('usEffect', token)
     if (token) {
       validateJwt(token)
     }
@@ -40,7 +39,7 @@ const Login = (props: LoginProps) => {
     try {
       setLoading(true)
       await authService.validateToken(jwt)
-      await new Promise(r => setTimeout(r, 5 * 1000))
+      // await new Promise(r => setTimeout(r, 2 * 1000))
       setLoading(false)
       navigate('/profile')
     } catch (e) {

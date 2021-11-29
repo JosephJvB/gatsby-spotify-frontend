@@ -1,10 +1,11 @@
 import { navigate } from "gatsby-link"
 import HttpClient from "../clients/httpClient"
 import { BaseSpotifyApiUrl, JafToken, SpotifyClientId, SpotifyScopes } from "../config"
-import { LoginRequestData, RegisterRequestData, TokenRequest } from "../models/requests"
+import { LoginRequestData, RegisterRequestData } from "../models/requests"
 import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems } from "../models/spotifyApi"
 import { IUser } from "../models/user"
 
+// changes to this class cause hot reload loop between profile and login
 class AuthService {
   private http: HttpClient
   loggedInUser: IUser
@@ -16,24 +17,25 @@ class AuthService {
     return !!this.loggedInUser
   }
   async getTopItems(type: SpotifyTopItems): Promise<void> {
-    const res = await this.http.getTopItems({
+    const { token, items } = await this.http.getTopItems({
       token: this.loggedInUser.token,
       type
     })
-    this.loggedInUser.token = res.token
+    this.loggedInUser.token = token
     switch (type) {
       case SpotifyTopItems.artists:
-        this.loggedInUser.topArtists = res.items as ISpotifyArtist[]
+        this.loggedInUser.topArtists = items as ISpotifyArtist[]
         break
       case SpotifyTopItems.tracks:
-        this.loggedInUser.topTracks = res.items as ISpotifyTrack[]
+        this.loggedInUser.topTracks = items as ISpotifyTrack[]
         break
     }
     localStorage.setItem(JafToken, this.loggedInUser.token)
   }
   async validateToken(token: string): Promise<void> {
     try {
-      this.loggedInUser = await this.http.validateToken({ token })
+      const {message, ...user} = await this.http.validateToken({ token })
+      this.loggedInUser = user
       localStorage.setItem(JafToken, this.loggedInUser.token)
     } catch (e) {
       localStorage.removeItem(JafToken)
@@ -41,11 +43,13 @@ class AuthService {
     }
   }
   async login(data: LoginRequestData): Promise<void> {
-    this.loggedInUser = await this.http.login(data)
+    const {message, ...user} = await this.http.login(data)
+    this.loggedInUser = user
     localStorage.setItem(JafToken, this.loggedInUser.token)
   }
   async register(data: RegisterRequestData): Promise<void> {
-    this.loggedInUser = await this.http.register(data)
+    const {message, ...user} = await this.http.register(data)
+    this.loggedInUser = user
     localStorage.setItem(JafToken, this.loggedInUser.token)
   }
   logout(): void {
