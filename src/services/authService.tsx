@@ -6,6 +6,7 @@ import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems } from "../models/spotif
 import { IUser } from "../models/user"
 
 // changes to this class cause hot reload loop between profile and login
+// not sure cause or fix yet
 class AuthService {
   private http: HttpClient
   loggedInUser: IUser

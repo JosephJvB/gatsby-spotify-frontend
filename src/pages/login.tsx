@@ -39,7 +39,6 @@ const Login = (props: LoginProps) => {
     try {
       setLoading(true)
       await authService.validateToken(jwt)
-      // await new Promise(r => setTimeout(r, 2 * 1000))
       setLoading(false)
       navigate('/profile')
     } catch (e) {
@@ -80,10 +79,15 @@ const Login = (props: LoginProps) => {
   }
   async function doLogin(): Promise<void> {
     const postData: LoginRequestData = { email, password }
+    if (!email || !password) {
+      setFormError('Missing value(s) from login form fields')
+      return
+    }
     await authService.login(postData)
   }
   async function doRegister(): Promise<void> {
-    if (!spotifyCode) {
+    if (!spotifyCode || !email || !password || !passwordConfirm) {
+      setFormError('Missing value(s) from register form fields')
       return
     }
     if (password != passwordConfirm) {
