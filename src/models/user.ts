@@ -5,6 +5,6 @@ export interface IUser {
   email: string
   displayName: string
   displayPicture?: string
-  topTracks: ISpotifyTrack[]
-  topArtists: ISpotifyArtist[]
+  topTracks?: ISpotifyTrack[]
+  topArtists?: ISpotifyArtist[]
 }

@@ -1,6 +1,8 @@
+import { navigate } from "gatsby-link"
 import HttpClient from "../clients/httpClient"
 import { BaseSpotifyApiUrl, JafToken, SpotifyClientId, SpotifyScopes } from "../config"
 import { LoginRequestData, RegisterRequestData, TokenRequest } from "../models/requests"
+import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems } from "../models/spotifyApi"
 import { IUser } from "../models/user"
 
 class AuthService {
@@ -13,9 +15,25 @@ class AuthService {
   get isLoggedIn() {
     return !!this.loggedInUser
   }
-  async validateToken(data: TokenRequest): Promise<void> {
+  async getTopItems(type: SpotifyTopItems): Promise<void> {
+    const res = await this.http.getTopItems({
+      token: this.loggedInUser.token,
+      type
+    })
+    this.loggedInUser.token = res.token
+    switch (type) {
+      case SpotifyTopItems.artists:
+        this.loggedInUser.topArtists = res.items as ISpotifyArtist[]
+        break
+      case SpotifyTopItems.tracks:
+        this.loggedInUser.topTracks = res.items as ISpotifyTrack[]
+        break
+    }
+    localStorage.setItem(JafToken, this.loggedInUser.token)
+  }
+  async validateToken(token: string): Promise<void> {
     try {
-      this.loggedInUser = await this.http.validateToken(data)
+      this.loggedInUser = await this.http.validateToken({ token })
       localStorage.setItem(JafToken, this.loggedInUser.token)
     } catch (e) {
       localStorage.removeItem(JafToken)
@@ -35,6 +53,7 @@ class AuthService {
       localStorage.removeItem(JafToken)
       this.loggedInUser = null
     }
+    navigate('/login')
   }
   get startUrl() {
     return BaseSpotifyApiUrl + 'authorize?' + new URLSearchParams({

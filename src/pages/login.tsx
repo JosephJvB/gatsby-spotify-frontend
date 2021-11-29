@@ -19,13 +19,6 @@ export enum LoginFormType {
 const Login = (props: LoginProps) => {
   const searchParams = new URLSearchParams(window.location.search)
   const spotifyCode = searchParams.get('code')
-  React.useEffect(() => {
-    const jafJwt = localStorage.getItem(JafToken)
-    if (jafJwt) {
-      validateJwt(jafJwt)
-    }
-  }, [])
-
   const [loading, setLoading] = React.useState(false)
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -36,28 +29,19 @@ const Login = (props: LoginProps) => {
   const [expiryTimeout, setExpiryTimeout] = React.useState<NodeJS.Timeout | null>()
   const [formError, setFormError] = React.useState('')
   React.useEffect(() => {
-    const jafJwt = localStorage.getItem(JafToken)
-    if (jafJwt) {
-      validateJwt(jafJwt)
-    }
-    if (spotifyCode) {
-      // todo: can't find docs on how long actual expiry is
-      const codeParamExpiry = 5 * 60 * 1000
-      const to = setTimeout(() => {
-        console.error('Spotify callback code expired')
-        navigate('/login')
-      }, codeParamExpiry)
-      setExpiryTimeout(to)
+    const token = localStorage.getItem(JafToken)
+    console.log('usEffect', token)
+    if (token) {
+      validateJwt(token)
     }
   }, [])
 
-  async function validateJwt(token): Promise<void> {
+  async function validateJwt(jwt: string): Promise<void> {
     try {
-      const postData: TokenRequest = { token }
       setLoading(true)
-      await authService.validateToken(postData)
+      await authService.validateToken(jwt)
+      await new Promise(r => setTimeout(r, 5 * 1000))
       setLoading(false)
-      // redirect to some page
       navigate('/profile')
     } catch (e) {
       setLoading(false)
@@ -76,11 +60,8 @@ const Login = (props: LoginProps) => {
   }
 
   async function submitForm(e: React.FormEvent) {
-    if (expiryTimeout) {
-      clearTimeout(expiryTimeout)
-    }
-    setLoading(true)
     e.preventDefault()
+    setLoading(true)
     try {
       switch (loginFormType) {
         case LoginFormType.login:

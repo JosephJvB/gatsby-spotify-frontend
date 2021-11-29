@@ -6,7 +6,7 @@ import Header from "../components/header"
 import ProfilePicture, { ProfilePicSize } from "../components/profilePicture"
 import TopItem from "../components/topItem"
 import "../main.css"
-import { ISpotifyArtist, ISpotifyTrack } from "../models/spotifyApi"
+import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems } from "../models/spotifyApi"
 import authService from "../services/authService"
 
 const ProfilePage = () => {
@@ -16,6 +16,8 @@ const ProfilePage = () => {
   }
   const [tracksOpen, setTracksOpen] = React.useState(false)
   const [artistsOpen, setArtistsOpen] = React.useState(false)
+  const [tracksLoading, setTracksLoading] = React.useState(false)
+  const [artistsLoading, setArtistsLoading] = React.useState(false)
   const scrollAfter = (id: string, ms = 340) => {
     const mainPanel = document.querySelector('main')
     setTimeout(() => {
@@ -27,11 +29,22 @@ const ProfilePage = () => {
       })
     }, ms)
   }
-  const clickArtists = () => {
+
+  const clickArtists = async () => {
+    if (!artistsOpen && !authService.loggedInUser.topArtists) {
+      setArtistsLoading(true)
+      await authService.getTopItems(SpotifyTopItems.artists)
+      setArtistsLoading(false)
+    }
     setArtistsOpen(!artistsOpen)
     scrollAfter('topArtists')
   }
-  const clickTracks = () => {
+  const clickTracks = async () => {
+    if (!tracksOpen && !authService.loggedInUser.topTracks) {
+      setTracksLoading(true)
+      await authService.getTopItems(SpotifyTopItems.tracks)
+      setTracksLoading(false)
+    }
     setTracksOpen(!tracksOpen)
     scrollAfter('topTracks')
   }
@@ -46,25 +59,27 @@ const ProfilePage = () => {
         {/* <p style={{textAlign: 'center'}}>{authService.loggedInUser.displayName}</p> */}
         <div className="profileSection" style={{marginTop: '30px'}}>
           <p id="topTracks" className="itemsTitle" onClick={clickTracks}>My top tracks</p>
-          { authService.loggedInUser.topTracks.length > 0 &&
+          { tracksLoading && <span>loading</span> }
+          { authService.loggedInUser.topTracks?.length > 0 &&
             <ul className={`sectionList ${tracksOpen ? "sectionListOpen" : ''}`}>
               { authService.loggedInUser.topTracks.map((t: ISpotifyTrack, i: number) => {
                   return <TopItem key={i} title={t.name} subTitle={t.artists[0]} imageUrl={t.albumImageUrl} />
                 }) }
             </ul>
           }
-          { tracksOpen && authService.loggedInUser.topTracks.length == 0 && <p>No tracks loaded</p> }
+          { tracksOpen && authService.loggedInUser.topTracks?.length == 0 && <p>No tracks loaded</p> }
         </div>
         <div className="profileSection">
           <p id="topArtists" className="itemsTitle" onClick={clickArtists}>My top artists</p>
-          { authService.loggedInUser.topArtists.length > 0 &&
+          { artistsLoading && <span>loading</span> }
+          { authService.loggedInUser.topArtists?.length > 0 &&
             <ul className={`sectionList ${artistsOpen ? "sectionListOpen" : ''}`}>
               { authService.loggedInUser.topArtists.map((a: ISpotifyArtist, i: number) => {
                 return <TopItem key={i} title={a.name} imageUrl={a.imageUrl} />
               })}
             </ul>
           }
-          { artistsOpen && authService.loggedInUser.topArtists.length == 0 && <p>No artists loaded</p> }
+          { artistsOpen && authService.loggedInUser.topArtists?.length == 0 && <p>No artists loaded</p> }
         </div>
       </main>
       <Footer />

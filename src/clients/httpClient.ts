@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { BaseApiUrl } from '../config'
-import { LoginRequestData, RegisterRequestData, TokenRequest } from '../models/requests'
-import { IAuthResponse } from '../models/responses'
+import { ITopItemsRequest, LoginRequestData, RegisterRequestData, TokenRequest } from '../models/requests'
+import { IAuthResponse, ITopItemsResponse } from '../models/responses'
 
 export default class HttpClient {
   constructor() {}
@@ -16,7 +16,6 @@ export default class HttpClient {
     })
     return r.data
   }
-
   async login(data: LoginRequestData): Promise<IAuthResponse> {
     const r: AxiosResponse<IAuthResponse> = await axios({
       method: 'post',
@@ -30,6 +29,18 @@ export default class HttpClient {
       method: 'post',
       url: BaseApiUrl + 'register',
       data
+    })
+    return r.data
+  }
+  async getTopItems(data: ITopItemsRequest): Promise<ITopItemsResponse> {
+    const { token, ...params } = data
+    const r: AxiosResponse<ITopItemsResponse> = await axios({
+      method: 'get',
+      url: BaseApiUrl + 'spotify/top',
+      params,
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
     })
     return r.data
   }
