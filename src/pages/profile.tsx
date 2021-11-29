@@ -10,6 +10,7 @@ import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems } from "../models/spotif
 import authService from "../services/authService"
 
 const ProfilePage = () => {
+  console.log('profile.authService', authService)
   if (!authService.isLoggedIn) {
     navigate('/login')
     return null

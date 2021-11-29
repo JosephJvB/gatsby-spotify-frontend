@@ -6,12 +6,17 @@ import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems } from "../models/spotif
 import { IUser } from "../models/user"
 
 // changes to this class cause hot reload loop between profile and login
-// not sure cause or fix yet
+// cause is, updating authService but one page (Profile?) still has reference to old AuthService instance
+// basically, there's an old authService instance still referenced.
+// checked with authService.id = random
 class AuthService {
   private http: HttpClient
   loggedInUser: IUser
+  id: number
   constructor() {
     this.http = new HttpClient()
+    // debugging
+    this.id = Math.floor(Math.random() * 500)
   }
 
   get isLoggedIn() {
@@ -69,5 +74,6 @@ class AuthService {
     })
   }
 }
+
 
 export default new AuthService()

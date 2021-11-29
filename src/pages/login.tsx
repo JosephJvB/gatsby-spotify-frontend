@@ -37,6 +37,7 @@ const Login = (props: LoginProps) => {
 
   async function validateJwt(jwt: string): Promise<void> {
     try {
+      console.log('login.validateJwt', authService)
       setLoading(true)
       await authService.validateToken(jwt)
       setLoading(false)
