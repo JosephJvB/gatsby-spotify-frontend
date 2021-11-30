@@ -8,6 +8,7 @@ import TopItem from "../components/topItem"
 import "../main.css"
 import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems } from "../models/spotifyApi"
 import authService from "../services/authService"
+import spotifyService from "../services/spotifyService"
 
 const ProfilePage = () => {
   console.log('profile.authService', authService)
@@ -32,18 +33,18 @@ const ProfilePage = () => {
   }
 
   const clickArtists = async () => {
-    if (!artistsOpen && !authService.loggedInUser.topArtists) {
+    if (!artistsOpen && !spotifyService.topArtists) {
       setArtistsLoading(true)
-      await authService.getTopItems(SpotifyTopItems.artists)
+      await spotifyService.getTopItems(SpotifyTopItems.artists)
       setArtistsLoading(false)
     }
     setArtistsOpen(!artistsOpen)
     scrollAfter('topArtists')
   }
   const clickTracks = async () => {
-    if (!tracksOpen && !authService.loggedInUser.topTracks) {
+    if (!tracksOpen && !spotifyService.topTracks) {
       setTracksLoading(true)
-      await authService.getTopItems(SpotifyTopItems.tracks)
+      await spotifyService.getTopItems(SpotifyTopItems.tracks)
       setTracksLoading(false)
     }
     setTracksOpen(!tracksOpen)
@@ -64,14 +65,14 @@ const ProfilePage = () => {
             { tracksLoading && 
               <img className="profileLoadingSpinner imageRotate" src="/static/spotify.svg" alt="spotify icon logo" /> }
           </div>
-          { authService.loggedInUser.topTracks?.length > 0 &&
+          { spotifyService.topTracks?.length > 0 &&
             <ul className={`sectionList ${tracksOpen ? "sectionListOpen" : ''}`}>
-              { authService.loggedInUser.topTracks.map((t: ISpotifyTrack, i: number) => {
+              { spotifyService.topTracks.map((t: ISpotifyTrack, i: number) => {
                   return <TopItem key={i} title={t.name} subTitle={t.artists[0]} imageUrl={t.albumImageUrl} />
                 }) }
             </ul>
           }
-          { tracksOpen && authService.loggedInUser.topTracks?.length == 0 && <p>No tracks loaded</p> }
+          { tracksOpen && spotifyService.topTracks?.length == 0 && <p>No tracks loaded</p> }
         </div>
         <div className="profileSection">
           <div className="titleSection" onClick={clickArtists}>
@@ -79,14 +80,14 @@ const ProfilePage = () => {
             { artistsLoading &&
               <img className="profileLoadingSpinner imageRotate" src="/static/spotify.svg" alt="spotify icon logo" /> }
           </div>
-          { authService.loggedInUser.topArtists?.length > 0 &&
+          { spotifyService.topArtists?.length > 0 &&
             <ul className={`sectionList ${artistsOpen ? "sectionListOpen" : ''}`}>
-              { authService.loggedInUser.topArtists.map((a: ISpotifyArtist, i: number) => {
+              { spotifyService.topArtists.map((a: ISpotifyArtist, i: number) => {
                 return <TopItem key={i} title={a.name} imageUrl={a.imageUrl} />
               })}
             </ul>
           }
-          { artistsOpen && authService.loggedInUser.topArtists?.length == 0 && <p>No artists loaded</p> }
+          { artistsOpen && spotifyService.topArtists?.length == 0 && <p>No artists loaded</p> }
         </div>
       </main>
       <Footer />

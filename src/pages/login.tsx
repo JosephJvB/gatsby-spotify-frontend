@@ -1,12 +1,10 @@
 
 import * as React from "react"
-import { LoginRequestData, RegisterRequestData, TokenRequest } from "../models/requests"
+import { ILoginRequestData, IRegisterRequestData } from "../models/requests"
 import SpotifyStart from "../components/spotifyStart"
 import { navigate } from "gatsby-link"
-import { JafToken } from "../config"
 import authService from "../services/authService"
 import Header from "../components/header"
-import ProfilePicture, { ProfilePicSize } from "../components/profilePicture"
 import "../main.css"
 
 export interface LoginProps {}
@@ -19,6 +17,7 @@ export enum LoginFormType {
 const Login = (props: LoginProps) => {
   const searchParams = new URLSearchParams(window.location.search)
   const spotifyCode = searchParams.get('code')
+  const redirectPage = searchParams.get('redirect')
   const [loading, setLoading] = React.useState(false)
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -29,19 +28,20 @@ const Login = (props: LoginProps) => {
   const [expiryTimeout, setExpiryTimeout] = React.useState<NodeJS.Timeout | null>()
   const [formError, setFormError] = React.useState('')
   React.useEffect(() => {
-    const token = localStorage.getItem(JafToken)
-    if (token) {
-      validateJwt(token)
-    }
+    validateJwt()
   }, [])
 
-  async function validateJwt(jwt: string): Promise<void> {
+  async function validateJwt(): Promise<void> {
     try {
       console.log('login.validateJwt', authService)
       setLoading(true)
-      await authService.validateToken(jwt)
+      await authService.validateToken()
       setLoading(false)
-      navigate('/profile')
+      if (redirectPage) {
+        navigate('/' + redirectPage)
+      } else {
+        navigate('/profile')
+      }
     } catch (e) {
       setLoading(false)
       console.error(e)
@@ -79,7 +79,7 @@ const Login = (props: LoginProps) => {
     }
   }
   async function doLogin(): Promise<void> {
-    const postData: LoginRequestData = { email, password }
+    const postData: ILoginRequestData = { email, password }
     if (!email || !password) {
       setFormError('Missing value(s) from login form fields')
       return
@@ -95,7 +95,7 @@ const Login = (props: LoginProps) => {
       setFormError('Passwords do not match')
       return
     }
-    const postData: RegisterRequestData = {
+    const postData: IRegisterRequestData = {
       email,
       password,
       passwordConfirm,

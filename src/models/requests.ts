@@ -1,16 +1,17 @@
+import { IQuiz } from "./quiz";
 import { SpotifyTopItems, SpotifyTopRange } from "./spotifyApi";
 
-export interface LoginRequestData {
+export interface ILoginRequestData {
   email: string
   password: string
 }
-export interface RegisterRequestData {
+export interface IRegisterRequestData {
   email: string
   password: string
   passwordConfirm: string
   spotifyCode: string
 }
-export interface TokenRequest {
+export interface ITokenRequest {
   token: string
 }
 export interface ITopItemsRequest {
@@ -18,4 +19,8 @@ export interface ITopItemsRequest {
   type: SpotifyTopItems
   range?: SpotifyTopRange
   limit?: number
+}
+export interface ISubmitQuizRequest {
+  token: string
+  quiz: IQuiz
 }

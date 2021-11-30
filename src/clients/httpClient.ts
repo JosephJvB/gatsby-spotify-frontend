@@ -1,12 +1,13 @@
 import axios, { AxiosResponse } from 'axios'
 import { BaseApiUrl } from '../config'
-import { ITopItemsRequest, LoginRequestData, RegisterRequestData, TokenRequest } from '../models/requests'
-import { IAuthResponse, ITopItemsResponse } from '../models/responses'
+import { IQuiz } from '../models/quiz'
+import { ITopItemsRequest, ILoginRequestData, IRegisterRequestData, ITokenRequest, ISubmitQuizRequest } from '../models/requests'
+import { IAuthResponse, IQuizResponse, ITokenResponse, ITopItemsResponse } from '../models/responses'
 
 export default class HttpClient {
   constructor() {}
 
-  async validateToken(data: TokenRequest): Promise<IAuthResponse> {
+  async validateToken(data: ITokenRequest): Promise<IAuthResponse> {
     const r: AxiosResponse<IAuthResponse> = await axios({
       method: 'get',
       url: BaseApiUrl + 'token/validate',
@@ -16,7 +17,7 @@ export default class HttpClient {
     })
     return r.data
   }
-  async login(data: LoginRequestData): Promise<IAuthResponse> {
+  async login(data: ILoginRequestData): Promise<IAuthResponse> {
     const r: AxiosResponse<IAuthResponse> = await axios({
       method: 'post',
       url: BaseApiUrl + 'login',
@@ -24,7 +25,7 @@ export default class HttpClient {
     })
     return r.data
   }
-  async register(data: RegisterRequestData): Promise<IAuthResponse> {
+  async register(data: IRegisterRequestData): Promise<IAuthResponse> {
     const r: AxiosResponse<IAuthResponse> = await axios({
       method: 'post',
       url: BaseApiUrl + 'register',
@@ -40,6 +41,27 @@ export default class HttpClient {
       params,
       headers: {
         Authorization: 'Bearer ' + token
+      }
+    })
+    return r.data
+  }
+  async loadQuiz(data: ITokenRequest): Promise<IQuizResponse> {
+    const r: AxiosResponse<IQuizResponse> = await axios({
+      method: 'get',
+      url: BaseApiUrl + 'quiz',
+      headers: {
+        Authorization: 'Bearer ' + data.token
+      }
+    })
+    return r.data
+  }
+  async submitQuiz(data: ISubmitQuizRequest): Promise<IQuizResponse> {
+    const r: AxiosResponse<IQuizResponse> = await axios({
+      method: 'post',
+      url: BaseApiUrl + 'quiz',
+      data: { quiz: data.quiz },
+      headers: {
+        Authorization: 'Bearer ' + data.token
       }
     })
     return r.data

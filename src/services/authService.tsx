@@ -1,7 +1,7 @@
 import { navigate } from "gatsby-link"
 import HttpClient from "../clients/httpClient"
 import { BaseSpotifyApiUrl, JafToken, SpotifyClientId, SpotifyScopes } from "../config"
-import { LoginRequestData, RegisterRequestData } from "../models/requests"
+import { ILoginRequestData, IRegisterRequestData } from "../models/requests"
 import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems } from "../models/spotifyApi"
 import { IUser } from "../models/user"
 
@@ -22,47 +22,33 @@ class AuthService {
   get isLoggedIn() {
     return !!this.loggedInUser
   }
-  async getTopItems(type: SpotifyTopItems): Promise<void> {
-    const { token, items } = await this.http.getTopItems({
-      token: this.loggedInUser.token,
-      type
-    })
-    this.loggedInUser.token = token
-    switch (type) {
-      case SpotifyTopItems.artists:
-        this.loggedInUser.topArtists = items as ISpotifyArtist[]
-        break
-      case SpotifyTopItems.tracks:
-        this.loggedInUser.topTracks = items as ISpotifyTrack[]
-        break
+  async validateToken(): Promise<void> {
+    const jwt = localStorage.getItem(JafToken)
+    if (!jwt) {
+      throw new Error('No JWT in localstorage')
     }
-    localStorage.setItem(JafToken, this.loggedInUser.token)
-  }
-  async validateToken(token: string): Promise<void> {
     try {
-      const {message, ...user} = await this.http.validateToken({ token })
+      const {message, token , ...user} = await this.http.validateToken({ token: jwt })
       this.loggedInUser = user
-      localStorage.setItem(JafToken, this.loggedInUser.token)
+      localStorage.setItem(JafToken, token)
     } catch (e) {
       localStorage.removeItem(JafToken)
       throw e
     }
   }
-  async login(data: LoginRequestData): Promise<void> {
-    const {message, ...user} = await this.http.login(data)
+  async login(data: ILoginRequestData): Promise<void> {
+    const {message, token, ...user} = await this.http.login(data)
     this.loggedInUser = user
-    localStorage.setItem(JafToken, this.loggedInUser.token)
+    localStorage.setItem(JafToken, token)
   }
-  async register(data: RegisterRequestData): Promise<void> {
-    const {message, ...user} = await this.http.register(data)
+  async register(data: IRegisterRequestData): Promise<void> {
+    const {message, token, ...user} = await this.http.register(data)
     this.loggedInUser = user
-    localStorage.setItem(JafToken, this.loggedInUser.token)
+    localStorage.setItem(JafToken, token)
   }
   logout(): void {
-    if (this.loggedInUser) {
-      localStorage.removeItem(JafToken)
-      this.loggedInUser = null
-    }
+    localStorage.removeItem(JafToken)
+    this.loggedInUser = null
     navigate('/login')
   }
   get startUrl() {

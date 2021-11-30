@@ -1,3 +1,4 @@
+import { IQuiz } from "./quiz";
 import { ISpotifyArtist, ISpotifyTrack } from "./spotifyApi";
 import { IUser } from "./user";
 
@@ -7,10 +8,15 @@ export interface ITokenResponse {
 
 export interface IAuthResponse extends IUser {
   message: string
+  token: string
 }
 
 export interface ITopItemsResponse {
   message?: string
   token: string
   items: (ISpotifyTrack | ISpotifyArtist)[]
+}
+export interface IQuizResponse extends IQuiz {
+  message?: string
+  token: string
 }
