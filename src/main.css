@@ -1,4 +1,4 @@
-
+@import url("./fonts.css");
 /* Try do mobile first styles */
 /* spotify green: #1db954 */
 html { height: 100%; overflow: auto; }
@@ -10,6 +10,7 @@ body {
   display: flex;
   background-color: rgba(18,18,18, 1);
   color: rgba(240,240,240,1);
+  font-family: adobe-caslon-pro;
 }
 main {
   height: 100%;
@@ -221,4 +222,24 @@ footer {
   height: 100%;
   z-index: 99;
   position: absolute;
+}
+.imgFull {
+  height: 200px;
+  width: 200px;
+  font-size: 90px;
+}
+.imgThumb {
+  height: 35px;
+  width: 35px;
+  font-size: 18px;
+}
+.titleSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.profileLoadingSpinner {
+  width: 25px;
+  height: 25px;
+  margin: 18px;
 }

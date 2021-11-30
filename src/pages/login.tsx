@@ -103,12 +103,14 @@ const Login = (props: LoginProps) => {
     }
     await authService.register(postData)
   }
+  let imgClass = 'profileImg imgFull'
+  if (loading) imgClass += ' imageRotate'
   return (
     <>
       <Header />
       <main className="container">
         <section>
-          <ProfilePicture size={ProfilePicSize.full} hCenter={true} spin={loading} />
+          <img className={imgClass} style={{margin: '0 auto'}} src="/static/spotify.svg" alt="spotify icon logo" />
           <form className="loginForm" onSubmit={e => submitForm(e)}>
             <div className="formElement">
               <label htmlFor="emailField">Email</label>

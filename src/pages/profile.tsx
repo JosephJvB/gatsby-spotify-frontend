@@ -59,8 +59,11 @@ const ProfilePage = () => {
         </section>
         {/* <p style={{textAlign: 'center'}}>{authService.loggedInUser.displayName}</p> */}
         <div className="profileSection" style={{marginTop: '30px'}}>
-          <p id="topTracks" className="itemsTitle" onClick={clickTracks}>My top tracks</p>
-          { tracksLoading && <span>loading</span> }
+          <div className="titleSection" onClick={clickTracks}>
+            <p id="topTracks" className="itemsTitle">My top tracks</p>
+            { tracksLoading && 
+              <img className="profileLoadingSpinner imageRotate" src="/static/spotify.svg" alt="spotify icon logo" /> }
+          </div>
           { authService.loggedInUser.topTracks?.length > 0 &&
             <ul className={`sectionList ${tracksOpen ? "sectionListOpen" : ''}`}>
               { authService.loggedInUser.topTracks.map((t: ISpotifyTrack, i: number) => {
@@ -71,8 +74,11 @@ const ProfilePage = () => {
           { tracksOpen && authService.loggedInUser.topTracks?.length == 0 && <p>No tracks loaded</p> }
         </div>
         <div className="profileSection">
-          <p id="topArtists" className="itemsTitle" onClick={clickArtists}>My top artists</p>
-          { artistsLoading && <span>loading</span> }
+          <div className="titleSection" onClick={clickArtists}>
+            <p id="topArtists" className="itemsTitle">My top artists</p>
+            { artistsLoading &&
+              <img className="profileLoadingSpinner imageRotate" src="/static/spotify.svg" alt="spotify icon logo" /> }
+          </div>
           { authService.loggedInUser.topArtists?.length > 0 &&
             <ul className={`sectionList ${artistsOpen ? "sectionListOpen" : ''}`}>
               { authService.loggedInUser.topArtists.map((a: ISpotifyArtist, i: number) => {

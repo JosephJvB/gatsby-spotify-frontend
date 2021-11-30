@@ -5,19 +5,10 @@ export enum ProfilePicSize {
   thumbnail = "thumbnail",
   full = "full",
 }
-interface ISize {
-  bg: string
-  font: string
-}
-const sizes: { [key: string]: ISize } = {
-  [ProfilePicSize.thumbnail]: { bg: '35px', font: '18px' },
-  [ProfilePicSize.full]: { bg: '200px', font: '90px' },
-}
 export interface IProfilePictureProps {
   size?: ProfilePicSize
   vCenter?: boolean
   hCenter?: boolean
-  spin?: boolean
 }
 
 const emptyColourPairs = [
@@ -25,7 +16,6 @@ const emptyColourPairs = [
 ]
 
 const ProfilePicture = (props: IProfilePictureProps) => {
-  const size = sizes[props.size]
   const r = Math.floor(Math.random() * emptyColourPairs.length)
   const { color, backgroundColor } = emptyColourPairs[r]
   const border = props.size == ProfilePicSize.full && 'solid 2.5px rgba(240, 240, 240, 1)'
@@ -37,41 +27,28 @@ const ProfilePicture = (props: IProfilePictureProps) => {
     ].join(' ')
   }
   const pfpStyle = {
-    width: size.bg,
-    height: size.bg,
     border,
     margin,
   }
   const emptyStyle = {
-    height: size.bg,
-    width: size.bg,
     color,
     backgroundColor,
     border,
     margin,
   }
-  const spottyStyle = {
-    height: size.bg,
-    width: size.bg,
-    margin,
-    // border,
-  }
-  const spinClass = props.spin ? 'imageRotate ' : ''
+  const imgClass = 'profileImg ' + (props.size == ProfilePicSize.full ? 'imgFull' : 'imgThumb')
   return (
     <>
-      { !authService.loggedInUser &&
-        <img className={`${spinClass}profileImg`} style={spottyStyle} src="/static/spotify.svg" alt="spotify icon logo" />
-      }
       { authService.loggedInUser && authService.loggedInUser.displayPicture &&
         <img height="375" width="375"
           style={pfpStyle}
-          className={`${spinClass}profileImg`}
+          className={imgClass}
           src={authService.loggedInUser.displayPicture}
           alt="user spotify profile picture" />
       }
       { authService.loggedInUser && !authService.loggedInUser.displayPicture &&
-        <div className={`${spinClass}profileImg emptyProfileImg`} style={emptyStyle}>
-          <p style={{fontSize: size.font}}>{authService.loggedInUser?.displayName.substr(0, 1)}</p>
+        <div className={imgClass + " emptyProfileImg"} style={emptyStyle}>
+          <p>{authService.loggedInUser?.displayName.substr(0, 1)}</p>
         </div>
       }
     </>
