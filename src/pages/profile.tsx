@@ -11,9 +11,8 @@ import authService from "../services/authService"
 import spotifyService from "../services/spotifyService"
 
 const ProfilePage = () => {
-  console.log('profile.authService', authService)
   if (!authService.isLoggedIn) {
-    navigate('/login')
+    navigate('/')
     return null
   }
   const [tracksOpen, setTracksOpen] = React.useState(false)
@@ -56,7 +55,8 @@ const ProfilePage = () => {
       <Header />
       <main>
         <section>
-          <ProfilePicture size={ProfilePicSize.full} hCenter={true} />
+          <ProfilePicture src={authService.loggedInUser?.displayPicture} name={authService.loggedInUser?.displayName}
+            size={ProfilePicSize.full} hCenter={true} />
         </section>
         {/* <p style={{textAlign: 'center'}}>{authService.loggedInUser.displayName}</p> */}
         <div className="profileSection" style={{marginTop: '30px'}}>

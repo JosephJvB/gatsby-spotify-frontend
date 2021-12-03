@@ -7,6 +7,7 @@ import ProfilePicture, { ProfilePicSize } from './profilePicture'
 const Header = () => {
   return (
     <header>
+      <title>JAF Unwrapped</title>
       {/* <div className="container flexRow">
         <ProfilePicture size={ProfilePicSize.thumbnail} />
         { authService.loggedInUser &&

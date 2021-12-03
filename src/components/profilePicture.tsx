@@ -9,6 +9,8 @@ export interface IProfilePictureProps {
   size?: ProfilePicSize
   vCenter?: boolean
   hCenter?: boolean
+  src: string
+  name: string
 }
 
 const emptyColourPairs = [
@@ -39,16 +41,16 @@ const ProfilePicture = (props: IProfilePictureProps) => {
   const imgClass = 'profileImg ' + (props.size == ProfilePicSize.full ? 'imgFull' : 'imgThumb')
   return (
     <>
-      { authService.loggedInUser && authService.loggedInUser.displayPicture &&
+      { authService.loggedInUser && props.src &&
         <img height="375" width="375"
           style={pfpStyle}
           className={imgClass}
-          src={authService.loggedInUser.displayPicture}
+          src={props.src}
           alt="user spotify profile picture" />
       }
-      { authService.loggedInUser && !authService.loggedInUser.displayPicture &&
+      { authService.loggedInUser && !props.src &&
         <div className={imgClass + " emptyProfileImg"} style={emptyStyle}>
-          <p>{authService.loggedInUser?.displayName.substr(0, 1)}</p>
+          <p>{props.name.substr(0, 1)}</p>
         </div>
       }
     </>

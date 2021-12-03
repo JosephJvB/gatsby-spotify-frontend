@@ -49,14 +49,14 @@ class AuthService {
   logout(): void {
     localStorage.removeItem(JafToken)
     this.loggedInUser = null
-    navigate('/login')
+    navigate('/')
   }
   get startUrl() {
     return BaseSpotifyApiUrl + 'authorize?' + new URLSearchParams({
       response_type: 'code',
       client_id: SpotifyClientId,
       scope: SpotifyScopes,
-      redirect_uri: window.location.origin + '/login',
+      redirect_uri: window.location.origin,
     })
   }
 }

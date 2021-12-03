@@ -3,7 +3,6 @@ import modalService, { ModalTypes } from '../services/modalService'
 
 // not working!
 const Modals = () => {
-  console.log('rerender')
   if (modalService.currentModal == null) {
     return null
   }

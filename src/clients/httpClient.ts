@@ -59,7 +59,7 @@ export default class HttpClient {
     const r: AxiosResponse<IQuizResponse> = await axios({
       method: 'post',
       url: BaseApiUrl + 'quiz',
-      data: { quiz: data.quiz },
+      data: { answers: data.answers },
       headers: {
         Authorization: 'Bearer ' + data.token
       }

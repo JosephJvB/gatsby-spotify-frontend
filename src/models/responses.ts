@@ -16,7 +16,9 @@ export interface ITopItemsResponse {
   token: string
   items: (ISpotifyTrack | ISpotifyArtist)[]
 }
-export interface IQuizResponse extends IQuiz {
+export interface IQuizResponse {
   message?: string
   token: string
+  quiz: IQuiz
+  answered: boolean
 }
