@@ -316,14 +316,8 @@ footer {
   /* margin: 30px auto;  */
 }
 .score {
-  /* margin: auto; */
-  /* width: 100%; */
-  position: absolute;
-  left: calc(50%);
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  margin: auto;
-  bottom: 10px;
+  margin: 20px auto;
+  text-align: center;
 }
 .questionIndex {
   text-align: center;

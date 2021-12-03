@@ -28,7 +28,7 @@ const Index = (props: LoginProps) => {
   const [expiryTimeout, setExpiryTimeout] = React.useState<NodeJS.Timeout | null>()
   const [formError, setFormError] = React.useState('')
   React.useEffect(() => {
-    if (window.location.pathname == '/login') {
+    if (window.location.pathname == '/') {
       validateJwt()
     }
   }, [])

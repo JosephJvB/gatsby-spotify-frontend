@@ -1,8 +1,6 @@
 import { navigate } from 'gatsby-link'
 import * as React from 'react'
 import authService from '../services/authService'
-import quizService from '../services/quizService'
-import ProfilePicture, { ProfilePicSize } from './profilePicture'
 
 interface Page {
   title: string
@@ -14,8 +12,6 @@ const pages: Page[] = [
 ]
 
 export interface FooterProps {
-  score?: number
-  total?: number
 }
 
 const Footer = (props: FooterProps) => {
@@ -45,11 +41,6 @@ const Footer = (props: FooterProps) => {
       { dotMenuOpen && <div onClick={closePopups} className="popupBackdrop"></div> }
       <footer>
         <div className="container flexRow" style={{height: '100%'}}>
-          { (!isNaN(props.score) && !isNaN(props.total)) ?
-              <p className="score">Score: {props.score} / {props.total}</p>
-              : null
-          }
-          {/* <ProfilePicture size={ProfilePicSize.thumbnail} vCenter={true} /> */}
           <div onClick={openDots} className="dotMenu">
             <span className="menuDot"></span>
             <span className="menuDot"></span>

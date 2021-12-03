@@ -37,21 +37,21 @@ const Quiz = () => {
     }
     const answers = [...quizAnswers]
     answers.push(a)
-    setQuizAnswers(answers)
     const nextQuestion = questionIndex + 1
     if (quizService.currentQuiz.questions[nextQuestion]) {
+      setQuizAnswers(answers)
       setQuestionIndex(questionIndex + 1)
     } else {
-      submitQuiz()
+      submitQuiz(answers)
     }
   }
-  async function submitQuiz() {
+  async function submitQuiz(answers: IQuestion[]) {
     if (quizService.answered) {
       return
     }
     setLoading(true)
     try {
-      await quizService.submitQuiz(quizAnswers)
+      await quizService.submitQuiz(answers)
       setQuestionIndex(0)
       setQuizAnswers([])
     } catch (e) {
@@ -71,7 +71,9 @@ const Quiz = () => {
       <Header />
       <main className="container">
         <section>
-          <img className={imgClass} style={{margin: '0 auto'}} src="/static/question-circle-solid.svg" alt="question mark icon" />
+          { (!quizStarted || loading) &&
+            <img className={imgClass} style={{margin: '0 auto'}} src="/static/question-circle-solid.svg" alt="question mark icon" />
+          }
           { !quizStarted &&
             <div className="quizInfo">
               <h1>JAF Spotify "Unwrapped"</h1>
@@ -90,9 +92,11 @@ const Quiz = () => {
                   <p>Click the review button to see how you did.</p>
                 </>
               }
-              <button disabled={loading} onClick={e => setQuizStarted(true)} className="startQuiz">
-                {quizService.answered ? "Review" : "Get Started"}
-              </button>
+              { !loading &&
+                <button onClick={e => setQuizStarted(true)} className="startQuiz">
+                  {quizService.answered ? "Review" : "Get Started"}
+                </button>
+              }
             </div>
           }
           { !loading && quizStarted && currentQuestion &&
@@ -113,9 +117,15 @@ const Quiz = () => {
               </div>
             </div>
           }
+          { !loading && quizService.answered && usersAnswers &&
+            <div className="score">
+              <p>Your score:</p>
+              <p>{usersAnswers.score} / {quizService.currentQuiz.questions.length}</p>
+            </div>
+          }
         </section>
       </main>
-      <Footer score={usersAnswers?.score} total={quizService.currentQuiz?.questions.length} />
+      <Footer />
     </>
   )
 }
