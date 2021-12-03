@@ -5,7 +5,6 @@ import SpotifyStart from "../components/spotifyStart"
 import { navigate } from "gatsby-link"
 import authService from "../services/authService"
 import Header from "../components/header"
-import "../main.css"
 
 export interface LoginProps {}
 

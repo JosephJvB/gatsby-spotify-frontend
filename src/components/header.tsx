@@ -1,22 +1,15 @@
 import * as React from 'react'
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faBell } from '@fortawesome/free-solid-svg-icons'
-import authService from '../services/authService'
-import ProfilePicture, { ProfilePicSize } from './profilePicture'
+import { Helmet } from 'react-helmet'
+import "../main.css"
 
 const Header = () => {
   return (
     <header>
-      <title>JAF Unwrapped</title>
-      {/* <div className="container flexRow">
-        <ProfilePicture size={ProfilePicSize.thumbnail} />
-        { authService.loggedInUser &&
-          <span className="notifsContainer">
-            <FontAwesomeIcon className="notifs" icon={faBell} />
-            <span className="notifsActive"></span>
-          </span>
-        }
-      </div> */}
+      <Helmet>
+        <title>JAF Unwrapped</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <link rel="icon" href="/static/question-circle-solid.svg"></link>
+      </Helmet>
     </header>
   )
 }
