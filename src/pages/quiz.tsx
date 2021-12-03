@@ -9,7 +9,7 @@ import quizService from '../services/quizService'
 
 const Quiz = () => {
   if (!authService.loggedInUser) {
-    navigate('/?redirect=quiz')
+    typeof window != 'undefined' && navigate('/?redirect=quiz')
     return null
   }
   const [loading, setLoading] = React.useState(false)

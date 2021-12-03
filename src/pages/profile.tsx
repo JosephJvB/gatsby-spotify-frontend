@@ -12,7 +12,7 @@ import spotifyService from "../services/spotifyService"
 
 const ProfilePage = () => {
   if (!authService.isLoggedIn) {
-    navigate('/')
+    typeof window != 'undefined' && navigate('/')
     return null
   }
   const [tracksOpen, setTracksOpen] = React.useState(false)

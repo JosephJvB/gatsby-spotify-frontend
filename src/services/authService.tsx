@@ -49,14 +49,15 @@ class AuthService {
   logout(): void {
     localStorage.removeItem(JafToken)
     this.loggedInUser = null
-    navigate('/')
+    typeof window != 'undefined' && navigate('/')
   }
   get startUrl() {
     return BaseSpotifyApiUrl + 'authorize?' + new URLSearchParams({
       response_type: 'code',
       client_id: SpotifyClientId,
       scope: SpotifyScopes,
-      redirect_uri: window.location.origin,
+      redirect_uri: 'https://daswxepyym8y0.cloudfront.net',
+      // redirect_uri: typeof window !== 'undefined' && window.location.origin,
     })
   }
 }

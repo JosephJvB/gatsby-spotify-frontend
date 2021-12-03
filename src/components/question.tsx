@@ -28,6 +28,8 @@ const Question = (props: IQuestionProps) => {
     }
   }
   const selectChoice= (c: IQuizProfile) => {
+    audioEl.current.pause()
+    setPlayingPreview(false)
     const question = {...props.question}
     question.answer = c
     props.answer(question)

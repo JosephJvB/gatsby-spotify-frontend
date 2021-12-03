@@ -22,16 +22,16 @@ const Footer = (props: FooterProps) => {
     if (profileMenuOpen) setProfileMenuOpen(false)
   }
   const pageActive = (p: Page) => {
-    return window.location.pathname == p.path
+    return typeof window !== 'undefined' && window.location.pathname == p.path
   }
   const pageClick = (p: Page) => {
     if (!pageActive(p)) {
-      navigate(p.path)
+      typeof window != 'undefined' && navigate(p.path)
     }
   }
   const logoutClick = () => {
     authService.logout()
-    navigate('/')
+    typeof window != 'undefined' && navigate('/')
   }
   const openDots = () => {
     setDotMenuOpen(!dotMenuOpen)

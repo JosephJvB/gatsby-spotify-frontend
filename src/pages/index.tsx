@@ -15,7 +15,7 @@ export enum LoginFormType {
 }
 
 const Index = (props: LoginProps) => {
-  const searchParams = new URLSearchParams(window.location.search)
+  const searchParams = new URLSearchParams(typeof window !== 'undefined' && window.location.search)
   const spotifyCode = searchParams.get('code')
   const redirectPage = searchParams.get('redirect')
   const [loading, setLoading] = React.useState(false)
@@ -28,7 +28,7 @@ const Index = (props: LoginProps) => {
   const [expiryTimeout, setExpiryTimeout] = React.useState<NodeJS.Timeout | null>()
   const [formError, setFormError] = React.useState('')
   React.useEffect(() => {
-    if (window.location.pathname == '/') {
+    if (typeof window !== 'undefined' && window.location.pathname == '/') {
       validateJwt()
     }
   }, [])
@@ -39,9 +39,9 @@ const Index = (props: LoginProps) => {
       await authService.validateToken()
       setLoading(false)
       if (redirectPage) {
-        navigate('/' + redirectPage)
+        typeof window != 'undefined' && navigate('/' + redirectPage)
       } else {
-        navigate('/profile')
+        typeof window != 'undefined' && navigate('/profile')
       }
     } catch (e) {
       setLoading(false)
@@ -71,7 +71,7 @@ const Index = (props: LoginProps) => {
           await doRegister()
           break
       }
-      navigate('/profile')
+      typeof window != 'undefined' && navigate('/profile')
       setLoading(false)
     } catch (e) {
       setLoading(false)
