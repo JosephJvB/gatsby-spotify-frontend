@@ -28,6 +28,9 @@ const Question = (props: IQuestionProps) => {
     }
   }
   const selectChoice= (c: IQuizProfile) => {
+    if (quizService.answered) {
+      return
+    }
     audioEl.current.pause()
     setPlayingPreview(false)
     const question = {...props.question}
@@ -36,7 +39,6 @@ const Question = (props: IQuestionProps) => {
   }
   return (
     <div className="question">
-      {/* <br /> */}
       <img className="questionAlbumImg"
         src={props.question.track.albumImageUrl}
         alt={'album image for ' + props.question.track.albumName} />
@@ -51,7 +53,6 @@ const Question = (props: IQuestionProps) => {
           onClick={togglePlaying}/>
       }
       <audio ref={audioEl} src={props.question.track.previewUrl} autoPlay={false} loop={false} ></audio>
-      {/* <br /> */}
       { props.question.choices.map((c, i) => {
         let choiceClass = 'choice'
         if (quizService.answered) {
