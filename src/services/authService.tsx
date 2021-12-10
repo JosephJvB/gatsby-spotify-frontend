@@ -1,8 +1,7 @@
 import { navigate } from "gatsby-link"
 import HttpClient from "../clients/httpClient"
-import { BaseSpotifyApiUrl, JafToken, SpotifyClientId, SpotifyScopes } from "../config"
+import { AdminSpotifyId, BaseSpotifyApiUrl, JafToken, SpotifyClientId, SpotifyScopes } from "../config"
 import { ILoginRequestData, IRegisterRequestData } from "../models/requests"
-import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems } from "../models/spotifyApi"
 import { IUser } from "../models/user"
 
 // changes to this class cause hot reload loop between profile and login
@@ -19,6 +18,9 @@ class AuthService {
     this.id = Math.floor(Math.random() * 500)
   }
 
+  get isAdmin() {
+    return this.loggedInUser?.spotifyId == AdminSpotifyId
+  }
   get isLoggedIn() {
     return !!this.loggedInUser
   }

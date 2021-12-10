@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
-import { BaseApiUrl } from '../config'
-import { IQuiz } from '../models/quiz'
-import { ITopItemsRequest, ILoginRequestData, IRegisterRequestData, ITokenRequest, ISubmitQuizRequest } from '../models/requests'
+import { AdminSpotifyId, BaseApiUrl } from '../config'
+import { ITopItemsRequest, ILoginRequestData, IRegisterRequestData, ITokenRequest, ISubmitQuizRequest, IGenerateQuizRequest } from '../models/requests'
 import { IAuthResponse, IQuizResponse, ITokenResponse, ITopItemsResponse } from '../models/responses'
 
 export default class HttpClient {
@@ -65,5 +64,17 @@ export default class HttpClient {
       }
     })
     return r.data
+  }
+  async generateQuiz(data: IGenerateQuizRequest): Promise<void> {
+    if (data.spotifyId != AdminSpotifyId) {
+      return
+    }
+    const r: AxiosResponse = await axios({
+      method: 'post',
+      url: BaseApiUrl + 'quiz/generate',
+      headers: {
+        Authorization: 'Bearer ' + data.token
+      }
+    })
   }
 }

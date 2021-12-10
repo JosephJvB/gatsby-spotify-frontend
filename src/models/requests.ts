@@ -24,3 +24,7 @@ export interface ISubmitQuizRequest {
   token: string
   answers: IQuestion[]
 }
+export interface IGenerateQuizRequest {
+  token: string,
+  spotifyId: string
+}

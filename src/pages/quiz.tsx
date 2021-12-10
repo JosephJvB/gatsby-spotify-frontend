@@ -16,6 +16,7 @@ const Quiz = () => {
   const [quizStarted, setQuizStarted] = React.useState(false)
   const [questionIndex, setQuestionIndex] = React.useState(0)
   const [quizAnswers, setQuizAnswers] = React.useState<IQuestion[]>([])
+  const [generateQuizClicks, setGenerateQuizClicks] = React.useState(0)
   React.useEffect(() => {
     if (!quizService.currentQuiz) {
       loadQuiz()
@@ -60,6 +61,19 @@ const Quiz = () => {
     }
     setLoading(false)
   }
+  async function adminGenerateQuiz() {
+     if (!authService.isAdmin) {
+      return
+     }
+     const nextClickCount = generateQuizClicks + 1
+     if (nextClickCount == 5) {
+       console.log('gonna generte')
+      // await quizService.generateQuiz(authService.loggedInUser.spotifyId)
+      setGenerateQuizClicks(0)
+     } else {
+       setGenerateQuizClicks(nextClickCount)
+     }
+  }
   let imgClass = 'profileImg imgFull'
   if (loading) imgClass += ' imageRotate'
   const currentQuestion = quizService.currentQuiz?.questions && quizService.currentQuiz.questions[questionIndex]
@@ -72,7 +86,10 @@ const Quiz = () => {
       <main className="container">
         <section>
           { (!quizStarted || loading) &&
-            <img className={imgClass} style={{margin: '0 auto'}} src="/static/question-circle-solid.svg" alt="question mark icon" />
+            <img className={imgClass} style={{margin: '0 auto'}}
+              src="/static/question-circle-solid.svg" alt="question mark icon"
+              onClick={authService.isAdmin ? adminGenerateQuiz : null}
+              />
           }
           { !quizStarted &&
             <div className="quizInfo">
@@ -83,7 +100,7 @@ const Quiz = () => {
                   <p>How well do you know your mates?</p>
                   <br/>
                   <p>This quiz is a series of multi-choice questions.</p>
-                  <p>You will be presented with a track, this track is one of your friends top 10 tracks. You must correctly guess who's top tracks the song has come from.</p>
+                  <p>You will be presented with a track, this track is one of your friends top 10 tracks. You must correctly guess whose top tracks the song has come from.</p>
                 </>
               }
               { !loading && quizService.answered &&

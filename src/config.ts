@@ -3,3 +3,4 @@ export const BaseApiUrl = 'https://jdkru13pp5.execute-api.ap-southeast-2.amazona
 export const BaseSpotifyApiUrl = 'https://accounts.spotify.com/'
 export const SpotifyClientId = '678f8fa942f640deaad0fa4f8005c98d'
 export const SpotifyScopes = 'user-read-private user-read-email user-top-read user-read-recently-played'
+export const AdminSpotifyId = 'xnmacgqaaa6a1xi7uy2k1fe7w'

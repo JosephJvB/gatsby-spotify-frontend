@@ -1,5 +1,5 @@
 import HttpClient from "../clients/httpClient"
-import { JafToken } from "../config"
+import { AdminSpotifyId, JafToken } from "../config"
 import { IQuestion, IQuiz } from "../models/quiz"
 
 class QuizService {
@@ -13,8 +13,9 @@ class QuizService {
     if (this.currentQuiz) {
       return
     }
-    const jwt = localStorage.getItem(JafToken)
-    const { token, message, answered, quiz } = await this.http.loadQuiz({ token: jwt })
+    const { token, message, answered, quiz } = await this.http.loadQuiz({
+      token: localStorage.getItem(JafToken)
+    })
     localStorage.setItem(JafToken, token)
     this.answered = answered
     this.currentQuiz = quiz
@@ -23,14 +24,22 @@ class QuizService {
     if (this.answered) {
       return
     }
-    const jwt = localStorage.getItem(JafToken)
     const { token, message, answered, quiz } = await this.http.submitQuiz({
-      token: jwt,
+      token: localStorage.getItem(JafToken),
       answers,
     })
     localStorage.setItem(JafToken, token)
     this.answered = answered
     this.currentQuiz = quiz
+  }
+  async generateQuiz(spotifyId: string) {
+    if (spotifyId != AdminSpotifyId) {
+      return
+     }
+     await this.http.generateQuiz({
+       token: localStorage.getItem(JafToken),
+       spotifyId: spotifyId,
+     })
   }
 }
 
