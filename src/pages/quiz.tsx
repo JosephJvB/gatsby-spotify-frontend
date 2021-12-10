@@ -65,13 +65,21 @@ const Quiz = () => {
      if (!authService.isAdmin) {
       return
      }
-     const nextClickCount = generateQuizClicks + 1
-     if (nextClickCount == 5) {
-       console.log('gonna generte')
-      // await quizService.generateQuiz(authService.loggedInUser.spotifyId)
-      setGenerateQuizClicks(0)
-     } else {
-       setGenerateQuizClicks(nextClickCount)
+     try {
+       const nextClickCount = generateQuizClicks + 1
+       if (nextClickCount == 5) {
+         setLoading(true)
+         await quizService.generateQuiz(authService.loggedInUser.spotifyId)
+         setLoading(false)
+         setGenerateQuizClicks(0)
+         await loadQuiz()
+        } else {
+          setGenerateQuizClicks(nextClickCount)
+        }
+      } catch (e) {
+        console.error(e)
+        console.error('adminGenerateQuiz failed')
+        setLoading(false)
      }
   }
   let imgClass = 'profileImg imgFull'

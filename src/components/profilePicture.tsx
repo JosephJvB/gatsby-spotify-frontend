@@ -46,7 +46,7 @@ const ProfilePicture = (props: IProfilePictureProps) => {
           style={pfpStyle}
           className={imgClass}
           src={props.src}
-          alt="user spotify profile picture" />
+          alt="" />
       }
       { authService.loggedInUser && !props.src &&
         <div className={imgClass + " emptyProfileImg"} style={emptyStyle}>

@@ -10,9 +10,6 @@ class QuizService {
     this.http = new HttpClient()
   }
   async loadQuiz() {
-    if (this.currentQuiz) {
-      return
-    }
     const { token, message, answered, quiz } = await this.http.loadQuiz({
       token: localStorage.getItem(JafToken)
     })
