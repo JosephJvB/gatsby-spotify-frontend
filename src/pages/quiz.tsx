@@ -101,7 +101,7 @@ const Quiz = () => {
           }
           { !quizStarted &&
             <div className="quizInfo">
-              <h1>JAF Spotify "Unwrapped"</h1>
+              <h1>Spotify "Unwrapped"</h1>
               <br />
               { !loading && !quizService.answered &&
                 <>
@@ -117,7 +117,7 @@ const Quiz = () => {
                   <p>Click the review button to see how you did.</p>
                 </>
               }
-              { !loading &&
+              { !loading && quizService.currentQuiz &&
                 <button onClick={e => setQuizStarted(true)} className="startQuiz">
                   {quizService.answered ? "Review" : "Get Started"}
                 </button>
