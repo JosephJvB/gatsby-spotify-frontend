@@ -17,7 +17,7 @@ export interface ITokenRequest {
 export interface ITopItemsRequest {
   token: string
   type: SpotifyTopItems
-  range?: SpotifyTopRange
+  range: SpotifyTopRange
   limit?: number
 }
 export interface ISubmitQuizRequest {

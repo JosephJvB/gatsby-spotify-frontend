@@ -1,26 +1,31 @@
 import HttpClient from "../clients/httpClient"
 import { JafToken } from "../config"
-import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems } from "../models/spotifyApi"
+import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems, SpotifyTopRange } from "../models/spotifyApi"
 
 class SpotifyService {
   http: HttpClient
-  topTracks: ISpotifyTrack[]
-  topArtists: ISpotifyArtist[]
+  topTracksMap: {
+    [key: string]: ISpotifyTrack[]
+  } = {}
+  topArtistsMap: {
+    [key: string]: ISpotifyArtist[]
+  } = {}
   constructor() {
     this.http = new HttpClient()
   }
-  async getTopItems(type: SpotifyTopItems): Promise<void> {
+  async getTopItems(type: SpotifyTopItems, range: SpotifyTopRange): Promise<void> {
     const { token, items } = await this.http.getTopItems({
       token: localStorage.getItem(JafToken),
-      type
+      type,
+      range
     })
     localStorage.setItem(JafToken, token)
     switch (type) {
       case SpotifyTopItems.artists:
-        this.topArtists = items as ISpotifyArtist[]
+        this.topArtistsMap[range] = items as ISpotifyArtist[]
         break
       case SpotifyTopItems.tracks:
-        this.topTracks = items as ISpotifyTrack[]
+        this.topTracksMap[range] = items as ISpotifyTrack[]
         break
     }
   }

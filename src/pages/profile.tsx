@@ -5,7 +5,7 @@ import Footer from "../components/footer"
 import Header from "../components/header"
 import ProfilePicture, { ProfilePicSize } from "../components/profilePicture"
 import TopItem from "../components/topItem"
-import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems } from "../models/spotifyApi"
+import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems, SpotifyTopRange } from "../models/spotifyApi"
 import authService from "../services/authService"
 import spotifyService from "../services/spotifyService"
 
@@ -18,6 +18,7 @@ const ProfilePage = () => {
   const [artistsOpen, setArtistsOpen] = React.useState(false)
   const [tracksLoading, setTracksLoading] = React.useState(false)
   const [artistsLoading, setArtistsLoading] = React.useState(false)
+  const [spotifySearchRange, setSpotifySearchRange] = React.useState(SpotifyTopRange.shortTerm)
   const scrollAfter = (id: string, ms = 340) => {
     const mainPanel = document.querySelector('main')
     setTimeout(() => {
@@ -31,22 +32,41 @@ const ProfilePage = () => {
   }
 
   const clickArtists = async () => {
-    if (!artistsOpen && !spotifyService.topArtists) {
+    if (!artistsOpen && !spotifyService.topArtistsMap[spotifySearchRange]) {
       setArtistsLoading(true)
-      await spotifyService.getTopItems(SpotifyTopItems.artists)
+      await spotifyService.getTopItems(SpotifyTopItems.artists, spotifySearchRange)
       setArtistsLoading(false)
     }
     setArtistsOpen(!artistsOpen)
     scrollAfter('topArtists')
   }
   const clickTracks = async () => {
-    if (!tracksOpen && !spotifyService.topTracks) {
+    if (!tracksOpen && !spotifyService.topTracksMap[spotifySearchRange]) {
       setTracksLoading(true)
-      await spotifyService.getTopItems(SpotifyTopItems.tracks)
+      await spotifyService.getTopItems(SpotifyTopItems.tracks, spotifySearchRange)
       setTracksLoading(false)
     }
     setTracksOpen(!tracksOpen)
     scrollAfter('topTracks')
+  }
+  const timeFrameMap: {
+    [key: string]: string
+  } = {
+    [SpotifyTopRange.shortTerm]: 'the last 4 weeks',
+    [SpotifyTopRange.mediumTerm]: 'the last 6 months',
+    [SpotifyTopRange.longTerm]: 'all time',
+  }
+  const changeTimeFrame = (range: SpotifyTopRange) => {
+    if (range == spotifySearchRange) {
+      return
+    }
+    if (tracksOpen && !spotifyService.topTracksMap[range]) {
+      setTracksOpen(false)
+    }
+    if (artistsOpen && !spotifyService.topArtistsMap[range]) {
+      setArtistsOpen(false)
+    }
+    setSpotifySearchRange(range)
   }
 
   return (
@@ -58,20 +78,30 @@ const ProfilePage = () => {
             size={ProfilePicSize.full} hCenter={true} />
         </section>
         {/* <p style={{textAlign: 'center'}}>{authService.loggedInUser.displayName}</p> */}
+        <div className="searchControl">
+          <label htmlFor="timeFrame">Results from:</label>
+          <select name="timeFrame" onChange={(e) => {
+            changeTimeFrame(e.target.value as SpotifyTopRange)
+          }}>
+            <option selected value={SpotifyTopRange.shortTerm}>{timeFrameMap[SpotifyTopRange.shortTerm]}</option>
+            <option value={SpotifyTopRange.mediumTerm}>{timeFrameMap[SpotifyTopRange.mediumTerm]}</option>
+            <option value={SpotifyTopRange.longTerm}>{timeFrameMap[SpotifyTopRange.longTerm]}</option>
+          </select>
+        </div>
         <div className="profileSection" style={{marginTop: '30px'}}>
           <div className="titleSection" onClick={clickTracks}>
             <p id="topTracks" className="itemsTitle">My top tracks</p>
             { tracksLoading && 
               <img className="profileLoadingSpinner imageRotate" src="/static/spotify.svg" alt="spotify icon logo" /> }
           </div>
-          { spotifyService.topTracks?.length > 0 &&
+          { spotifyService.topTracksMap[spotifySearchRange]?.length > 0 &&
             <ul className={`sectionList ${tracksOpen ? "sectionListOpen" : ''}`}>
-              { spotifyService.topTracks.map((t: ISpotifyTrack, i: number) => {
+              { spotifyService.topTracksMap[spotifySearchRange].map((t: ISpotifyTrack, i: number) => {
                   return <TopItem key={i} title={t.name} subTitle={t.artists[0]} imageUrl={t.albumImageUrl} />
                 }) }
             </ul>
           }
-          { tracksOpen && spotifyService.topTracks?.length == 0 && <p>No tracks loaded</p> }
+          { tracksOpen && spotifyService.topTracksMap[spotifySearchRange]?.length == 0 && <p>No tracks loaded</p> }
         </div>
         <div className="profileSection">
           <div className="titleSection" onClick={clickArtists}>
@@ -79,14 +109,14 @@ const ProfilePage = () => {
             { artistsLoading &&
               <img className="profileLoadingSpinner imageRotate" src="/static/spotify.svg" alt="spotify icon logo" /> }
           </div>
-          { spotifyService.topArtists?.length > 0 &&
+          { spotifyService.topArtistsMap[spotifySearchRange]?.length > 0 &&
             <ul className={`sectionList ${artistsOpen ? "sectionListOpen" : ''}`}>
-              { spotifyService.topArtists.map((a: ISpotifyArtist, i: number) => {
+              { spotifyService.topArtistsMap[spotifySearchRange].map((a: ISpotifyArtist, i: number) => {
                 return <TopItem key={i} title={a.name} imageUrl={a.imageUrl} />
               })}
             </ul>
           }
-          { artistsOpen && spotifyService.topArtists?.length == 0 && <p>No artists loaded</p> }
+          { artistsOpen && spotifyService.topArtistsMap[spotifySearchRange]?.length == 0 && <p>No artists loaded</p> }
         </div>
       </main>
       <Footer />
