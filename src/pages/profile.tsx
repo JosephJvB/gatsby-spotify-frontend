@@ -80,10 +80,10 @@ const ProfilePage = () => {
         {/* <p style={{textAlign: 'center'}}>{authService.loggedInUser.displayName}</p> */}
         <div className="searchControl">
           <label htmlFor="timeFrame">Results from:</label>
-          <select name="timeFrame" onChange={(e) => {
+          <select name="timeFrame" defaultValue={SpotifyTopRange.shortTerm} onChange={(e) => {
             changeTimeFrame(e.target.value as SpotifyTopRange)
           }}>
-            <option selected value={SpotifyTopRange.shortTerm}>{timeFrameMap[SpotifyTopRange.shortTerm]}</option>
+            <option value={SpotifyTopRange.shortTerm}>{timeFrameMap[SpotifyTopRange.shortTerm]}</option>
             <option value={SpotifyTopRange.mediumTerm}>{timeFrameMap[SpotifyTopRange.mediumTerm]}</option>
             <option value={SpotifyTopRange.longTerm}>{timeFrameMap[SpotifyTopRange.longTerm]}</option>
           </select>

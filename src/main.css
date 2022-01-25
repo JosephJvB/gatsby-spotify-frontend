@@ -326,3 +326,22 @@ footer {
 .trackName {
   min-height: 40px;
 }
+.searchControl {
+  display: flex;
+  width: 345px;
+  margin: 20px auto 0 auto;
+  flex-direction: column;
+}
+.searchControl select {
+  width: 200px;
+  height: 30px;
+  margin: 0 auto;
+  background: rgba(18,18,18, 1);
+  color: rgba(240,240,240,1);
+  border: solid 1.5px rgba(240, 240, 240, 1);
+  border-radius: 3px;
+}
+.searchControl label {
+  width: 200px;
+  margin: 0 auto;
+}
