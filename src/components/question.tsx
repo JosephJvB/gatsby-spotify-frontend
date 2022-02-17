@@ -39,19 +39,19 @@ const Question = (props: IQuestionProps) => {
   }
   return (
     <div className="question">
-      <img className="questionAlbumImg"
-        src={props.question.track.albumImageUrl}
-        alt={'album image for ' + props.question.track.albumName} />
+      <div className="questionImgContainer" onClick={togglePlaying}>
+        <img className="questionAlbumImg"
+          src={props.question.track.albumImageUrl}
+          alt={'album image for ' + props.question.track.albumName} />
+        { !playingPreview &&
+          <img className="questionPlayBtn" src="/static/play-circle-solid.svg" alt="play button icon" />
+        }
+        { playingPreview &&
+          <img className="questionPlayBtn" src="/static/pause-circle-solid.svg" alt="play button icon" />
+        }
+      </div>
       <p>{props.question.track.artists[0]}</p>
       <p className="trackName">{props.question.track.name}</p>
-      { !playingPreview &&
-        <img className="questionPlayBtn" src="/static/play-circle-solid.svg" alt="play button icon"
-          onClick={togglePlaying}/>
-      }
-      { playingPreview &&
-        <img className="questionPlayBtn" src="/static/pause-circle-solid.svg" alt="play button icon"
-          onClick={togglePlaying}/>
-      }
       <audio ref={audioEl} src={props.question.track.previewUrl} autoPlay={false} loop={false} ></audio>
       { props.question.choices.map((c, i) => {
         let choiceClass = 'choice'

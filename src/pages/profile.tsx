@@ -101,7 +101,7 @@ const ProfilePage = () => {
                 }) }
             </ul>
           }
-          { tracksOpen && spotifyService.topTracksMap[spotifySearchRange]?.length == 0 && <p>No tracks loaded</p> }
+          { tracksOpen && spotifyService.topTracksMap[spotifySearchRange]?.length && <p>No tracks loaded</p> }
         </div>
         <div className="profileSection">
           <div className="titleSection" onClick={clickArtists}>
@@ -116,7 +116,7 @@ const ProfilePage = () => {
               })}
             </ul>
           }
-          { artistsOpen && spotifyService.topArtistsMap[spotifySearchRange]?.length == 0 && <p>No artists loaded</p> }
+          { artistsOpen && spotifyService.topArtistsMap[spotifySearchRange]?.length && <p>No artists loaded</p> }
         </div>
       </main>
       <Footer />
