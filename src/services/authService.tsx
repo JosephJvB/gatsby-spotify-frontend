@@ -58,7 +58,7 @@ class AuthService {
       response_type: 'code',
       client_id: SpotifyClientId,
       scope: SpotifyScopes,
-      redirect_uri: 'https://daswxepyym8y0.cloudfront.net',
+      redirect_uri: 'https://jaf-unwrapped.com',
       // redirect_uri: typeof window !== 'undefined' && window.location.origin,
     })
   }
