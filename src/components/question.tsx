@@ -1,6 +1,6 @@
 import * as React from 'react'
+import { ServiceContext } from '../../gatsby-browser'
 import { IQuestion, IQuizProfile } from '../models/quiz'
-import quizService from '../services/quizService'
 import ProfilePicture, { ProfilePicSize } from './profilePicture'
 
 export interface IQuestionProps {
@@ -9,6 +9,7 @@ export interface IQuestionProps {
   answer: (q: IQuestion) => void
 }
 const Question = (props: IQuestionProps) => {
+  const { quizService } = React.useContext(ServiceContext)
   console.log('question props', props)
   const [playingPreview, setPlayingPreview] = React.useState(false)
   const audioEl = React.useRef<HTMLAudioElement>(null)

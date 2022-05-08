@@ -1,8 +1,8 @@
 import * as React from 'react'
-import authService from '../services/authService'
+import { ServiceContext } from '../../gatsby-browser'
 
 const SpotifyStart = () => {
-
+  const { authService } = React.useContext(ServiceContext)
   return (
     <div style={{margin: 'auto'}}>
       <a href={authService.startUrl}>

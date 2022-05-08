@@ -1,5 +1,5 @@
 import * as React from 'react'
-import authService from '../services/authService'
+import { ServiceContext } from '../../gatsby-browser'
 
 export enum ProfilePicSize {
   thumbnail = "thumbnail",
@@ -18,6 +18,7 @@ const emptyColourPairs = [
 ]
 
 const ProfilePicture = (props: IProfilePictureProps) => {
+  const { authService } = React.useContext(ServiceContext)
   const r = Math.floor(Math.random() * emptyColourPairs.length)
   const { color, backgroundColor } = emptyColourPairs[r]
   const border = props.size == ProfilePicSize.full && 'solid 2.5px rgba(240, 240, 240, 1)'

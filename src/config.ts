@@ -1,5 +1,6 @@
 export const JafToken = 'jaf-jwt'
 export const BaseApiUrl = 'https://qs5s1d7fl6.execute-api.ap-southeast-2.amazonaws.com/v1/'
+export const Py_BaseApiUrl = 'https://b8drtbrrxk.execute-api.ap-southeast-2.amazonaws.com/v1/'
 export const BaseSpotifyApiUrl = 'https://accounts.spotify.com/'
 export const SpotifyClientId = '678f8fa942f640deaad0fa4f8005c98d'
 export const SpotifyScopes = 'user-read-private user-read-email user-top-read user-read-recently-played'

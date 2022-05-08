@@ -1,15 +1,15 @@
 import { navigate } from "gatsby-link"
 import * as React from "react"
+import { ServiceContext } from "../../gatsby-browser"
 import Footer from "../components/footer"
 
 import Header from "../components/header"
 import ProfilePicture, { ProfilePicSize } from "../components/profilePicture"
 import TopItem from "../components/topItem"
 import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems, SpotifyTopRange } from "../models/spotifyApi"
-import authService from "../services/authService"
-import spotifyService from "../services/spotifyService"
 
 const ProfilePage = () => {
+  const { authService, spotifyService } = React.useContext(ServiceContext)
   if (!authService.isLoggedIn) {
     typeof window != 'undefined' && navigate('/')
     return null

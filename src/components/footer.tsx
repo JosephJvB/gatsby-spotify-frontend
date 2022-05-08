@@ -1,6 +1,6 @@
 import { navigate } from 'gatsby-link'
 import * as React from 'react'
-import authService from '../services/authService'
+import { ServiceContext } from '../../gatsby-browser'
 
 interface Page {
   title: string
@@ -15,6 +15,7 @@ export interface FooterProps {
 }
 
 const Footer = (props: FooterProps) => {
+  const { authService } = React.useContext(ServiceContext)
   const [dotMenuOpen, setDotMenuOpen] = React.useState(false)
   const [profileMenuOpen, setProfileMenuOpen] = React.useState(false)
   const closePopups = () => {

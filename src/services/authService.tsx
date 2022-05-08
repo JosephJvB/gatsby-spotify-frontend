@@ -8,7 +8,7 @@ import { IUser } from "../models/user"
 // cause is, updating authService but one page (Profile?) still has reference to old AuthService instance
 // basically, there's an old authService instance still referenced.
 // checked with authService.id = random
-class AuthService {
+export default class AuthService {
   private http: HttpClient
   loggedInUser: IUser
   id: number
@@ -63,6 +63,3 @@ class AuthService {
     })
   }
 }
-
-
-export default new AuthService()

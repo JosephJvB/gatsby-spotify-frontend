@@ -1,13 +1,13 @@
 import { navigate } from 'gatsby-link'
 import * as React from 'react'
+import { ServiceContext } from '../../gatsby-browser'
 import Footer from '../components/footer'
 import Header from '../components/header'
 import Question from '../components/question'
 import { IQuestion } from '../models/quiz'
-import authService from '../services/authService'
-import quizService from '../services/quizService'
 
 const Quiz = () => {
+  const { authService, quizService } = React.useContext(ServiceContext)
   if (!authService.loggedInUser) {
     typeof window != 'undefined' && navigate('/?redirect=quiz')
     return null

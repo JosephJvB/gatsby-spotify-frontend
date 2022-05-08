@@ -3,8 +3,9 @@ import * as React from "react"
 import { ILoginRequestData, IRegisterRequestData } from "../models/requests"
 import SpotifyStart from "../components/spotifyStart"
 import { navigate } from "gatsby-link"
-import authService from "../services/authService"
 import Header from "../components/header"
+import { useContext } from "react"
+import { ServiceContext } from "../../gatsby-browser"
 
 export interface LoginProps {}
 
@@ -14,6 +15,7 @@ export enum LoginFormType {
 }
 
 const Index = (props: LoginProps) => {
+  const { authService, spotifyService } = React.useContext(ServiceContext)
   const searchParams = new URLSearchParams(typeof window !== 'undefined' && window.location.search)
   const spotifyCode = searchParams.get('code')
   const redirectPage = searchParams.get('redirect')

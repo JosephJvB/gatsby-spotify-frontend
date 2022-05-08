@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { AdminSpotifyId, BaseApiUrl } from '../config'
+import { AdminSpotifyId, BaseApiUrl, Py_BaseApiUrl } from '../config'
 import { ITopItemsRequest, ILoginRequestData, IRegisterRequestData, ITokenRequest, ISubmitQuizRequest, IGenerateQuizRequest } from '../models/requests'
 import { IAuthResponse, IQuizResponse, ITokenResponse, ITopItemsResponse } from '../models/responses'
 
@@ -19,7 +19,7 @@ export default class HttpClient {
   async login(data: ILoginRequestData): Promise<IAuthResponse> {
     const r: AxiosResponse<IAuthResponse> = await axios({
       method: 'post',
-      url: BaseApiUrl + 'login',
+      url: Py_BaseApiUrl + 'login',
       data
     })
     return r.data

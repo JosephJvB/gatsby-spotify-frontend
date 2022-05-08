@@ -2,7 +2,7 @@ import HttpClient from "../clients/httpClient"
 import { AdminSpotifyId, JafToken } from "../config"
 import { IQuestion, IQuiz } from "../models/quiz"
 
-class QuizService {
+export default class QuizService {
   http: HttpClient
   currentQuiz: IQuiz
   answered: boolean
@@ -39,5 +39,3 @@ class QuizService {
      })
   }
 }
-
-export default new QuizService()

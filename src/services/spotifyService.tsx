@@ -2,7 +2,7 @@ import HttpClient from "../clients/httpClient"
 import { JafToken } from "../config"
 import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems, SpotifyTopRange } from "../models/spotifyApi"
 
-class SpotifyService {
+export default class SpotifyService {
   http: HttpClient
   topTracksMap: {
     [key: string]: ISpotifyTrack[]
@@ -30,5 +30,3 @@ class SpotifyService {
     }
   }
 }
-
-export default new SpotifyService()
