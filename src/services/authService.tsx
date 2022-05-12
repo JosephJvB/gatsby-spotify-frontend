@@ -1,7 +1,6 @@
 import { navigate } from "gatsby-link"
 import HttpClient from "../clients/httpClient"
-import { AdminSpotifyId, BaseSpotifyApiUrl, JafToken, SessionToken, SpotifyClientId, SpotifyScopes } from "../config"
-import { ILoginRequestData, IRegisterRequestData } from "../models/requests"
+import { AdminSpotifyId, BaseSpotifyApiUrl, JafToken, SpotifyClientId, SpotifyScopes } from "../config"
 import { IUser } from "../models/user"
 
 // changes to this class cause hot reload loop between profile and login
@@ -25,43 +24,23 @@ export default class AuthService {
     return !!this.loggedInUser
   }
 
-  async validateSession(sessionJwt: string): Promise<void> {
+  async validateSession(jwt: string): Promise<void> {
     try {
-      const {message, token, ...user} = await this.http.validateSession({ token: sessionJwt })
+      const {message, token, ...user} = await this.http.validateSession(jwt)
       this.loggedInUser = user
       localStorage.setItem(JafToken, token)
     } catch (e) {
-      localStorage.removeItem(SessionToken)
+      localStorage.removeItem(JafToken)
       throw e
     }
   }
-  async login(data: ILoginRequestData): Promise<void> {
-    const {message, token, sessionToken, ...user} = await this.http.login(data)
+  async login(spotifyCode: string): Promise<void> {
+    const {message, token, ...user} = await this.http.login(spotifyCode)
     this.loggedInUser = user
     localStorage.setItem(JafToken, token)
-    if (sessionToken) {
-      localStorage.setItem(SessionToken, sessionToken)
-    } else {
-      localStorage.removeItem(SessionToken)
-    }
-  }
-  async register(data: IRegisterRequestData): Promise<void> {
-    const {message, token, sessionToken, ...user} = await this.http.register(data)
-    this.loggedInUser = user
-    localStorage.setItem(JafToken, token)
-    if (sessionToken) {
-      localStorage.setItem(SessionToken, sessionToken)
-    } else {
-      localStorage.removeItem(SessionToken)
-    }
   }
   async logout(): Promise<void> {
-    const sessionToken = localStorage.getItem(SessionToken)
     localStorage.removeItem(JafToken)
-    if (sessionToken) {
-      localStorage.removeItem(SessionToken)
-      await this.http.deleteSession({ token: sessionToken })
-    }
     this.loggedInUser = null
     typeof window != 'undefined' && navigate('/')
   }

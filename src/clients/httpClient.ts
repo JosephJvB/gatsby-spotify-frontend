@@ -1,44 +1,26 @@
 import axios, { AxiosResponse } from 'axios'
 import { AdminSpotifyId, BaseApiUrl, Py_BaseApiUrl } from '../config'
-import { ITopItemsRequest, ILoginRequestData, IRegisterRequestData, ITokenRequest, ISubmitQuizRequest, IGenerateQuizRequest } from '../models/requests'
-import { IAuthResponse, IAuthSessionResponse, IQuizResponse, ITokenResponse, ITopItemsResponse } from '../models/responses'
+import { ITopItemsRequest, ITokenRequest, ISubmitQuizRequest, IGenerateQuizRequest } from '../models/requests'
+import { IAuthResponse, IAuthSessionResponse, IQuizResponse, ITopItemsResponse } from '../models/responses'
 
 export default class HttpClient {
   constructor() {}
 
-  async validateSession(data: ITokenRequest): Promise<IAuthResponse> {
+  async validateSession(jwt: string): Promise<IAuthResponse> {
     const r: AxiosResponse<IAuthResponse> = await axios({
       method: 'get',
       url: Py_BaseApiUrl + 'session',
       headers: {
-        Authorization: 'Bearer ' + data.token
+        Authorization: 'Bearer ' + jwt
       }
     })
     return r.data
   }
-  async deleteSession(data: ITokenRequest): Promise<IAuthResponse> {
-    const r: AxiosResponse<IAuthResponse> = await axios({
-      method: 'delete',
-      url: Py_BaseApiUrl + 'session',
-      headers: {
-        Authorization: 'Bearer ' + data.token
-      }
-    })
-    return r.data
-  }
-  async login(data: ILoginRequestData): Promise<IAuthSessionResponse> {
+  async login(spotifyCode: string): Promise<IAuthSessionResponse> {
     const r: AxiosResponse<IAuthSessionResponse> = await axios({
-      method: 'post',
+      method: 'get',
       url: Py_BaseApiUrl + 'login',
-      data
-    })
-    return r.data
-  }
-  async register(data: IRegisterRequestData): Promise<IAuthSessionResponse> {
-    const r: AxiosResponse<IAuthSessionResponse> = await axios({
-      method: 'post',
-      url: Py_BaseApiUrl + 'register',
-      data
+      params: { spotifyCode }
     })
     return r.data
   }
