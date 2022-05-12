@@ -27,7 +27,7 @@ const Index = (props: LoginProps) => {
       setLoading(true)
       await authService.validateSession(jwt)
       setLoading(false)
-      navigate('/' + redirectPage)
+      navigate('/' + (redirectPage || 'profile'))
     } catch (e) {
       setLoading(false)
       console.error(e)
