@@ -4,8 +4,6 @@ import AuthService from "./src/services/authService"
 import QuizService from "./src/services/quizService"
 import SpotifyService from "./src/services/spotifyService"
 
-// this works
-// probably I should inject services here?
 const services: IServiceContext = {
   authService: new AuthService(),
   quizService: new QuizService(),

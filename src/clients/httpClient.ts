@@ -9,7 +9,7 @@ export default class HttpClient {
   async validateToken(data: ITokenRequest): Promise<IAuthResponse> {
     const r: AxiosResponse<IAuthResponse> = await axios({
       method: 'get',
-      url: BaseApiUrl + 'token/validate',
+      url: Py_BaseApiUrl + 'jwt',
       headers: {
         Authorization: 'Bearer ' + data.token
       }
@@ -27,7 +27,7 @@ export default class HttpClient {
   async register(data: IRegisterRequestData): Promise<IAuthResponse> {
     const r: AxiosResponse<IAuthResponse> = await axios({
       method: 'post',
-      url: BaseApiUrl + 'register',
+      url: Py_BaseApiUrl + 'register',
       data
     })
     return r.data
