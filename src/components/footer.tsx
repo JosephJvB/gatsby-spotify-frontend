@@ -11,8 +11,7 @@ const pages: Page[] = [
   { path: '/quiz', title: 'Quiz' },
 ]
 
-export interface FooterProps {
-}
+export interface FooterProps {}
 
 const Footer = (props: FooterProps) => {
   const { authService } = React.useContext(ServiceContext)
@@ -30,8 +29,13 @@ const Footer = (props: FooterProps) => {
       typeof window != 'undefined' && navigate(p.path)
     }
   }
-  const logoutClick = () => {
-    authService.logout()
+  const logoutClick = async () => {
+    try {
+      await authService.logout()
+    } catch (e) {
+      console.error(e)
+      console.error('logout failed')
+    }
     typeof window != 'undefined' && navigate('/')
   }
   const openDots = () => {

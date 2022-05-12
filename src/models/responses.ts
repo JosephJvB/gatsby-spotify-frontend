@@ -10,6 +10,11 @@ export interface IAuthResponse extends IUser {
   message: string
   token: string
 }
+export interface IAuthSessionResponse extends IUser {
+  message: string
+  token: string
+  sessionToken?: string
+}
 
 export interface ITopItemsResponse {
   message?: string

@@ -1,11 +1,10 @@
 
 import * as React from "react"
 import { ILoginRequestData, IRegisterRequestData } from "../models/requests"
-import SpotifyStart from "../components/spotifyStart"
 import { navigate } from "gatsby-link"
 import Header from "../components/header"
-import { useContext } from "react"
 import { ServiceContext } from "../../gatsby-browser"
+import { JafToken, SessionToken } from "../config"
 
 export interface LoginProps {}
 
@@ -15,7 +14,7 @@ export enum LoginFormType {
 }
 
 const Index = (props: LoginProps) => {
-  const { authService, spotifyService } = React.useContext(ServiceContext)
+  const { authService } = React.useContext(ServiceContext)
   const searchParams = new URLSearchParams(typeof window !== 'undefined' && window.location.search)
   const spotifyCode = searchParams.get('code')
   const redirectPage = searchParams.get('redirect')
@@ -30,14 +29,17 @@ const Index = (props: LoginProps) => {
   const [formError, setFormError] = React.useState('')
   React.useEffect(() => {
     if (typeof window !== 'undefined' && window.location.pathname == '/') {
-      validateJwt()
+      const sessionJwt = localStorage.getItem(SessionToken)
+      if (sessionJwt) {
+        validateSession(sessionJwt)
+      }
     }
   }, [])
 
-  async function validateJwt(): Promise<void> {
+  async function validateSession(jwt: string): Promise<void> {
     try {
       setLoading(true)
-      await authService.validateToken()
+      await authService.validateSession(jwt)
       setLoading(false)
       if (redirectPage) {
         typeof window != 'undefined' && navigate('/' + redirectPage)
@@ -47,7 +49,7 @@ const Index = (props: LoginProps) => {
     } catch (e) {
       setLoading(false)
       console.error(e)
-      console.error('validateJwt failed')
+      console.error('validateSession failed')
     }
   }
 
@@ -140,17 +142,21 @@ const Index = (props: LoginProps) => {
       </main>
       <footer className="loginFooter">
         { loginFormType == LoginFormType.login && !spotifyCode &&
-          <SpotifyStart />
+          <div style={{margin: 'auto'}}>
+            <a href={authService.startUrl}>
+              <p style={{color: 'white'}}>Keen to join? Start here. All good if not!! <img height="15" width="15" src="/static/external-link-alt-solid.svg" alt="" /></p>
+            </a>
+          </div>
         }
         { loginFormType == LoginFormType.login && !!spotifyCode &&
-          <div>
+          <div style={{margin: 'auto'}}>
             <a onClick={changeLoginFormType}>
               <p>Don't have an account? Register here</p>
             </a>
           </div>
         }
         { loginFormType == LoginFormType.register &&
-          <div>
+          <div style={{margin: 'auto'}}>
             <a onClick={changeLoginFormType}>
               <p>Already have an account? Login here</p>
             </a>

@@ -1,4 +1,5 @@
 export const JafToken = 'jaf-jwt'
+export const SessionToken = 'jaf-rememberme'
 export const BaseApiUrl = 'https://qs5s1d7fl6.execute-api.ap-southeast-2.amazonaws.com/v1/'
 export const Py_BaseApiUrl = 'https://b8drtbrrxk.execute-api.ap-southeast-2.amazonaws.com/v1/'
 export const BaseSpotifyApiUrl = 'https://accounts.spotify.com/'
