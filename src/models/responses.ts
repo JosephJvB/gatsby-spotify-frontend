@@ -1,4 +1,4 @@
-import { IQuiz } from "./quiz";
+import { IQuiz, IQuizResponse } from "./quiz";
 import { ISpotifyArtist, ISpotifyTrack } from "./spotifyApi";
 import { IUser } from "./user";
 
@@ -16,9 +16,9 @@ export interface ITopItemsResponse {
   token: string
   items: (ISpotifyTrack | ISpotifyArtist)[]
 }
-export interface IQuizResponse {
+export interface ILoadQuizResponse {
   message?: string
   token: string
   quiz: IQuiz
-  answered: boolean
+  quizResponse: IQuizResponse
 }

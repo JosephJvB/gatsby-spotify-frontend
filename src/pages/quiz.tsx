@@ -33,7 +33,7 @@ const Quiz = () => {
     setLoading(false)
   }
   const answerQuestion = (a: IQuestion) => {
-    if (quizService.answered) {
+    if (!!quizService.currentResponse) {
       return
     }
     const answers = [...quizAnswers]
@@ -47,7 +47,7 @@ const Quiz = () => {
     }
   }
   async function submitQuiz(answers: IQuestion[]) {
-    if (quizService.answered) {
+    if (!!quizService.currentResponse) {
       return
     }
     setLoading(true)
@@ -85,9 +85,7 @@ const Quiz = () => {
   let imgClass = 'profileImg imgFull'
   if (loading) imgClass += ' imageRotate'
   const currentQuestion = quizService.currentQuiz?.questions && quizService.currentQuiz.questions[questionIndex]
-  const usersAnswers = quizService.answered &&
-    quizService.currentQuiz?.responses.find(r => r.spotifyId == authService.loggedInUser?.spotifyId)
-  const currentResponse = usersAnswers?.answers && usersAnswers?.answers[questionIndex]
+  const currentResponse = quizService?.currentResponse?.answers[questionIndex]
   return (
     <>
       <Header />
@@ -103,7 +101,7 @@ const Quiz = () => {
             <div className="quizInfo">
               <h1>Spotify "Unwrapped"</h1>
               <br />
-              { !loading && !quizService.answered &&
+              { !loading && !quizService.currentResponse &&
                 <>
                   <p>How well do you know your mates?</p>
                   <br/>
@@ -111,7 +109,7 @@ const Quiz = () => {
                   <p>You will be presented with a track, this track is one of your friends top 10 tracks. You must correctly guess whose top tracks the song has come from.</p>
                 </>
               }
-              { !loading && quizService.answered &&
+              { !loading && !!quizService.currentResponse &&
                 <>
                   <p>You have answered the current quiz.</p>
                   <p>Click the review button to see how you did.</p>
@@ -119,7 +117,7 @@ const Quiz = () => {
               }
               { !loading && quizService.currentQuiz &&
                 <button onClick={e => setQuizStarted(true)} className="startQuiz">
-                  {quizService.answered ? "Review" : "Get Started"}
+                  {!!quizService.currentResponse ? "Review" : "Get Started"}
                 </button>
               }
             </div>
@@ -130,7 +128,7 @@ const Quiz = () => {
               <Question question={currentQuestion} answer={answerQuestion} response={currentResponse} />
             </>
           }
-          { !loading && quizStarted && quizService.currentQuiz && quizService.answered && usersAnswers &&
+          { !loading && quizStarted && quizService.currentResponse &&
             <div className="quizReview">
               <div className="reviewNav">
                 <button className="reviewNavBtn"
@@ -142,10 +140,10 @@ const Quiz = () => {
               </div>
             </div>
           }
-          { !loading && quizService.answered && usersAnswers &&
+          { !loading && !!quizService.currentResponse &&
             <div className="score">
               <p>Your score:</p>
-              <p>{usersAnswers.score} / {quizService.currentQuiz.questions.length}</p>
+              <p>{quizService.currentResponse.score} / {quizService.currentQuiz.questions.length}</p>
             </div>
           }
         </section>

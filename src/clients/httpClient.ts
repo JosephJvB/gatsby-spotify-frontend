@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
-import { AdminSpotifyId, BaseApiUrl, PyAuth_ApiUrl } from '../config'
-import { ITopItemsRequest, ITokenRequest, ISubmitQuizRequest, IGenerateQuizRequest } from '../models/requests'
-import { IAuthResponse, IAuthSessionResponse, IQuizResponse, ITopItemsResponse } from '../models/responses'
+import { AdminSpotifyId, BaseApiUrl, PyAuth_ApiUrl, PyUserQuiz_ApiUrl, PyAdminQuiz_ApiUrl } from '../config'
+import { ITopItemsRequest, ISubmitQuizRequest, IGenerateQuizRequest, IGetQuizRequest } from '../models/requests'
+import { IAuthResponse, IAuthSessionResponse, ILoadQuizResponse, ITopItemsResponse } from '../models/responses'
 
 export default class HttpClient {
   constructor() {}
@@ -36,20 +36,21 @@ export default class HttpClient {
     })
     return r.data
   }
-  async loadQuiz(data: ITokenRequest): Promise<IQuizResponse> {
-    const r: AxiosResponse<IQuizResponse> = await axios({
+  async loadQuiz(data: IGetQuizRequest): Promise<ILoadQuizResponse> {
+    const r: AxiosResponse<ILoadQuizResponse> = await axios({
       method: 'get',
-      url: BaseApiUrl + 'quiz',
+      url: PyUserQuiz_ApiUrl + 'quiz/' + data.quizType,
+      params: { quizId: data.quizId },
       headers: {
         Authorization: 'Bearer ' + data.token
       }
     })
     return r.data
   }
-  async submitQuiz(data: ISubmitQuizRequest): Promise<IQuizResponse> {
-    const r: AxiosResponse<IQuizResponse> = await axios({
+  async submitQuiz(data: ISubmitQuizRequest): Promise<ILoadQuizResponse> {
+    const r: AxiosResponse<ILoadQuizResponse> = await axios({
       method: 'post',
-      url: BaseApiUrl + 'quiz',
+      url: PyUserQuiz_ApiUrl + 'quiz',
       data: { answers: data.answers },
       headers: {
         Authorization: 'Bearer ' + data.token
@@ -63,7 +64,7 @@ export default class HttpClient {
     }
     const r: AxiosResponse = await axios({
       method: 'post',
-      url: BaseApiUrl + 'quiz/generate',
+      url: PyAdminQuiz_ApiUrl + 'quiz/' + data.quizType,
       headers: {
         Authorization: 'Bearer ' + data.token
       }

@@ -1,13 +1,18 @@
 import { ISpotifyTrack } from "./spotifyApi";
 
+export enum QuizType {
+  track = 'track',
+}
+
 export interface IQuiz {
-  ts: number
+  guid: string
+  quizId: string
+  quizType: string
   questions: IQuestion[]
-  responses: IQuizResponse[]
 }
 export interface IQuestion {
   id: string
-  track: ISpotifyTrack
+  subject: ISpotifyTrack
   choices: IQuizProfile[]
   answer: IQuizProfile
 }
