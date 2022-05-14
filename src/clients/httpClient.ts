@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { AdminSpotifyId, BaseApiUrl, Py_BaseApiUrl } from '../config'
+import { AdminSpotifyId, BaseApiUrl, PyAuth_ApiUrl } from '../config'
 import { ITopItemsRequest, ITokenRequest, ISubmitQuizRequest, IGenerateQuizRequest } from '../models/requests'
 import { IAuthResponse, IAuthSessionResponse, IQuizResponse, ITopItemsResponse } from '../models/responses'
 
@@ -9,7 +9,7 @@ export default class HttpClient {
   async validateSession(jwt: string): Promise<IAuthResponse> {
     const r: AxiosResponse<IAuthResponse> = await axios({
       method: 'get',
-      url: Py_BaseApiUrl + 'session',
+      url: PyAuth_ApiUrl + 'session',
       headers: {
         Authorization: 'Bearer ' + jwt
       }
@@ -19,7 +19,7 @@ export default class HttpClient {
   async login(spotifyCode: string): Promise<IAuthSessionResponse> {
     const r: AxiosResponse<IAuthSessionResponse> = await axios({
       method: 'get',
-      url: Py_BaseApiUrl + 'login',
+      url: PyAuth_ApiUrl + 'login',
       params: { spotifyCode }
     })
     return r.data
