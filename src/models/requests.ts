@@ -1,4 +1,4 @@
-import { IQuestion, QuizType } from "./quiz";
+import { IQuestion, IQuizResponse, QuizType } from "./quiz";
 import { SpotifyTopItems, SpotifyTopRange } from "./spotifyApi";
 
 export interface ITokenRequest {
@@ -12,6 +12,8 @@ export interface ITopItemsRequest {
 }
 export interface ISubmitQuizRequest {
   token: string
+  quizType: string
+  quizId: string
   answers: IQuestion[]
 }
 export interface IGenerateQuizRequest {

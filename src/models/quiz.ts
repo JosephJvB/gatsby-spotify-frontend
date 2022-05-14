@@ -22,6 +22,7 @@ export interface IQuizProfile {
   spotifyDisplayPicture: string
 }
 export interface IQuizResponse {
+  quizId: string
   spotifyId: string
   answers: IQuestion[]
   score: number

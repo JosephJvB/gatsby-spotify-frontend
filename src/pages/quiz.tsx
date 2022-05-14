@@ -85,7 +85,7 @@ const Quiz = () => {
   let imgClass = 'profileImg imgFull'
   if (loading) imgClass += ' imageRotate'
   const currentQuestion = quizService.currentQuiz?.questions && quizService.currentQuiz.questions[questionIndex]
-  const currentResponse = quizService?.currentResponse?.answers[questionIndex]
+  const questionResponse = quizService?.currentResponse?.answers[questionIndex]
   return (
     <>
       <Header />
@@ -125,7 +125,7 @@ const Quiz = () => {
           { !loading && quizStarted && currentQuestion &&
             <>
               <p className="questionIndex">{questionIndex + 1} / {quizService.currentQuiz.questions.length}</p>
-              <Question question={currentQuestion} answer={answerQuestion} response={currentResponse} />
+              <Question question={currentQuestion} answer={answerQuestion} response={questionResponse} />
             </>
           }
           { !loading && quizStarted && quizService.currentResponse &&

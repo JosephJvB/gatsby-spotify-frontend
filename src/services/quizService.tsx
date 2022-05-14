@@ -25,7 +25,9 @@ export default class QuizService {
     }
     const { token, message, quizResponse } = await this.http.submitQuiz({
       token: localStorage.getItem(JafToken),
-      answers,
+      quizType: this.currentQuiz.quizType,
+      quizId: this.currentQuiz.quizId,
+      answers: answers
     })
     localStorage.setItem(JafToken, token)
     this.currentResponse = quizResponse

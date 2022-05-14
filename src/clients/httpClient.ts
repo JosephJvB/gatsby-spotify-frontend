@@ -50,8 +50,8 @@ export default class HttpClient {
   async submitQuiz(data: ISubmitQuizRequest): Promise<ILoadQuizResponse> {
     const r: AxiosResponse<ILoadQuizResponse> = await axios({
       method: 'post',
-      url: PyUserQuiz_ApiUrl + 'quiz',
-      data: { answers: data.answers },
+      url: PyUserQuiz_ApiUrl + 'submit',
+      data,
       headers: {
         Authorization: 'Bearer ' + data.token
       }
