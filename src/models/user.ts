@@ -3,3 +3,7 @@ export interface IUser {
   displayName: string
   displayPicture?: string
 }
+
+export interface ISelectUser extends IUser {
+  selected: boolean
+}

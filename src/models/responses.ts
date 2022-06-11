@@ -22,3 +22,9 @@ export interface ILoadQuizResponse {
   quiz: IQuiz
   quizResponse: IQuizResponse
 }
+
+export interface ILoadUsersResponse {
+  message?: string
+  token: string
+  users: IUser[]
+}
