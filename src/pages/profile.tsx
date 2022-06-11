@@ -101,7 +101,7 @@ const ProfilePage = () => {
           { spotifyService.topTracksMap[spotifySearchRange]?.length > 0 &&
             <ul className={`sectionList ${tracksOpen ? "sectionListOpen" : ''}`}>
               { spotifyService.topTracksMap[spotifySearchRange].map((t: ISpotifyTrack, i: number) => {
-                  return <TopItem key={i} title={t.name} subTitle={t.artists[0].name} imageUrl={t.uri} />
+                  return <TopItem key={i} title={t.name} subTitle={t.name} imageUrl={t.albumImageUrl} />
                 }) }
             </ul>
           }
@@ -116,7 +116,7 @@ const ProfilePage = () => {
           { spotifyService.topArtistsMap[spotifySearchRange]?.length > 0 &&
             <ul className={`sectionList ${artistsOpen ? "sectionListOpen" : ''}`}>
               { spotifyService.topArtistsMap[spotifySearchRange].map((a: ISpotifyArtist, i: number) => {
-                return <TopItem key={i} title={a.name} imageUrl={a.images[0].url} />
+                return <TopItem key={i} title={a.name} imageUrl={a.imageUrl} />
               })}
             </ul>
           }

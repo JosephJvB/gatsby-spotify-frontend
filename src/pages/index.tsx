@@ -16,9 +16,9 @@ const Index = (props: LoginProps) => {
     const searchParams = new URLSearchParams(window.location.search)
     const jwt = localStorage.getItem(JafToken)
     if (searchParams.has('code')) {
-      doLogin(searchParams.get('code'))
+      doLogin(searchParams!.get('code')!)
     } else if (jwt) {
-      validateSession(jwt, searchParams.get('redirect'))
+      validateSession(jwt, searchParams.get('redirect')!)
     }
   }, [])
   

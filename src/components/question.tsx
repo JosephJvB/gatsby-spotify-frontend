@@ -15,25 +15,25 @@ const Question = (props: IQuestionProps) => {
   const [playingPreview, setPlayingPreview] = React.useState(false)
   const audioEl = React.useRef<HTMLAudioElement>(null)
   React.useEffect(() => {
-    audioEl.current.addEventListener('play', () => {
+    audioEl!.current!.addEventListener('play', () => {
       setPlayingPreview(true)
     })
-    audioEl.current.addEventListener('pause', () => {
+    audioEl!.current!.addEventListener('pause', () => {
       setPlayingPreview(false)
     })
   }, [])
   const togglePlaying = () => {
-    if (audioEl.current.paused) {
-      audioEl.current.play()
+    if (audioEl!.current!.paused) {
+      audioEl!.current!.play()
     } else {
-      audioEl.current.pause()
+      audioEl!.current!.pause()
     }
   }
   const selectChoice= (c: IQuizProfile) => {
     if (!!quizService.currentResponse) {
       return
     }
-    audioEl.current.pause()
+    audioEl!.current!.pause()
     setPlayingPreview(false)
     const question = {...props.question}
     question.answer = c

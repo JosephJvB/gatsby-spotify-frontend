@@ -10,6 +10,10 @@ const pages: Page[] = [
   { path: '/profile', title: 'Profile' },
   { path: '/quiz', title: 'Quiz' },
 ]
+const adminPage: Page = {
+  path: '/admin',
+  title: 'Admin'
+}
 
 export interface FooterProps {}
 
@@ -41,6 +45,10 @@ const Footer = (props: FooterProps) => {
   const openDots = () => {
     setDotMenuOpen(!dotMenuOpen)
   }
+  const renderPages = [...pages]
+  if (authService.loggedInUser && authService.isAdmin) {
+    renderPages.push(adminPage)
+  }
   return (
     <>
       { dotMenuOpen && <div onClick={closePopups} className="popupBackdrop"></div> }
@@ -54,7 +62,7 @@ const Footer = (props: FooterProps) => {
         </div>
       </footer>
       { <div className={`dotMenuPanel ${dotMenuOpen ? 'open' : 'closed'}`}>
-        {pages.map((p, i) => {
+        {renderPages.map((p, i) => {
           let cls = 'menuItem'
           if (pageActive(p)) cls += ' menuItemActive'
           return <p key={i} className={cls} onClick={e => pageClick(p)}>{p.title}</p>

@@ -17,17 +17,31 @@ const Admin = () => {
     return null
   }
   const [loading, setLoading] = React.useState<boolean>(false)
-  const [userMap, setUserMap] = React.useState<IUserMap>({})
+  const [userList, setUserList] = React.useState<ISelectUser[]>([
+    {
+      spotifyId: 'joe',
+      displayName: 'joe',
+      displayPicture: 'joe',
+      selected: true
+    }
+  ])
   React.useEffect(() => {
     loadUsers()
   }, [])
 
+  // not working!!
   const handleUserSelect = (id: string) => {
-    if (!userMap[id]) {
+    userList[id]
+    if (!userList[id]) {
       return
     }
-    userMap[id].selected = !userMap[id].selected
-    setUserMap(userMap)
+    const next = userList.map(u => {
+      if (u.spotifyId == id) {
+        u.selected = !u.selected
+      }
+      return u
+    })
+    setUserList(next)
   }
 
   async function loadUsers() {
@@ -36,15 +50,15 @@ const Admin = () => {
      }
     setLoading(true)
     try {
-      const r = await adminService.loadUsers(authService.loggedInUser.spotifyId)
-      const map: IUserMap = {}
-      for (const u of r) {
-        map[u.spotifyId] = {
-          ...u,
-          selected: true,
-        }
-      }
-      setUserMap(map)
+      // const r = await adminService.loadUsers(authService.loggedInUser.spotifyId)
+      // const map: IUserMap = {}
+      // for (const u of r) {
+      //   map[u.spotifyId] = {
+      //     ...u,
+      //     selected: true,
+      //   }
+      // }
+      // setUserMap(map)
     } catch (e) {
       console.error(e)
       console.error('failed to load users')
@@ -70,7 +84,7 @@ const Admin = () => {
   return (
     <>
       <Header />
-      <main>
+      <main className="container">
         <section>
           <img className={imgClass} style={{margin: '0 auto'}}
             src="/static/question-circle-solid.svg" alt="question mark icon"
@@ -78,12 +92,12 @@ const Admin = () => {
         </section>
         <section className="users-table">
           {loading && <p>Loading users...</p>}
-          {!loading && Object.keys(userMap).map(id => {
-            const u = userMap[id]
+          {!loading &&userList.map((u, idx) => {
             return (
-              <div className="user-row" onClick={() => handleUserSelect(id)}>
+              <div key={idx} className="user-row" onClick={() => handleUserSelect(u.spotifyId)}>
                 <span className="user-name">{u.displayName}</span>
-                <input type="checkbox" name="select-user" id={u.spotifyId} checked={u.selected} />
+                <input type="checkbox" name="select-user" id={u.spotifyId} checked={u.selected} 
+                  onChange={() => null}/>
               </div>
             )
           })}

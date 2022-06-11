@@ -1,4 +1,4 @@
-export interface ISpotifyTrack {
+export interface ISpotifyTrack_v2 {
   album: ISpotifyAlbum
   artists: ISpotifyArtist[]
   available_markets: string[]
@@ -16,6 +16,18 @@ export interface ISpotifyTrack {
   uri: string
 }
 
+export interface ISpotifyTrack {
+  albumImageUrl: string
+  albumName: string
+  artists:string[]
+  id: string
+  name: string
+  popularity: 55
+  previewUrl: string
+  releaseDate: string
+  uri: string
+}
+
 export interface IFollowers {
   href: string
   total: number
@@ -25,7 +37,7 @@ export interface ISpotifyImage {
   url: string
   width: number
 }
-export interface ISpotifyArtist {
+export interface ISpotifyArtist_v2 {
   followers: IFollowers
   genres: string[]
   href: string
@@ -35,6 +47,13 @@ export interface ISpotifyArtist {
   popularity: number
   type: string
   uri: string
+}
+export interface ISpotifyArtist {
+  followers: number
+  genres: string[]
+  imageUrl: string
+  name: string
+  popularity: number
 }
 export enum SpotifyTopItems {
   tracks = 'tracks',
