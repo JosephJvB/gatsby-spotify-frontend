@@ -10,8 +10,8 @@ export default class SpotifyService {
   topArtistsMap: {
     [key: string]: ISpotifyArtist[]
   } = {}
-  constructor() {
-    this.http = new HttpClient()
+  constructor(http: HttpClient) {
+    this.http = http
   }
   async getTopItems(type: SpotifyTopItems, range: SpotifyTopRange): Promise<void> {
     const { token, items } = await this.http.getTopItems({

@@ -1,15 +1,15 @@
-export enum ModalTypes {
-  AccountInfo,
-}
+// export enum ModalTypes {
+//   AccountInfo,
+// }
 
-// not working!
-class ModalService {
-  currentModal: ModalTypes
-  constructor() {}
+// // not working!
+// class ModalService {
+//   currentModal: ModalTypes
+//   constructor() {}
 
-  setModal(type: ModalTypes) {
-    this.currentModal = type != this.currentModal ? type : null
-  }
-}
+//   setModal(type: ModalTypes) {
+//     this.currentModal = type != this.currentModal ? type : null
+//   }
+// }
 
-export default new ModalService()
+// export default new ModalService()

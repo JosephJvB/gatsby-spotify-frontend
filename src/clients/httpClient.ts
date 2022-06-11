@@ -1,7 +1,23 @@
 import axios, { AxiosResponse } from 'axios'
-import { AdminSpotifyId, BaseApiUrl, PyAuth_ApiUrl, PyUserQuiz_ApiUrl, PyAdminQuiz_ApiUrl } from '../config'
-import { ITopItemsRequest, ISubmitQuizRequest, IGenerateQuizRequest, IGetQuizRequest } from '../models/requests'
-import { IAuthResponse, IAuthSessionResponse, ILoadQuizResponse, ITopItemsResponse } from '../models/responses'
+import { AdminSpotifyId,
+  BaseApiUrl,
+  PyAuth_ApiUrl,
+  PyUserQuiz_ApiUrl,
+  PyAdminQuiz_ApiUrl,
+  Golang_ApiUrl,
+} from '../config'
+import { ITopItemsRequest,
+  ISubmitQuizRequest,
+  IGenerateQuizRequest,
+  IGetQuizRequest,
+  ILoadUsersRequest,
+} from '../models/requests'
+import { IAuthResponse,
+  IAuthSessionResponse,
+  ILoadQuizResponse,
+  ILoadUsersResponse,
+  ITopItemsResponse,
+} from '../models/responses'
 
 export default class HttpClient {
   constructor() {}
@@ -69,5 +85,15 @@ export default class HttpClient {
         Authorization: 'Bearer ' + data.token
       }
     })
+  }
+  async loadUsers(data: ILoadUsersRequest): Promise<ILoadUsersResponse> {
+    const r: AxiosResponse<ILoadUsersResponse> = await axios({
+      method: 'post',
+      url: Golang_ApiUrl + 'users',
+      headers: {
+        Authorization: 'Bearer ' + data.token,
+      }
+    })
+    return r.data
   }
 }

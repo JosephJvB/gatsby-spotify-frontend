@@ -9,10 +9,10 @@ import { IUser } from "../models/user"
 // checked with authService.id = random
 export default class AuthService {
   private http: HttpClient
-  loggedInUser: IUser
+  loggedInUser: IUser | null
   id: number
-  constructor() {
-    this.http = new HttpClient()
+  constructor(http: HttpClient) {
+    this.http = http
     // debugging
     this.id = Math.floor(Math.random() * 500)
   }

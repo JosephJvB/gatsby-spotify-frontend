@@ -1,13 +1,13 @@
 import HttpClient from "../clients/httpClient"
-import { AdminSpotifyId, JafToken } from "../config"
+import { JafToken } from "../config"
 import { IQuestion, IQuiz, IQuizResponse, QuizType } from "../models/quiz"
 
 export default class QuizService {
   http: HttpClient
   currentQuiz: IQuiz
   currentResponse: IQuizResponse
-  constructor() {
-    this.http = new HttpClient()
+  constructor(http: HttpClient) {
+    this.http = http
   }
   async loadQuiz() {
     const { token, message, quiz, quizResponse } = await this.http.loadQuiz({
@@ -31,15 +31,5 @@ export default class QuizService {
     })
     localStorage.setItem(JafToken, token)
     this.currentResponse = quizResponse
-  }
-  async generateQuiz(spotifyId: string) {
-    if (spotifyId != AdminSpotifyId) {
-      return
-     }
-     await this.http.generateQuiz({
-       token: localStorage.getItem(JafToken),
-       spotifyId: spotifyId,
-       quizType: QuizType.track
-     })
   }
 }
