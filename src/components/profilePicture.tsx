@@ -9,8 +9,8 @@ export interface IProfilePictureProps {
   size?: ProfilePicSize
   vCenter?: boolean
   hCenter?: boolean
-  src: string
-  name: string
+  src?: string
+  name?: string
 }
 
 const emptyColourPairs = [
@@ -21,7 +21,7 @@ const ProfilePicture = (props: IProfilePictureProps) => {
   const { authService } = React.useContext(ServiceContext)
   const r = Math.floor(Math.random() * emptyColourPairs.length)
   const { color, backgroundColor } = emptyColourPairs[r]
-  const border = props.size == ProfilePicSize.full && 'solid 2.5px rgba(240, 240, 240, 1)'
+  const border = props.size == ProfilePicSize.full ? 'solid 2.5px rgba(240, 240, 240, 1)' : 'none'
   let margin = ''
   if (props.vCenter || props.hCenter) {
     margin = [
@@ -51,7 +51,7 @@ const ProfilePicture = (props: IProfilePictureProps) => {
       }
       { authService.loggedInUser && !props.src &&
         <div className={imgClass + " emptyProfileImg"} style={emptyStyle}>
-          <p>{props.name.substr(0, 1)}</p>
+          <p>{props.name?.substr(0, 1)}</p>
         </div>
       }
     </>

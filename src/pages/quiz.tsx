@@ -7,7 +7,7 @@ import Question from '../components/question'
 import { IQuestion } from '../models/quiz'
 
 const Quiz = () => {
-  const { authService, quizService } = React.useContext(ServiceContext)
+  const { authService, quizService, adminService } = React.useContext(ServiceContext)
   if (!authService.loggedInUser) {
     typeof window != 'undefined' && navigate('/?redirect=quiz')
     return null
@@ -16,7 +16,6 @@ const Quiz = () => {
   const [quizStarted, setQuizStarted] = React.useState(false)
   const [questionIndex, setQuestionIndex] = React.useState(0)
   const [quizAnswers, setQuizAnswers] = React.useState<IQuestion[]>([])
-  const [generateQuizClicks, setGenerateQuizClicks] = React.useState(0)
   React.useEffect(() => {
     if (!quizService.currentQuiz) {
       loadQuiz()
@@ -61,27 +60,7 @@ const Quiz = () => {
     }
     setLoading(false)
   }
-  async function adminGenerateQuiz() {
-     if (!authService.isAdmin) {
-      return
-     }
-     try {
-       const nextClickCount = generateQuizClicks + 1
-       if (nextClickCount == 5) {
-         setLoading(true)
-         await quizService.generateQuiz(authService.loggedInUser.spotifyId)
-         setLoading(false)
-         setGenerateQuizClicks(0)
-         await loadQuiz()
-        } else {
-          setGenerateQuizClicks(nextClickCount)
-        }
-      } catch (e) {
-        console.error(e)
-        console.error('adminGenerateQuiz failed')
-        setLoading(false)
-     }
-  }
+
   let imgClass = 'profileImg imgFull'
   if (loading) imgClass += ' imageRotate'
   const currentQuestion = quizService.currentQuiz?.questions && quizService.currentQuiz.questions[questionIndex]
@@ -94,7 +73,6 @@ const Quiz = () => {
           { (!quizStarted || loading) &&
             <img className={imgClass} style={{margin: '0 auto'}}
               src="/static/question-circle-solid.svg" alt="question mark icon"
-              onClick={authService.isAdmin ? adminGenerateQuiz : null}
               />
           }
           { !quizStarted &&

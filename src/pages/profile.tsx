@@ -21,8 +21,12 @@ const ProfilePage = () => {
   const [spotifySearchRange, setSpotifySearchRange] = React.useState(SpotifyTopRange.shortTerm)
   const scrollAfter = (id: string, ms = 340) => {
     const mainPanel = document.querySelector('main')
+    const target = document.getElementById(id)
+     if (!mainPanel || !target) {
+      return
+     }
     setTimeout(() => {
-      const y = document.getElementById(id).offsetTop - 50
+      const y = target.offsetTop - 50
       mainPanel.scrollTo({
         top: y,
         left: 0,
@@ -97,7 +101,7 @@ const ProfilePage = () => {
           { spotifyService.topTracksMap[spotifySearchRange]?.length > 0 &&
             <ul className={`sectionList ${tracksOpen ? "sectionListOpen" : ''}`}>
               { spotifyService.topTracksMap[spotifySearchRange].map((t: ISpotifyTrack, i: number) => {
-                  return <TopItem key={i} title={t.name} subTitle={t.artists[0]} imageUrl={t.albumImageUrl} />
+                  return <TopItem key={i} title={t.name} subTitle={t.artists[0].name} imageUrl={t.uri} />
                 }) }
             </ul>
           }
@@ -112,7 +116,7 @@ const ProfilePage = () => {
           { spotifyService.topArtistsMap[spotifySearchRange]?.length > 0 &&
             <ul className={`sectionList ${artistsOpen ? "sectionListOpen" : ''}`}>
               { spotifyService.topArtistsMap[spotifySearchRange].map((a: ISpotifyArtist, i: number) => {
-                return <TopItem key={i} title={a.name} imageUrl={a.imageUrl} />
+                return <TopItem key={i} title={a.name} imageUrl={a.images[0].url} />
               })}
             </ul>
           }
