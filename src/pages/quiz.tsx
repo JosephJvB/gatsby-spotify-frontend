@@ -17,7 +17,7 @@ const Quiz = () => {
   const [questionIndex, setQuestionIndex] = React.useState(0)
   const [quizAnswers, setQuizAnswers] = React.useState<IQuestion[]>([])
   React.useEffect(() => {
-    if (!quizService.currentQuiz) {
+    if (!quizService.currentResponse) {
       loadQuiz()
     }
   }, [])
