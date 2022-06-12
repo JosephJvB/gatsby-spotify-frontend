@@ -3,12 +3,7 @@ import React from 'react'
 import { ServiceContext } from '../../gatsby-browser'
 import Footer from '../components/footer'
 import Header from '../components/header'
-import { ISelectUser, IUser } from '../models/user'
-
-type IUserMap = {
-  [key: string]: ISelectUser
-}
-
+import { ISelectUser } from '../models/user'
 
 const Admin = () => {
   const { authService, adminService } = React.useContext(ServiceContext)
@@ -17,24 +12,12 @@ const Admin = () => {
     return null
   }
   const [loading, setLoading] = React.useState<boolean>(false)
-  const [userList, setUserList] = React.useState<ISelectUser[]>([
-    {
-      spotifyId: 'joe',
-      displayName: 'joe',
-      displayPicture: 'joe',
-      selected: true
-    }
-  ])
+  const [userList, setUserList] = React.useState<ISelectUser[]>([])
   React.useEffect(() => {
     loadUsers()
   }, [])
 
-  // not working!!
   const handleUserSelect = (id: string) => {
-    userList[id]
-    if (!userList[id]) {
-      return
-    }
     const next = userList.map(u => {
       if (u.spotifyId == id) {
         u.selected = !u.selected
@@ -51,14 +34,11 @@ const Admin = () => {
     setLoading(true)
     try {
       // const r = await adminService.loadUsers(authService.loggedInUser.spotifyId)
-      // const map: IUserMap = {}
-      // for (const u of r) {
-      //   map[u.spotifyId] = {
-      //     ...u,
-      //     selected: true,
-      //   }
-      // }
-      // setUserMap(map)
+      // const loaded: ISelectUser[] = r.map(u => ({
+      //   ...u,
+      //   selected: true,
+      // }))
+      // setUserList(loaded)
     } catch (e) {
       console.error(e)
       console.error('failed to load users')
@@ -71,7 +51,8 @@ const Admin = () => {
     }
     setLoading(true)
     try {
-      await adminService.generateQuiz(authService.loggedInUser.spotifyId)
+      const selectedIds: string[] = userList.map(u => u.spotifyId)
+      await adminService.generateQuiz(selectedIds)
      } catch (e) {
       console.error(e)
       console.error('adminGenerateQuiz failed')
@@ -85,25 +66,26 @@ const Admin = () => {
     <>
       <Header />
       <main className="container">
-        <section>
+        <section style={{textAlign: 'center'}}>
           <img className={imgClass} style={{margin: '0 auto'}}
             src="/static/question-circle-solid.svg" alt="question mark icon"
             />
+          <h1>Admin</h1>
         </section>
         <section className="users-table">
           {loading && <p>Loading users...</p>}
           {!loading &&userList.map((u, idx) => {
             return (
-              <div key={idx} className="user-row" onClick={() => handleUserSelect(u.spotifyId)}>
+              <div key={idx} className="user-row">
                 <span className="user-name">{u.displayName}</span>
-                <input type="checkbox" name="select-user" id={u.spotifyId} checked={u.selected} 
-                  onChange={() => null}/>
+                <input className="select-user" type="checkbox" name="select-user" id={u.spotifyId} checked={u.selected} 
+                  onChange={() => handleUserSelect(u.spotifyId)}/>
               </div>
             )
           })}
         </section>
         <section>
-          <button onClick={generateQuiz}>
+          <button className="generateQuizBtn" onClick={generateQuiz}>
             I makea da quiz ohhh!!
           </button>
         </section>

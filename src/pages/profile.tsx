@@ -77,9 +77,10 @@ const ProfilePage = () => {
     <>
       <Header />
       <main>
-        <section>
+        <section style={{textAlign: 'center'}}>
           <ProfilePicture src={authService.loggedInUser?.displayPicture} name={authService.loggedInUser?.displayName}
             size={ProfilePicSize.full} hCenter={true} />
+          <h1>{authService.loggedInUser?.displayName || 'Profile'}</h1>
         </section>
         {/* <p style={{textAlign: 'center'}}>{authService.loggedInUser.displayName}</p> */}
         <div className="searchControl">

@@ -337,7 +337,7 @@ footer {
 .searchControl {
   display: flex;
   width: 345px;
-  margin: 20px auto 0 auto;
+  margin:0 auto;
   flex-direction: column;
 }
 .searchControl select {
@@ -352,4 +352,24 @@ footer {
 .searchControl label {
   width: 200px;
   margin: 0 auto;
+}
+.user-row {
+  display: flex;
+  justify-content: space-between;
+  border-top: solid 1.5px rgba(240, 240, 240, 1);
+  padding: 0 10px;
+}
+.user-name {
+  margin: auto 0;
+}
+.select-user {
+}
+.generateQuizBtn {
+  margin: 15px auto 0 auto;
+  border: solid 2.5px rgba(240, 240, 240, 1);
+  background-color: rgba(18,18,18, 1);
+  color: rgba(240, 240, 240, 1);
+  height: 35px;
+  width: 150px;
+  border-radius: 15px;
 }

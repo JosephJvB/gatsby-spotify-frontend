@@ -9,20 +9,17 @@ export default class AdminService {
     this.http = http
   }
 
-  async generateQuiz(spotifyId: string) {
-    if (spotifyId != AdminSpotifyId) {
-      return
-     }
+  async generateQuiz(userIds: string[]) {
      await this.http.generateQuiz({
-       token: localStorage.getItem(JafToken),
-       spotifyId,
-       quizType: QuizType.track
+       token: localStorage.getItem(JafToken)!,
+       quizType: QuizType.track,
+       userIds,
      })
   }
 
   async loadUsers(spotifyId: string): Promise<IUser[]> {
     const { token, message, users } = await this.http.loadUsers({
-      token: localStorage.getItem(JafToken),
+      token: localStorage.getItem(JafToken)!,
       spotifyId,
     })
     localStorage.setItem(JafToken, token)

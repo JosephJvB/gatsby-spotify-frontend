@@ -75,12 +75,10 @@ export default class HttpClient {
     return r.data
   }
   async generateQuiz(data: IGenerateQuizRequest): Promise<void> {
-    if (data.spotifyId != AdminSpotifyId) {
-      return
-    }
     const r: AxiosResponse = await axios({
       method: 'post',
       url: PyAdminQuiz_ApiUrl + 'quiz/' + data.quizType,
+      data,
       headers: {
         Authorization: 'Bearer ' + data.token
       }

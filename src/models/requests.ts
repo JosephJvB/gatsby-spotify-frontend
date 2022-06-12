@@ -2,33 +2,33 @@ import { IQuestion, IQuizResponse, QuizType } from "./quiz";
 import { SpotifyTopItems, SpotifyTopRange } from "./spotifyApi";
 
 export interface ITokenequest {
-  token: string | null
+  token: string
 }
 export interface ITopItemsRequest {
-  token: string | null
+  token: string
   type: SpotifyTopItems
   range: SpotifyTopRange
   limit?: number
 }
 export interface ISubmitQuizRequest {
-  token: string | null
+  token: string
   quizType: string
   quizId: string
   answers: IQuestion[]
 }
 export interface IGenerateQuizRequest {
-  token: string | null
-  spotifyId: string
+  token: string
   quizType: QuizType
+  userIds: string[]
 }
 
 export interface IGetQuizRequest {
-  token: string | null
+  token: string
   quizType: QuizType
   quizId: string
 }
 
 export interface ILoadUsersRequest {
-  token: string | null
+  token: string
   spotifyId: string
 }
