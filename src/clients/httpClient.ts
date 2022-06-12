@@ -86,7 +86,7 @@ export default class HttpClient {
   }
   async loadUsers(data: ILoadUsersRequest): Promise<ILoadUsersResponse> {
     const r: AxiosResponse<ILoadUsersResponse> = await axios({
-      method: 'post',
+      method: 'get',
       url: Golang_ApiUrl + 'users',
       headers: {
         Authorization: 'Bearer ' + data.token,

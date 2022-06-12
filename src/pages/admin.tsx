@@ -33,12 +33,12 @@ const Admin = () => {
      }
     setLoading(true)
     try {
-      // const r = await adminService.loadUsers(authService.loggedInUser.spotifyId)
-      // const loaded: ISelectUser[] = r.map(u => ({
-      //   ...u,
-      //   selected: true,
-      // }))
-      // setUserList(loaded)
+      const r = await adminService.loadUsers(authService.loggedInUser.spotifyId)
+      const loaded: ISelectUser[] = r.map(u => ({
+        ...u,
+        selected: true,
+      }))
+      setUserList(loaded)
     } catch (e) {
       console.error(e)
       console.error('failed to load users')

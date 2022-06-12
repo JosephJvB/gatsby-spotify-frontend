@@ -353,6 +353,11 @@ footer {
   width: 200px;
   margin: 0 auto;
 }
+.users-table {
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: 3px;
+}
 .user-row {
   display: flex;
   justify-content: space-between;
