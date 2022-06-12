@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { AdminSpotifyId,
-  BaseApiUrl,
+  TsTopItems_ApiUrl,
   PyAuth_ApiUrl,
   PyUserQuiz_ApiUrl,
   PyAdminQuiz_ApiUrl,
@@ -44,7 +44,7 @@ export default class HttpClient {
     const { token, ...params } = data
     const r: AxiosResponse<ITopItemsResponse> = await axios({
       method: 'get',
-      url: BaseApiUrl + 'spotify/top',
+      url: TsTopItems_ApiUrl + 'spotify/top',
       params,
       headers: {
         Authorization: 'Bearer ' + token

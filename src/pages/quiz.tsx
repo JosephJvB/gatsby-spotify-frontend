@@ -7,7 +7,7 @@ import Question from '../components/question'
 import { IQuestion } from '../models/quiz'
 
 const Quiz = () => {
-  const { authService, quizService, adminService } = React.useContext(ServiceContext)
+  const { authService, quizService } = React.useContext(ServiceContext)
   if (!authService.loggedInUser) {
     typeof window != 'undefined' && navigate('/?redirect=quiz')
     return null
