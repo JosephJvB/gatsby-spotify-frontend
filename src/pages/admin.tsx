@@ -51,7 +51,9 @@ const Admin = () => {
     }
     setLoading(true)
     try {
-      const selectedIds: string[] = userList.map(u => u.spotifyId)
+      const selectedIds: string[] = userList
+        .filter(u => u.selected)
+        .map(u => u.spotifyId)
       await adminService.generateQuiz(selectedIds)
      } catch (e) {
       console.error(e)
