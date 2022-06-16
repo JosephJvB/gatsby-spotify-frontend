@@ -61,7 +61,7 @@ const Index = (props: LoginProps) => {
       <Header />
       <main className="container">
         <section>
-          <img className={imgClass} style={{margin: '0 auto'}} src="/static/spotify.svg" alt="spotify icon logo" />
+          <img className={imgClass} style={{margin: '0 auto'}} src="/spotify.svg" alt="spotify icon logo" />
           <button className="submitButton" type="submit" onClick={startLoginFlow}>Login</button>
         </section>
       </main>

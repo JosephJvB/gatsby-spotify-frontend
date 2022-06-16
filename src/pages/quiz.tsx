@@ -72,7 +72,7 @@ const Quiz = () => {
         <section>
           { (!quizStarted || loading) &&
             <img className={imgClass} style={{margin: '0 auto'}}
-              src="/static/question-circle-solid.svg" alt="question mark icon"
+              src="/question-circle-solid.svg" alt="question mark icon"
               />
           }
           { !quizStarted &&

@@ -70,7 +70,7 @@ const Admin = () => {
       <main className="container">
         <section style={{textAlign: 'center'}}>
           <img className={imgClass} style={{margin: '0 auto'}}
-            src="/static/question-circle-solid.svg" alt="question mark icon"
+            src="/question-circle-solid.svg" alt="question mark icon"
             />
           <h1>Admin</h1>
         </section>

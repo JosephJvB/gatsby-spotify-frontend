@@ -97,7 +97,7 @@ const ProfilePage = () => {
           <div className="titleSection" onClick={clickTracks}>
             <p id="topTracks" className="itemsTitle">My top tracks</p>
             { tracksLoading && 
-              <img className="profileLoadingSpinner imageRotate" src="/static/spotify.svg" alt="spotify icon logo" /> }
+              <img className="profileLoadingSpinner imageRotate" src="/spotify.svg" alt="spotify icon logo" /> }
           </div>
           { spotifyService.topTracksMap[spotifySearchRange]?.length > 0 &&
             <ul className={`sectionList ${tracksOpen ? "sectionListOpen" : ''}`}>
@@ -112,7 +112,7 @@ const ProfilePage = () => {
           <div className="titleSection" onClick={clickArtists}>
             <p id="topArtists" className="itemsTitle">My top artists</p>
             { artistsLoading &&
-              <img className="profileLoadingSpinner imageRotate" src="/static/spotify.svg" alt="spotify icon logo" /> }
+              <img className="profileLoadingSpinner imageRotate" src="/spotify.svg" alt="spotify icon logo" /> }
           </div>
           { spotifyService.topArtistsMap[spotifySearchRange]?.length > 0 &&
             <ul className={`sectionList ${artistsOpen ? "sectionListOpen" : ''}`}>
