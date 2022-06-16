@@ -4,6 +4,7 @@ import { ServiceContext } from '../../gatsby-browser'
 import Footer from '../components/footer'
 import Header from '../components/header'
 import { ISelectUser } from '../models/user'
+import questionSvg from '../images/question-circle-solid.svg'
 
 const Admin = () => {
   const { authService, adminService } = React.useContext(ServiceContext)
@@ -70,7 +71,7 @@ const Admin = () => {
       <main className="container">
         <section style={{textAlign: 'center'}}>
           <img className={imgClass} style={{margin: '0 auto'}}
-            src="/question-circle-solid.svg" alt="question mark icon"
+            src={questionSvg} alt="question mark icon"
             />
           <h1>Admin</h1>
         </section>

@@ -5,6 +5,7 @@ import Footer from '../components/footer'
 import Header from '../components/header'
 import Question from '../components/question'
 import { IQuestion } from '../models/quiz'
+import questionSvg from '../images/question-circle-solid.svg'
 
 const Quiz = () => {
   const { authService, quizService } = React.useContext(ServiceContext)
@@ -72,7 +73,7 @@ const Quiz = () => {
         <section>
           { (!quizStarted || loading) &&
             <img className={imgClass} style={{margin: '0 auto'}}
-              src="/question-circle-solid.svg" alt="question mark icon"
+              src={questionSvg} alt="question mark icon"
               />
           }
           { !quizStarted &&

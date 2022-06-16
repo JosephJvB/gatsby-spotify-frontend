@@ -2,6 +2,8 @@ import * as React from 'react'
 import { ServiceContext } from '../../gatsby-browser'
 import { IQuestion, IQuizProfile } from '../models/quiz'
 import ProfilePicture, { ProfilePicSize } from './profilePicture'
+import playSvg from '../images/play-circle-solid.svg'
+import pauseSvg from '../images/pause-circle-solid.svg'
 
 export interface IQuestionProps {
   question: IQuestion
@@ -47,10 +49,10 @@ const Question = (props: IQuestionProps) => {
           src={albumImage?.url}
           alt={'album image for ' + props.question.subject.album.name} />
         { !playingPreview &&
-          <img className="questionPlayBtn" src="/play-circle-solid.svg" alt="play button icon" />
+          <img className="questionPlayBtn" src={playSvg} alt="play button icon" />
         }
         { playingPreview &&
-          <img className="questionPlayBtn" src="/pause-circle-solid.svg" alt="play button icon" />
+          <img className="questionPlayBtn" src={pauseSvg} alt="play button icon" />
         }
       </div>
       <p>{props.question.subject.artists[0].name}</p>

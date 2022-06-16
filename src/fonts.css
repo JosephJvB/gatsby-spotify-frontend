@@ -1,48 +1,48 @@
 @font-face {
   font-family: brandon-grotesque;
-  src: url("/fonts/brandon-grotesque.woff2");
+  src: url("./fonts/brandon-grotesque.woff2");
   font-weight: 400;
   font-style: normal;
   font-display: auto;
 }
 @font-face {
   font-family: adobe-caslon-pro;
-  src: url("/fonts/adobe-caslon-pro.woff2");
+  src: url("./fonts/adobe-caslon-pro.woff2");
   font-weight: 400;
   font-style: normal;
   font-display: auto;
 }
 @font-face {
   font-family: adobe-caslon-pro;
-  src: url("/fonts/adobe-caslon-pro-bold.woff2");
+  src: url("./fonts/adobe-caslon-pro-bold.woff2");
   font-weight: 700;
   font-style: normal;
   font-display: auto;
 }
 @font-face {
   font-family: adobe-caslon-pro-italic;
-  src: url("/fonts/adobe-caslon-pro-italic.woff2");
+  src: url("./fonts/adobe-caslon-pro-italic.woff2");
   font-weight: 400;
   font-style: italic;
   font-display: auto;
 }
 @font-face {
   font-family: adobe-caslon-pro-italic-bold;
-  src: url("/fonts/adobe-caslon-pro-italic-bold.woff2");
+  src: url("./fonts/adobe-caslon-pro-italic-bold.woff2");
   font-weight: 400;
   font-style: italic;
   font-display: auto;
 }
 @font-face {
   font-family: source-code-pro;
-  src: url("/fonts/SourceCodePro-Regular.ttf");
+  src: url("./fonts/SourceCodePro-Regular.ttf");
   font-weight: 400;
   font-style: normal;
   font-display: auto;
 }
 @font-face {
   font-family: source-code-pro-light;
-  src: url("/fonts/SourceCodePro-Light.ttf");
+  src: url("./fonts/SourceCodePro-Light.ttf");
   font-weight: 400;
   font-style: normal;
   font-display: auto;
