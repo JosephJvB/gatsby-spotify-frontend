@@ -3,6 +3,7 @@ import { navigate } from "gatsby-link"
 import Header from "../components/header"
 import { ServiceContext } from "../../gatsby-browser"
 import { JafToken } from "../config"
+import spotifySvg from '../images/spotify.svg'
 
 export interface LoginProps {}
 
@@ -61,7 +62,7 @@ const Index = (props: LoginProps) => {
       <Header />
       <main className="container">
         <section>
-          <img className={imgClass} style={{margin: '0 auto'}} src="/spotify.svg" alt="spotify icon logo" />
+          <img className={imgClass} style={{margin: '0 auto'}} src={spotifySvg} alt="spotify icon logo" />
           <button className="submitButton" type="submit" onClick={startLoginFlow}>Login</button>
         </section>
       </main>
