@@ -81,7 +81,7 @@ const Admin = () => {
             return (
               <div key={idx} className="user-row">
                 <span className="user-name">{u.displayName}</span>
-                <input className="select-user" type="checkbox" name="select-user" id={u.spotifyId} checked={u.selected} 
+                <input className="select-user" type="checkbox" name="select-user" checked={u.selected} 
                   onChange={() => handleUserSelect(u.spotifyId)}/>
               </div>
             )

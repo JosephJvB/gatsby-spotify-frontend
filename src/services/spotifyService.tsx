@@ -15,7 +15,7 @@ export default class SpotifyService {
   }
   async getTopItems(type: SpotifyTopItems, range: SpotifyTopRange): Promise<void> {
     const { token, items } = await this.http.getTopItems({
-      token: localStorage.getItem(JafToken),
+      token: localStorage.getItem(JafToken)!,
       type,
       range
     })

@@ -23,7 +23,7 @@ const Index = (props: LoginProps) => {
     }
   }, [])
   
-  async function validateSession(jwt: string, redirectPage: string): Promise<void> {
+  async function validateSession(jwt: string, redirectPage?: string): Promise<void> {
     try {
       setLoading(true)
       await authService.validateSession(jwt)

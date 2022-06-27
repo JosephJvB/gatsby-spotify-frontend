@@ -52,7 +52,7 @@ const Question = (props: IQuestionProps) => {
           <img className="questionPlayBtn" src={playSvg} alt="play button icon" />
         }
         { playingPreview &&
-          <img className="questionPlayBtn" src={pauseSvg} alt="play button icon" />
+          <img className="questionPlayBtn" src={pauseSvg} alt="pause button icon" />
         }
       </div>
       <p>{props.question.subject.artists[0].name}</p>

@@ -54,13 +54,6 @@ const ProfilePage = () => {
     setTracksOpen(!tracksOpen)
     scrollAfter('topTracks')
   }
-  const timeFrameMap: {
-    [key: string]: string
-  } = {
-    [SpotifyTopRange.shortTerm]: 'the last 4 weeks',
-    [SpotifyTopRange.mediumTerm]: 'the last 6 months',
-    [SpotifyTopRange.longTerm]: 'all time',
-  }
   const changeTimeFrame = (range: SpotifyTopRange) => {
     if (range == spotifySearchRange) {
       return
@@ -89,9 +82,9 @@ const ProfilePage = () => {
           <select name="timeFrame" defaultValue={SpotifyTopRange.shortTerm} onChange={(e) => {
             changeTimeFrame(e.target.value as SpotifyTopRange)
           }}>
-            <option value={SpotifyTopRange.shortTerm}>{timeFrameMap[SpotifyTopRange.shortTerm]}</option>
-            <option value={SpotifyTopRange.mediumTerm}>{timeFrameMap[SpotifyTopRange.mediumTerm]}</option>
-            <option value={SpotifyTopRange.longTerm}>{timeFrameMap[SpotifyTopRange.longTerm]}</option>
+            <option value={SpotifyTopRange.shortTerm}>the last 4 weeks</option>
+            <option value={SpotifyTopRange.mediumTerm}>the last 6 months</option>
+            <option value={SpotifyTopRange.longTerm}>all time</option>
           </select>
         </div>
         <div className="profileSection" style={{marginTop: '30px'}}>

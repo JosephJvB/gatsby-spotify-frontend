@@ -9,7 +9,7 @@ import { IUser } from "../models/user"
 // checked with authService.id = random
 export default class AuthService {
   private http: HttpClient
-  loggedInUser: IUser | null
+  loggedInUser: IUser | null = null
   id: number
   constructor(http: HttpClient) {
     this.http = http

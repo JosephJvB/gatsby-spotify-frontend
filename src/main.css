@@ -55,50 +55,12 @@ section {
   /* font-size: 90px; */
   /* color: cornflowerblue; */
 }
-.notifsContainer {
-  display: inline;
-  display: flex;
-  margin: auto 0 auto auto;
-  border: none;
-  position: relative;
-}
-.notifsActive {
-  border-radius: 100px;
-  height: 10px;
-  width: 10px;
-  background-color: red;
-  position: absolute;
-  top: -4px;
-  left: -4px;
-}
-header {
-  /* display: flex; */
-  /* flex-direction: row; */
-  /* padding: 15px 0; */
-  /* margin-bottom: 50px;
-  height: 0px; */
-  /* height: 50px; */
-  /* background-color: rgba(18,18,18, 0); */
-  /* height: 35px; */
-  /* box-shadow: green 1px 1px 10px 2px; */
-  /* font-size: 22px; */
-}
-.formElement {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
 input {
   border: none;
   height: 30px;
   border-radius: 3px;
   padding: 0 10px;
   margin: 10px 0;
-}
-.loginForm {
-  display: flex;
-  flex-direction: column;
-  min-width: 250px;
 }
 .submitButton {
   /* background-color: #1db954; */
@@ -194,7 +156,7 @@ footer {
 }
 .dotMenuPanel {
   position: absolute;
-  width: calc(100% - 28px);
+  width: 350px;
   bottom: 0px;
   left: 0;
   right: 0;

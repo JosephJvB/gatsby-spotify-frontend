@@ -61,14 +61,14 @@ const Footer = (props: FooterProps) => {
           </div>
         </div>
       </footer>
-      { <div className={`dotMenuPanel ${dotMenuOpen ? 'open' : 'closed'}`}>
+      <div className={`dotMenuPanel ${dotMenuOpen ? 'open' : 'closed'}`}>
         {renderPages.map((p, i) => {
           let cls = 'menuItem'
           if (pageActive(p)) cls += ' menuItemActive'
           return <p key={i} className={cls} onClick={e => pageClick(p)}>{p.title}</p>
         })}
         <p className="menuItem" onClick={logoutClick}>Logout</p>
-      </div> }
+      </div>
     </>
   )
 }
