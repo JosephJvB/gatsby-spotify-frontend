@@ -1,6 +1,5 @@
 Todos
-- Use custom domain name for APIGateways
-  - Sam template has domain config options - looks p complex
+- Lambda edge from https://jaf-unwrapped.com -> www
 - Configure site so can reload at /quiz and redirect to /quiz after reload
   - Check out Gatsby build options
   - react-snap ?
