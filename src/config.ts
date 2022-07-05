@@ -1,6 +1,6 @@
 export const JafToken = 'jaf-jwt'
 export const TsTopItems_ApiUrl = 'https://qs5s1d7fl6.execute-api.ap-southeast-2.amazonaws.com/v1/'
-export const PyAuth_ApiUrl = 'https://k7sxgi814k.execute-api.ap-southeast-2.amazonaws.com/v1/'
+export const PyAuth_ApiUrl = 'https://py.jaf-unwrapped.com/'
 export const PyAdminQuiz_ApiUrl = 'https://0erjbtawy9.execute-api.ap-southeast-2.amazonaws.com/v1/'
 export const PyUserQuiz_ApiUrl = 'https://aeilmcmxie.execute-api.ap-southeast-2.amazonaws.com/v1/'
 export const Golang_ApiUrl  = 'https://l9hrg92kv3.execute-api.ap-southeast-2.amazonaws.com/v1/'
