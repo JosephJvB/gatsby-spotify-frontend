@@ -5,6 +5,7 @@ import Footer from '../components/footer'
 import Header from '../components/header'
 import { ISelectUser } from '../models/user'
 import questionSvg from '../images/question-circle-solid.svg'
+import ProfilePicture, { ProfilePicSize } from '../components/profilePicture'
 
 const Admin = () => {
   const { authService, adminService } = React.useContext(ServiceContext)
@@ -37,7 +38,7 @@ const Admin = () => {
       const r = await adminService.loadUsers(authService.loggedInUser.spotifyId)
       const loaded: ISelectUser[] = r.map(u => ({
         ...u,
-        selected: true,
+        selected: false,
       }))
       setUserList(loaded)
     } catch (e) {
@@ -62,9 +63,17 @@ const Admin = () => {
     }
     setLoading(false)
   }
+  function toggleAll(nextState: boolean) {
+    const nextList = userList.map(u => ({
+      ...u,
+      selected: nextState
+    }))
+    setUserList(nextList)
+  }
 
   let imgClass = 'profileImg imgFull'
   if (loading) imgClass += ' imageRotate'
+  const toggleState = !!userList.find(u => !u.selected)
   return (
     <>
       <Header />
@@ -74,12 +83,17 @@ const Admin = () => {
             src={questionSvg} alt="question mark icon"
             />
           <h1>Admin</h1>
+          <button onClick={() => toggleAll(toggleState)} className="toggle-users">
+            {toggleState ? 'select' : 'unselect'} all
+          </button>
         </section>
         <section className="users-table">
           {loading && <p>Loading users...</p>}
-          {!loading &&userList.map((u, idx) => {
+          {!loading && userList.map((u, idx) => {
             return (
               <div key={idx} className="user-row">
+                <ProfilePicture src={u.displayPicture} size={ProfilePicSize.thumbnail}
+                  vCenter={true} name={u.displayName} />
                 <span className="user-name">{u.displayName}</span>
                 <input className="select-user" type="checkbox" name="select-user" checked={u.selected} 
                   onChange={() => handleUserSelect(u.spotifyId)}/>
@@ -88,7 +102,7 @@ const Admin = () => {
           })}
         </section>
         <section>
-          <button className="generateQuizBtn" onClick={generateQuiz}>
+          <button className="generate-quiz" onClick={generateQuiz}>
             I makea da quiz ohhh!!
           </button>
         </section>

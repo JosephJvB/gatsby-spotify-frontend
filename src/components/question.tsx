@@ -11,9 +11,7 @@ export interface IQuestionProps {
   answer: (q: IQuestion) => void
 }
 const Question = (props: IQuestionProps) => {
-  console.log(props)
   const { quizService } = React.useContext(ServiceContext)
-  console.log('question props', props)
   const [playingPreview, setPlayingPreview] = React.useState(false)
   const audioEl = React.useRef<HTMLAudioElement>(null)
   React.useEffect(() => {

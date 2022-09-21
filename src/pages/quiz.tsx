@@ -33,7 +33,7 @@ const Quiz = () => {
     setLoading(false)
   }
   const answerQuestion = (a: IQuestion) => {
-    if (!!quizService.currentResponse) {
+    if (!!quizService.currentResponse || !quizService.currentQuiz) {
       return
     }
     const answers = [...quizAnswers]
@@ -41,7 +41,7 @@ const Quiz = () => {
     const nextQuestion = questionIndex + 1
     if (quizService.currentQuiz.questions[nextQuestion]) {
       setQuizAnswers(answers)
-      setQuestionIndex(questionIndex + 1)
+      setQuestionIndex(nextQuestion)
     } else {
       submitQuiz(answers)
     }
@@ -64,7 +64,7 @@ const Quiz = () => {
 
   let imgClass = 'profileImg imgFull'
   if (loading) imgClass += ' imageRotate'
-  const currentQuestion = quizService.currentQuiz?.questions && quizService.currentQuiz.questions[questionIndex]
+  const currentQuestion = quizService.currentQuiz?.questions[questionIndex]
   const questionResponse = quizService?.currentResponse?.answers[questionIndex]
   return (
     <>
@@ -103,7 +103,7 @@ const Quiz = () => {
           }
           { !loading && quizStarted && currentQuestion &&
             <>
-              <p className="questionIndex">{questionIndex + 1} / {quizService.currentQuiz.questions.length}</p>
+              <p className="questionIndex">{questionIndex + 1} / {quizService.currentQuiz?.questions.length}</p>
               <Question question={currentQuestion} answer={answerQuestion} response={questionResponse} />
             </>
           }
@@ -111,10 +111,10 @@ const Quiz = () => {
             <div className="quizReview">
               <div className="reviewNav">
                 <button className="reviewNavBtn"
-                  disabled={!quizService.currentQuiz.questions[questionIndex - 1]}
+                  disabled={!quizService.currentQuiz?.questions[questionIndex - 1]}
                   onClick={e => setQuestionIndex(questionIndex - 1)}>prev</button>
                 <button className="reviewNavBtn"
-                  disabled={!quizService.currentQuiz.questions[questionIndex + 1]}
+                  disabled={!quizService.currentQuiz?.questions[questionIndex + 1]}
                   onClick={e => setQuestionIndex(questionIndex + 1)}>next</button>
               </div>
             </div>
@@ -122,7 +122,7 @@ const Quiz = () => {
           { !loading && !!quizService.currentResponse &&
             <div className="score">
               <p>Your score:</p>
-              <p>{quizService.currentResponse.score} / {quizService.currentQuiz.questions.length}</p>
+              <p>{quizService.currentResponse.score} / {quizService.currentQuiz?.questions.length}</p>
             </div>
           }
         </section>

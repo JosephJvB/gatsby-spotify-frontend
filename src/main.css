@@ -7,7 +7,7 @@ body { height: 100%; }
 a {
   text-decoration: none;
 }
-body, p  {
+body, p {
   margin: 0;
 }
 body {
@@ -319,19 +319,23 @@ footer {
   overflow-x: hidden;
   overflow-y: auto;
   border-radius: 3px;
+  border: solid 1px white;
 }
 .user-row {
   display: flex;
   justify-content: space-between;
   border-top: solid 1.5px rgba(240, 240, 240, 1);
-  padding: 0 10px;
+  padding: 5px 10px;
 }
 .user-name {
-  margin: auto 0;
+  text-align: left;
+  align-self: center;
+  margin-left: 15px;
 }
 .select-user {
+  margin: auto 0 auto auto;
 }
-.generateQuizBtn {
+.generate-quiz {
   margin: 15px auto 0 auto;
   border: solid 2.5px rgba(240, 240, 240, 1);
   background-color: rgba(18,18,18, 1);
@@ -339,4 +343,16 @@ footer {
   height: 35px;
   width: 150px;
   border-radius: 15px;
+  cursor: pointer;
+}
+.toggle-users {
+  margin: 0 auto 15px auto;
+  border: solid 2.5px rgba(240, 240, 240, 1);
+  background-color: rgba(18,18,18, 1);
+  color: rgba(240, 240, 240, 1);
+  height: 35px;
+  width: 150px;
+  border-radius: 15px;
+  padding: 5px 0;
+  cursor: pointer;
 }
