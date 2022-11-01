@@ -116,8 +116,8 @@ input {
 }
 .popularity {
   margin: auto 0 auto 5px;
-  border-radius: 30px;
-  padding: 5px;
+  border-radius: 20px;
+  padding: 4px 5px;
   font-size: 12px;
 }
 footer {
