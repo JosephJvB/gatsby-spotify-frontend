@@ -36,7 +36,10 @@ export default class HttpClient {
     const r: AxiosResponse<IAuthSessionResponse> = await axios({
       method: 'get',
       url: PyAuth_ApiUrl + 'login',
-      params: { spotifyCode }
+      params: {
+        spotifyCode,
+        redirectUrlOverride: window.location.origin
+      }
     })
     return r.data
   }

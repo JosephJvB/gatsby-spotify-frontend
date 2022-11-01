@@ -1,5 +1,5 @@
+import { ISpotifyArtist, ISpotifyTrack } from "jvb-spotty-models";
 import { IQuiz, IQuizResponse } from "./quiz";
-import { ISpotifyArtist, ISpotifyTrack } from "./spotifyApi";
 import { IUser } from "./user";
 
 export interface IAuthResponse extends IUser {

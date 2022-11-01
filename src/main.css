@@ -100,13 +100,25 @@ input {
   margin-top: 10px;
   display: flex;
 }
-.topItem p {
-  margin: 0;
-}
 .itemText {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+.itemTitles {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+.itemTitles p {
+  margin: 0;
+}
+.popularity {
+  margin: auto 0 auto 5px;
+  border-radius: 30px;
+  padding: 5px;
+  font-size: 12px;
 }
 footer {
   width: 100%;

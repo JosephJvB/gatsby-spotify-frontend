@@ -26,6 +26,7 @@
     "react-helmet": "^6.1.0"
   },
   "devDependencies": {
-    "@types/react-helmet": "^6.1.5"
+    "@types/react-helmet": "^6.1.5",
+    "jvb-spotty-models": "^0.0.10"
   }
 }

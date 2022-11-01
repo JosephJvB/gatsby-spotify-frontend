@@ -49,9 +49,7 @@ export default class AuthService {
       response_type: 'code',
       client_id: SpotifyClientId,
       scope: SpotifyScopes,
-      // redirect_uri: 'http://localhost:3000',
-      redirect_uri: 'https://www.jaf-unwrapped.com',
-      // redirect_uri: typeof window !== 'undefined' && window.location.origin,
+      redirect_uri: window!.location.origin,
     })
   }
 }

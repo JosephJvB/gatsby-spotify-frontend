@@ -1,4 +1,4 @@
-import { ISpotifyTrack } from "./spotifyApi";
+import { ISpotifyTrack } from "jvb-spotty-models"
 
 export enum QuizType {
   track = 'track',

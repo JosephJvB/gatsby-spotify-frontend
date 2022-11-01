@@ -1,12 +1,12 @@
 import { IQuestion, IQuizResponse, QuizType } from "./quiz";
-import { SpotifyTopItems, SpotifyTopRange } from "./spotifyApi";
+import { SpotifyItemType, SpotifyTopRange } from 'jvb-spotty-models'
 
 export interface ITokenRequest {
   token: string
 }
 export interface ITopItemsRequest {
   token: string
-  type: SpotifyTopItems
+  type: SpotifyItemType
   range: SpotifyTopRange
   limit?: number
 }

@@ -1,4 +1,5 @@
 import { navigate } from "gatsby-link"
+import { ISpotifyArtist, ISpotifyTrack, SpotifyItemType, SpotifyTopRange } from "jvb-spotty-models"
 import * as React from "react"
 import { ServiceContext } from "../../gatsby-browser"
 import Footer from "../components/footer"
@@ -6,7 +7,6 @@ import Footer from "../components/footer"
 import Header from "../components/header"
 import ProfilePicture, { ProfilePicSize } from "../components/profilePicture"
 import TopItem from "../components/topItem"
-import { ISpotifyArtist, ISpotifyTrack, SpotifyTopItems, SpotifyTopRange } from "../models/spotifyApi"
 import spotifySvg from '../images/spotify.svg'
 
 const ProfilePage = () => {
@@ -39,7 +39,7 @@ const ProfilePage = () => {
   const clickArtists = async () => {
     if (!artistsOpen && !spotifyService.topArtistsMap[spotifySearchRange]) {
       setArtistsLoading(true)
-      await spotifyService.getTopItems(SpotifyTopItems.artists, spotifySearchRange)
+      await spotifyService.getTopItems(SpotifyItemType.artists, spotifySearchRange)
       setArtistsLoading(false)
     }
     setArtistsOpen(!artistsOpen)
@@ -48,7 +48,7 @@ const ProfilePage = () => {
   const clickTracks = async () => {
     if (!tracksOpen && !spotifyService.topTracksMap[spotifySearchRange]) {
       setTracksLoading(true)
-      await spotifyService.getTopItems(SpotifyTopItems.tracks, spotifySearchRange)
+      await spotifyService.getTopItems(SpotifyItemType.tracks, spotifySearchRange)
       setTracksLoading(false)
     }
     setTracksOpen(!tracksOpen)
@@ -96,7 +96,7 @@ const ProfilePage = () => {
           { spotifyService.topTracksMap[spotifySearchRange]?.length > 0 &&
             <ul className={`sectionList ${tracksOpen ? "sectionListOpen" : ''}`}>
               { spotifyService.topTracksMap[spotifySearchRange].map((t: ISpotifyTrack, i: number) => {
-                  return <TopItem key={i} title={t.name} subTitle={t.artists[0].name} imageUrl={t.album.images[0].url} />
+                  return <TopItem key={i} title={t.name} subTitle={t.artists[0].name} imageUrl={t.album.images[0].url} popularity={t.popularity} />
                 }) }
             </ul>
           }
@@ -111,7 +111,7 @@ const ProfilePage = () => {
           { spotifyService.topArtistsMap[spotifySearchRange]?.length > 0 &&
             <ul className={`sectionList ${artistsOpen ? "sectionListOpen" : ''}`}>
               { spotifyService.topArtistsMap[spotifySearchRange].map((a: ISpotifyArtist, i: number) => {
-                return <TopItem key={i} title={a.name} imageUrl={a.images[0].url} />
+                return <TopItem key={i} title={a.name} imageUrl={a.images[0].url} popularity={a.popularity}/>
               })}
             </ul>
           }
