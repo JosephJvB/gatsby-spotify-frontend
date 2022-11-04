@@ -49,6 +49,15 @@ const ProfilePage = () => {
     }
   }
 
+  const scrollToLastItem = () => {
+    // could use refs to make it more react-like but I'm OK with this for now
+    const allListItems = document.querySelectorAll('li')
+    const lastItem = allListItems[allListItems.length - 1]
+    lastItem.scrollIntoView({
+      behavior: 'smooth',
+    })
+  }
+
   React.useEffect(() => {
     loadCurrentDisplay()
   }, [spotifySearchRange, viewStateIdx])
@@ -60,6 +69,7 @@ const ProfilePage = () => {
     setLoading(true)
     await spotifyService.getTopItems(SpotifyItemType.artists, spotifySearchRange)
     setLoading(false)
+    scrollToLastItem()
   }
   const loadTracks = async () => {
     if (spotifyService.topTracksMap[spotifySearchRange]) {
@@ -68,6 +78,7 @@ const ProfilePage = () => {
     setLoading(true)
     await spotifyService.getTopItems(SpotifyItemType.tracks, spotifySearchRange)
     setLoading(false)
+    scrollToLastItem()
   }
   const loadAudioFeatures = async () => {
     if (spotifyService.audioFeaturesMap[spotifySearchRange]) {
@@ -76,6 +87,7 @@ const ProfilePage = () => {
     setLoading(true)
     await spotifyService.getAudioFeatures(spotifySearchRange)
     setLoading(false)
+    scrollToLastItem()
   }
   const changeTimeFrame = (range: SpotifyTopRange) => {
     if (range == spotifySearchRange) {
