@@ -1,4 +1,4 @@
-import { ISpotifyArtist, ISpotifyTrack } from "jvb-spotty-models";
+import { IAudioFeatures, ISpotifyArtist, ISpotifyTrack } from "jvb-spotty-models";
 import { IQuiz, IQuizResponse } from "./quiz";
 import { IUser } from "./user";
 
@@ -27,4 +27,9 @@ export interface ILoadUsersResponse {
   message?: string
   token: string
   users: IUser[]
+}
+export interface IGetAudioFeaturesResponse {
+  message?: string
+  token: string
+  audioFeatures: IAudioFeatures[]
 }

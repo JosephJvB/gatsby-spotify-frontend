@@ -36,7 +36,7 @@ const ProfilePage = () => {
     }, ms)
   }
 
-  const clickArtists = async () => {
+  const loadArtists = async () => {
     if (!artistsOpen && !spotifyService.topArtistsMap[spotifySearchRange]) {
       setArtistsLoading(true)
       await spotifyService.getTopItems(SpotifyItemType.artists, spotifySearchRange)
@@ -45,7 +45,7 @@ const ProfilePage = () => {
     setArtistsOpen(!artistsOpen)
     scrollAfter('topArtists')
   }
-  const clickTracks = async () => {
+  const loadTracks = async () => {
     if (!tracksOpen && !spotifyService.topTracksMap[spotifySearchRange]) {
       setTracksLoading(true)
       await spotifyService.getTopItems(SpotifyItemType.tracks, spotifySearchRange)
@@ -53,6 +53,15 @@ const ProfilePage = () => {
     }
     setTracksOpen(!tracksOpen)
     scrollAfter('topTracks')
+  }
+  const loadAudioFeatures = async () => {
+    // if (!tracksOpen && !spotifyService.audioFeaturesMap[spotifySearchRange]) {
+    //   setTracksLoading(true)
+    //   await spotifyService.getAudioFeatures(spotifySearchRange)
+    //   setTracksLoading(false)
+    // }
+    // setTracksOpen(!tracksOpen)
+    // scrollAfter('topTracks')
   }
   const changeTimeFrame = (range: SpotifyTopRange) => {
     if (range == spotifySearchRange) {
@@ -88,7 +97,7 @@ const ProfilePage = () => {
           </select>
         </div>
         <div className="profileSection" style={{marginTop: '30px'}}>
-          <div className="titleSection" onClick={clickTracks}>
+          <div className="titleSection" onClick={loadTracks}>
             <p id="topTracks" className="itemsTitle">My top tracks</p>
             { tracksLoading && 
               <img className="profileLoadingSpinner imageRotate" src={spotifySvg} alt="spotify icon logo" /> }
@@ -103,7 +112,7 @@ const ProfilePage = () => {
           { tracksOpen && !spotifyService.topTracksMap[spotifySearchRange]?.length && <p>No tracks loaded</p> }
         </div>
         <div className="profileSection">
-          <div className="titleSection" onClick={clickArtists}>
+          <div className="titleSection" onClick={loadArtists}>
             <p id="topArtists" className="itemsTitle">My top artists</p>
             { artistsLoading &&
               <img className="profileLoadingSpinner imageRotate" src={spotifySvg} alt="spotify icon logo" /> }

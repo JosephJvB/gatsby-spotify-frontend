@@ -1,14 +1,17 @@
-import { ISpotifyArtist, ISpotifyTrack, SpotifyItemType, SpotifyTopRange } from "jvb-spotty-models"
+import { IAudioFeatures, ISpotifyArtist, ISpotifyTrack, SpotifyItemType, SpotifyTopRange } from "jvb-spotty-models"
 import HttpClient from "../clients/httpClient"
 import { JafToken } from "../config"
 
 export default class SpotifyService {
   http: HttpClient
   topTracksMap: {
-    [key: string]: ISpotifyTrack[]
+    [timeRange: string]: ISpotifyTrack[]
   } = {}
   topArtistsMap: {
-    [key: string]: ISpotifyArtist[]
+    [timeRange: string]: ISpotifyArtist[]
+  } = {}
+  audioFeaturesMap: {
+    [timeRange: string]: IAudioFeatures[]
   } = {}
   constructor(http: HttpClient) {
     this.http = http
@@ -28,5 +31,14 @@ export default class SpotifyService {
         this.topTracksMap[range] = items as ISpotifyTrack[]
         break
     }
+  }
+  async getAudioFeatures(range: SpotifyTopRange): Promise<void> {
+    const trackIds = this.topTracksMap[range].map(t => t.id)
+    const { token, audioFeatures } = await this.http.getAudioFeatures({
+      token: localStorage.getItem(JafToken)!,
+      trackIds,
+    })
+    localStorage.setItem(JafToken, token)
+    this.audioFeaturesMap[range] = audioFeatures
   }
 }

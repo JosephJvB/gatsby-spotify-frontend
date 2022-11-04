@@ -32,3 +32,8 @@ export interface ILoadUsersRequest {
   token: string
   spotifyId: string
 }
+
+export interface IGetAudioFeaturesRequest {
+  token: string
+  trackIds: string[]
+}

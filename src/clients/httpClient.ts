@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { AdminSpotifyId,
-  TsTopItems_ApiUrl,
+  TS_ApiUrl,
   PyAuth_ApiUrl,
   PyUserQuiz_ApiUrl,
   PyAdminQuiz_ApiUrl,
@@ -11,9 +11,11 @@ import { ITopItemsRequest,
   IGenerateQuizRequest,
   IGetQuizRequest,
   ILoadUsersRequest,
+  IGetAudioFeaturesRequest,
 } from '../models/requests'
 import { IAuthResponse,
   IAuthSessionResponse,
+  IGetAudioFeaturesResponse,
   ILoadQuizResponse,
   ILoadUsersResponse,
   ITopItemsResponse,
@@ -47,7 +49,7 @@ export default class HttpClient {
     const { token, ...params } = data
     const r: AxiosResponse<ITopItemsResponse> = await axios({
       method: 'get',
-      url: TsTopItems_ApiUrl + 'spotify/top',
+      url: TS_ApiUrl + 'spotify/top',
       params,
       headers: {
         Authorization: 'Bearer ' + token
@@ -91,6 +93,19 @@ export default class HttpClient {
     const r: AxiosResponse<ILoadUsersResponse> = await axios({
       method: 'get',
       url: Golang_ApiUrl + 'users',
+      headers: {
+        Authorization: 'Bearer ' + data.token,
+      }
+    })
+    return r.data
+  }
+  async getAudioFeatures(data: IGetAudioFeaturesRequest): Promise<IGetAudioFeaturesResponse> {
+    const r: AxiosResponse<IGetAudioFeaturesResponse> = await axios({
+      method: 'get',
+      url: TS_ApiUrl + 'spotify/audio-features',
+      params: {
+        trackIds: data.trackIds.join(',')
+      },
       headers: {
         Authorization: 'Bearer ' + data.token,
       }

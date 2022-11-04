@@ -1,5 +1,5 @@
 export const JafToken = 'jaf-jwt'
-export const TsTopItems_ApiUrl = 'https://ts.jaf-unwrapped.com/'
+export const TS_ApiUrl = 'https://ts.jaf-unwrapped.com/'
 export const PyAuth_ApiUrl = 'https://py-auth.jaf-unwrapped.com/'
 export const PyAdminQuiz_ApiUrl = 'https://py-adminquiz.jaf-unwrapped.com/'
 export const PyUserQuiz_ApiUrl = 'https://py-userquiz.jaf-unwrapped.com/'
