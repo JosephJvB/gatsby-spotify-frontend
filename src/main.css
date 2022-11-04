@@ -83,18 +83,13 @@ input {
 .itemsTitle {
   margin: 18px 10px;
 }
-.sectionList {
-  list-style: none;
+.myDataList {
   padding-inline-start: 0;
   max-height: 0;
-  transition: max-height 0.33s ease-out;
   overflow: hidden;
   margin: 0 10px;
-}
-.sectionListOpen {
   max-height: 1000px;
   margin: 0 10px 15px 10px;
-  transition: max-height 0.33s ease-in;
 }
 .topItem {
   margin-top: 10px;
@@ -125,7 +120,7 @@ footer {
   position: sticky;
   bottom: 0;
   height: 50px;
-  /* border-top: solid 1px white; */
+  border-top: solid 1px white;
   background-color: rgba(18, 18, 18, 1);
   display: flex;
 }
@@ -217,9 +212,9 @@ footer {
   justify-content: space-between;
 }
 .profileLoadingSpinner {
-  width: 25px;
-  height: 25px;
-  margin: 18px;
+  width: 100px;
+  height: 100px;
+  margin: 30px auto 0 auto;
 }
 .startQuiz {
   border: solid 2.5px rgba(240, 240, 240, 1);
@@ -326,6 +321,11 @@ footer {
 .searchControl label {
   width: 200px;
   margin: 0 auto;
+}
+.profileDataView {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
 }
 .users-table {
   overflow-x: hidden;

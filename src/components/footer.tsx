@@ -7,11 +7,11 @@ interface Page {
   path: string
 }
 const pages: Page[] = [
-  { path: '/profile', title: 'Profile' },
-  { path: '/quiz', title: 'Quiz' },
+  { path: '/profile/', title: 'Profile' },
+  { path: '/quiz/', title: 'Quiz' },
 ]
 const adminPage: Page = {
-  path: '/admin',
+  path: '/admin/',
   title: 'Admin'
 }
 
