@@ -1,5 +1,5 @@
 import { navigate } from "gatsby-link"
-import { IAudioFeatures, ISpotifyArtist, ISpotifyTrack, SpotifyItemType, SpotifyTopRange } from "jvb-spotty-models"
+import { ISpotifyArtist, ISpotifyTrack, SpotifyItemType, SpotifyTopRange } from "jvb-spotty-models"
 import * as React from "react"
 import { ServiceContext } from "../../gatsby-browser"
 import Footer from "../components/footer"
@@ -171,7 +171,11 @@ const ProfilePage = () => {
           {/* tracks */}
           { profileViews[viewStateIdx] == profileViewState.tracks &&
             <>
-              <p id="topTracks" className="itemsTitle">My top tracks</p>
+              <p id="topTracks" className="itemsTitle">
+                My top tracks
+                {/* todo */}
+                {/* { !loading && <span onClick={...}>Show track breakdown</span> } */}
+              </p>
               { loading &&
                 <img className="profileLoadingSpinner imageRotate" src={spotifySvg} alt="spotify icon logo" />
               }
