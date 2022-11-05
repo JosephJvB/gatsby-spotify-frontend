@@ -93,6 +93,27 @@ input {
   margin-top: 10px;
   display: flex;
 }
+.topItem.placeholder {
+  height: 40px;
+  border-radius: 2px;
+  background: linear-gradient(130deg, #6d6d6d, #828282, #afafaf, #828282, #6d6d6d);
+  background-size: 400% 100%;
+  -webkit-animation: placeholder-animation 2.5s ease infinite alternate;
+  -moz-animation: placeholder-animation 2.5s ease infinite alternate;
+  animation: placeholder-animation 2.5s ease infinite alternate;
+}
+@-webkit-keyframes placeholder-animation {
+  0%{background-position:10% 0%}
+  100%{background-position:90% 0%}
+}
+@-moz-keyframes placeholder-animation {
+  0%{background-position:10% 0%}
+  100%{background-position:90% 0%}
+}
+@keyframes placeholder-animation { 
+  0%{background-position:10% 0%}
+  100%{background-position:90% 0%}
+}
 .itemText {
   display: flex;
   flex-direction: row;

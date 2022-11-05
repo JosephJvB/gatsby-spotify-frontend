@@ -151,13 +151,17 @@ const ProfilePage = () => {
           </select>
         </div>
         <p className="itemsTitle">My top {profileViews[viewStateIdx]}</p>
-        { loading &&
-          <img className="profileLoadingSpinner imageRotate" src={spotifySvg} alt="spotify icon logo" />
-        }
         <section className="profileDataView carousel"
           onTouchStart={e => swipeListener.onTouchStart(e.nativeEvent)}
           onTouchMove={e => swipeListener.onTouchMove(e.nativeEvent)}
           onTouchEnd={() => swipeListener.onTouchEnd()}>
+          { loading &&
+            <ul>
+              { Array(10).fill(0).map((_, idx: number) => (
+                <li key={idx} className="topItem placeholder"></li>
+              ))}
+            </ul>
+          }
           { !loading && profileViews.map((view, idx) => (
             <ul key={view} className={('carousel-item ' + carouselClasses[idx]).trim()}>
               { view == profileViewState.artists &&
