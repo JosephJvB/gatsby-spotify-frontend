@@ -8,7 +8,7 @@ export interface ISwipeCoords {
 }
 
 const SWIPE_PX_THRESHHOLD = 20
-const allDirections: ISwipeDirection[] = ['left', 'right', 'up', 'down']
+
 export default class SwipeListener implements ISwipeCoords {
   listening = false
   startX = 0
@@ -16,17 +16,17 @@ export default class SwipeListener implements ISwipeCoords {
   startY = 0
   endY = 0
   constructor(
-    private directions: ISwipeDirection[] = allDirections,
+    private directions: ISwipeDirection[],
     private cb: ISwipeCB,
   ) {}
-  onTouchStart(e: React.TouchEvent) {
+  onTouchStart(e: TouchEvent) {
     this.listening = true
     this.startX = e.touches[0].clientX
     this.startY = e.touches[0].clientY
     this.endX = this.startX
     this.endY = this.startY
   }
-  onTouchMove(e: React.TouchEvent) {
+  onTouchMove(e: TouchEvent) {
     if (!this.listening) {
       return
     }

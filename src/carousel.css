@@ -1,0 +1,29 @@
+.carousel {
+  position: relative;
+  overflow-x: clip;
+}
+.carousel-item {
+  transition: 0.28s;
+  visibility: hidden;
+  position: absolute;
+  display: none;
+}
+.carousel-item.active {
+  display: flex;
+  flex-direction: column;
+  visibility: visible;
+  position: relative;
+  left: 0;
+}
+.left {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: -100%;
+}
+.right {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 100%;
+}

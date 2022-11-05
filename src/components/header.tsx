@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { Helmet } from 'react-helmet'
-import "../main.css"
 import questionSvg from '../images/question-circle-solid.svg'
+import "../main.css"
+import "../carousel.css"
 
 const Header = () => {
   return (

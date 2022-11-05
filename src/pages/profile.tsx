@@ -13,15 +13,10 @@ import spotifySvg from '../images/spotify.svg'
 enum profileViewState {
   artists = 'artists',
   tracks = 'tracks',
-  audioFeatures = 'audioFeatures',
 }
 const profileViews: profileViewState[] = [
   profileViewState.artists,
   profileViewState.tracks,
-  // disabled
-  // issue: if tracks aren't loaded, we can't load audio features
-  // audio features need to be a option from the tracks view - so we can be certain tracks have loaded
-  // profileViewState.audioFeatures,
 ]
 
 const ProfilePage = () => {
@@ -34,7 +29,12 @@ const ProfilePage = () => {
 
   const [loading, setLoading] = React.useState(true)
   const [viewStateIdx, setViewStateIdx] = React.useState(0)
+  const [carouselClasses, setCarouselClasses] = React.useState(['active', ''])
 
+  React.useEffect(() => {
+    loadCurrentDisplay()
+  }, [spotifySearchRange, viewStateIdx])
+  
   const loadCurrentDisplay = async () => {
     switch (profileViews[viewStateIdx]) {
       case profileViewState.artists:
@@ -43,12 +43,8 @@ const ProfilePage = () => {
       case profileViewState.tracks:
         await loadTracks()
         break
-      case profileViewState.audioFeatures:
-        await loadAudioFeatures()
-        break
     }
   }
-
   const scrollToLastItem = () => {
     // could use refs to make it more react-like but I'm OK with this for now
     const allListItems = document.querySelectorAll('li')
@@ -57,11 +53,6 @@ const ProfilePage = () => {
       behavior: 'smooth',
     })
   }
-
-  React.useEffect(() => {
-    loadCurrentDisplay()
-  }, [spotifySearchRange, viewStateIdx])
-
   const loadArtists = async () => {
     if (spotifyService.topArtistsMap[spotifySearchRange]) {
       return
@@ -96,6 +87,25 @@ const ProfilePage = () => {
     setSpotifySearchRange(range)
   }
 
+  const updateCarousel = (direction: ISwipeDirection, nextViewState: number) => {
+    const nextCarouselClasses = carouselClasses.map((c: string, idx: number) => {
+      let nextClass = ''
+      if (idx == nextViewState) {
+        nextClass = direction == 'right' ? 'left' : 'right'
+      }
+      if (idx == viewStateIdx) {
+        nextClass += direction
+      }
+      return nextClass
+    })
+    setCarouselClasses(nextCarouselClasses)
+      setTimeout(() => {
+        setCarouselClasses(nextCarouselClasses.map((c, i) => {
+          return i == nextViewState ? 'active' : ''
+        }))
+      }, 300)
+  }
+
   const swipeListener = new SwipeListener(['left', 'right'], (direction: ISwipeDirection) => {
     if (loading) {
       return
@@ -113,10 +123,14 @@ const ProfilePage = () => {
     if (nextViewState < 0) {
       nextViewState = profileViews.length - 1
     }
+
     if (nextViewState != viewStateIdx) {
       setViewStateIdx(nextViewState)
+      updateCarousel(direction, nextViewState)
     }
   })
+
+  console.log('rerender', viewStateIdx)
 
   return (
     <>
@@ -138,66 +152,26 @@ const ProfilePage = () => {
             <option value={SpotifyTopRange.longTerm}>all time</option>
           </select>
         </div>
-        <section className="profileDataView"
-          onTouchStart={e => swipeListener.onTouchStart(e)}
-          onTouchMove={e => swipeListener.onTouchMove(e)}
-          onTouchEnd={() => swipeListener.onTouchEnd()}
-        >
-          {/* artists */}
-          { profileViews[viewStateIdx] == profileViewState.artists &&
-            <>
-              <p id="topArtists" className="itemsTitle">My top artists</p>
-              { loading &&
-                <img className="profileLoadingSpinner imageRotate" src={spotifySvg} alt="spotify icon logo" />
-              }
-              { !loading && spotifyService.topArtistsMap[spotifySearchRange]?.length > 0 &&
-                <ul className="myDataList">
-                  { spotifyService.topArtistsMap[spotifySearchRange].map((a: ISpotifyArtist, i: number) => {
-                    return <TopItem key={i} title={a.name} imageUrl={a.images[0].url} popularity={a.popularity}/>
-                  })}
-                </ul>
-              }
-              { !loading && !spotifyService.topArtistsMap[spotifySearchRange]?.length && <p>No artists loaded</p> }
-            </>
-          }
-          {/* tracks */}
-          { profileViews[viewStateIdx] == profileViewState.tracks &&
-            <>
-              <p id="topTracks" className="itemsTitle">
-                My top tracks
-                {/* todo */}
-                {/* { !loading && <span onClick={...}>Show track breakdown</span> } */}
-              </p>
-              { loading &&
-                <img className="profileLoadingSpinner imageRotate" src={spotifySvg} alt="spotify icon logo" />
-              }
-              { !loading && spotifyService.topTracksMap[spotifySearchRange]?.length > 0 &&
-                <ul className="myDataList">
-                  { spotifyService.topTracksMap[spotifySearchRange].map((t: ISpotifyTrack, i: number) => {
-                      return <TopItem key={i} title={t.name} subTitle={t.artists[0].name} imageUrl={t.album.images[0].url} popularity={t.popularity} />
-                  })}
-                </ul>
-              }
-              { !loading && !spotifyService.topTracksMap[spotifySearchRange]?.length && <p>No tracks loaded</p> }
-            </>
-          }
-          {/* audioFeatures */}
-          { profileViews[viewStateIdx] == profileViewState.audioFeatures &&
-            <>
-              <p id="topTracks" className="itemsTitle">My music breakdown</p>
-              { loading &&
-                <img className="profileLoadingSpinner imageRotate" src={spotifySvg} alt="spotify icon logo" />
-              }
-              { !loading && spotifyService.audioFeaturesMap[spotifySearchRange]?.length > 0 &&
-                <ul className="myDataList">
-                  { spotifyService.audioFeaturesMap[spotifySearchRange].map(feature => {
-                    return <li key={feature.featureName}>{feature.label}: {feature.value}</li>
-                  })}
-                </ul>
-              }
-              { !loading && !spotifyService.audioFeaturesMap[spotifySearchRange] && <p>No track features loaded</p> }
-            </>
-          }
+        <p className="itemsTitle">My top {profileViews[viewStateIdx]}</p>
+        { loading &&
+          <img className="profileLoadingSpinner imageRotate" src={spotifySvg} alt="spotify icon logo" />
+        }
+        <section className="profileDataView carousel"
+          onTouchStart={e => swipeListener.onTouchStart(e.nativeEvent)}
+          onTouchMove={e => swipeListener.onTouchMove(e.nativeEvent)}
+          onTouchEnd={() => swipeListener.onTouchEnd()}>
+          { !loading && profileViews.map((view, idx) => (
+            <ul key={view} className={('carousel-item ' + carouselClasses[idx]).trim()}>
+              { view == profileViewState.artists &&
+                spotifyService.topArtistsMap[spotifySearchRange]?.map((a: ISpotifyArtist, i: number) => (
+                  <TopItem key={i} title={a.name} imageUrl={a.images[0].url} popularity={a.popularity}/>
+              ))}
+              { view == profileViewState.tracks &&
+                spotifyService.topTracksMap[spotifySearchRange]?.map((t: ISpotifyTrack, i: number) => (
+                  <TopItem key={i} title={t.name} subTitle={t.artists[0].name} imageUrl={t.album.images[0].url} popularity={t.popularity} />
+              ))}
+            </ul>
+          ))}
         </section>
       </main>
       <Footer />

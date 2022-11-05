@@ -20,6 +20,12 @@ main {
   height: 100%;
   overflow: auto;
   padding: 50px 0 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+ul {
+  padding-inline-start: 0;
+  margin-block-start: 0;
 }
 #___gatsby,#gatsby-focus-wrapper {
   width: 100%;
@@ -81,15 +87,7 @@ input {
   flex-direction: column;
 }
 .itemsTitle {
-  margin: 18px 10px;
-}
-.myDataList {
-  padding-inline-start: 0;
-  max-height: 0;
-  overflow: hidden;
-  margin: 0 10px;
-  max-height: 1000px;
-  margin: 0 10px 15px 10px;
+  margin: 20px 25px 0 25px;
 }
 .topItem {
   margin-top: 10px;
@@ -325,7 +323,7 @@ footer {
 .profileDataView {
   display: flex;
   flex-direction: column;
-  padding: 15px 15px 0 15px;
+  padding: 0 25px;
 }
 .users-table {
   overflow-x: hidden;
