@@ -1,0 +1,15 @@
+.carousel-item {
+  transition: 0.2s;
+}
+.active {
+  margin-left: 0;
+  margin-right: 0;
+}
+.exit-left {
+  margin-left: -100vw;
+  margin-right: 30px;
+}
+.exit-right {
+  margin-right: -100vw;
+  margin-left: 30px;
+}

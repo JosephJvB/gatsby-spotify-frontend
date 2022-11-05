@@ -15,14 +15,13 @@ enum profileViewState {
   tracks = 'tracks',
   audioFeatures = 'audioFeatures',
 }
-const profileViews: profileViewState[] = [
-  profileViewState.artists,
-  profileViewState.tracks,
-  // disabled
-  // issue: if tracks aren't loaded, we can't load audio features
-  // audio features need to be a option from the tracks view - so we can be certain tracks have loaded
-  // profileViewState.audioFeatures,
-]
+interface IProfileView {
+  name: profileViewState
+  data: {
+    [range: string]: (ISpotifyArtist | ISpotifyTrack)[]
+  },
+  dataLoader: () => Promise<void>
+}
 
 const ProfilePage = () => {
   const { authService, spotifyService } = React.useContext(ServiceContext)
@@ -30,24 +29,12 @@ const ProfilePage = () => {
     typeof window != 'undefined' && navigate('/')
     return null
   }
+
   const [spotifySearchRange, setSpotifySearchRange] = React.useState(SpotifyTopRange.shortTerm)
+  const [activeClass, setActiveClass] = React.useState('exit-left')
 
   const [loading, setLoading] = React.useState(true)
   const [viewStateIdx, setViewStateIdx] = React.useState(0)
-
-  const loadCurrentDisplay = async () => {
-    switch (profileViews[viewStateIdx]) {
-      case profileViewState.artists:
-        await loadArtists()
-        break
-      case profileViewState.tracks:
-        await loadTracks()
-        break
-      case profileViewState.audioFeatures:
-        await loadAudioFeatures()
-        break
-    }
-  }
 
   const scrollToLastItem = () => {
     // could use refs to make it more react-like but I'm OK with this for now
@@ -59,7 +46,7 @@ const ProfilePage = () => {
   }
 
   React.useEffect(() => {
-    loadCurrentDisplay()
+    profileViews[viewStateIdx].dataLoader()
   }, [spotifySearchRange, viewStateIdx])
 
   const loadArtists = async () => {
@@ -107,12 +94,16 @@ const ProfilePage = () => {
       return
     }
     let nextViewState = viewStateIdx
+    let nextActiveClass = 'exit-'
+    let nextInActiveClass = 'enter-'
     // right
     if (diffX > 0) {
+      nextActiveClass += 'right'
       nextViewState--
     }
     // left
     if (diffX < 0) {
+      nextActiveClass += 'left'
       nextViewState++
     }
     if (nextViewState > profileViews.length - 1) {
@@ -123,8 +114,22 @@ const ProfilePage = () => {
     }
     if (nextViewState != viewStateIdx) {
       setViewStateIdx(nextViewState)
+      setActiveClass(nextActiveClass)
     }
   })
+
+  const profileViews: IProfileView[] = [
+    {
+      name: profileViewState.artists,
+      data: spotifyService.topArtistsMap,
+      dataLoader: loadArtists,
+    },
+    {
+      name: profileViewState.tracks,
+      data: spotifyService.topTracksMap,
+      dataLoader: loadTracks,
+    },
+  ]
 
   return (
     <>
@@ -151,46 +156,36 @@ const ProfilePage = () => {
           onTouchMove={e => swipeListener.onTouchMove(e)}
           onTouchEnd={() => swipeListener.onTouchEnd()}
         >
-          {/* artists */}
-          { profileViews[viewStateIdx] == profileViewState.artists &&
-            <>
-              <p id="topArtists" className="itemsTitle">My top artists</p>
+          { profileViews.map(view => {
+            let dataViewClass = 'myDataView carousel-item'
+            if (view == profileViews[viewStateIdx]) {
+              dataViewClass += ' active'
+            } else {
+              dataViewClass += ' ' + activeClass
+            }
+            return <div key={view.name} className={dataViewClass}>
+              <p className="itemsTitle">My top {view.name}</p>
               { loading &&
                 <img className="profileLoadingSpinner imageRotate" src={spotifySvg} alt="spotify icon logo" />
               }
-              { !loading && spotifyService.topArtistsMap[spotifySearchRange]?.length > 0 &&
+              { !loading && view.data[spotifySearchRange]?.length &&
                 <ul className="myDataList">
-                  { spotifyService.topArtistsMap[spotifySearchRange].map((a: ISpotifyArtist, i: number) => {
-                    return <TopItem key={i} title={a.name} imageUrl={a.images[0].url} popularity={a.popularity}/>
-                  })}
-                </ul>
-              }
-              { !loading && !spotifyService.topArtistsMap[spotifySearchRange]?.length && <p>No artists loaded</p> }
-            </>
-          }
-          {/* tracks */}
-          { profileViews[viewStateIdx] == profileViewState.tracks &&
-            <>
-              <p id="topTracks" className="itemsTitle">
-                My top tracks
-                {/* todo */}
-                {/* { !loading && <span onClick={...}>Show track breakdown</span> } */}
-              </p>
-              { loading &&
-                <img className="profileLoadingSpinner imageRotate" src={spotifySvg} alt="spotify icon logo" />
-              }
-              { !loading && spotifyService.topTracksMap[spotifySearchRange]?.length > 0 &&
-                <ul className="myDataList">
-                  { spotifyService.topTracksMap[spotifySearchRange].map((t: ISpotifyTrack, i: number) => {
+                  {view.data[spotifySearchRange].map((item: (ISpotifyArtist | ISpotifyTrack), i: number) => {
+                    if (view.name == profileViewState.artists) {
+                      const a: ISpotifyArtist = item as ISpotifyArtist
+                      return <TopItem key={i} title={a.name} imageUrl={a.images[0].url} popularity={a.popularity}/>
+                    }
+                    if (view.name == profileViewState.tracks) {
+                      const t: ISpotifyTrack = item as ISpotifyTrack
                       return <TopItem key={i} title={t.name} subTitle={t.artists[0].name} imageUrl={t.album.images[0].url} popularity={t.popularity} />
+                    }
                   })}
                 </ul>
               }
-              { !loading && !spotifyService.topTracksMap[spotifySearchRange]?.length && <p>No tracks loaded</p> }
-            </>
-          }
+            </div>
+          })}
           {/* audioFeatures */}
-          { profileViews[viewStateIdx] == profileViewState.audioFeatures &&
+          {/* { profileViews[viewStateIdx] == profileViewState.audioFeatures &&
             <>
               <p id="topTracks" className="itemsTitle">My music breakdown</p>
               { loading &&
@@ -205,7 +200,7 @@ const ProfilePage = () => {
               }
               { !loading && !spotifyService.audioFeaturesMap[spotifySearchRange] && <p>No track features loaded</p> }
             </>
-          }
+          } */}
         </section>
       </main>
       <Footer />

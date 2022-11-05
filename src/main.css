@@ -80,6 +80,13 @@ input {
   display: flex;
   flex-direction: column;
 }
+.myDataView {
+  width: calc(100vw - 30px)
+}
+.myDataView.active {
+  display: flex;
+  flex-direction: column;
+}
 .itemsTitle {
   margin: 18px 10px;
 }
@@ -324,7 +331,7 @@ footer {
 }
 .profileDataView {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   padding: 15px 15px 0 15px;
 }
 .users-table {

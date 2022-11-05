@@ -5,3 +5,5 @@
 - track breakdown styling
 - track breakdown values display red, orange, green based on upper / lower limits.
   - didn't see anything in spotify api ay?
+- move profile timerange selector to bottom right
+- move page select to top nav ?())
