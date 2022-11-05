@@ -130,8 +130,6 @@ const ProfilePage = () => {
     }
   })
 
-  console.log('rerender', viewStateIdx)
-
   return (
     <>
       <Header />
