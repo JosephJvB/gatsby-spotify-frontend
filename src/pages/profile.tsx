@@ -7,7 +7,7 @@ import Footer from "../components/footer"
 import Header from "../components/header"
 import ProfilePicture, { ProfilePicSize } from "../components/profilePicture"
 import TopItem from "../components/topItem"
-import SwipeListener, { ISwipeCoords } from '../helpers/swipe'
+import SwipeListener, { ISwipeCoords, ISwipeDirection } from '../helpers/swipe'
 import spotifySvg from '../images/spotify.svg'
 
 enum profileViewState {
@@ -96,23 +96,15 @@ const ProfilePage = () => {
     setSpotifySearchRange(range)
   }
 
-  const swipeListener = new SwipeListener((coords: ISwipeCoords) => {
+  const swipeListener = new SwipeListener(['left', 'right'], (direction: ISwipeDirection) => {
     if (loading) {
       return
     }
-    const diffX = coords.endX - coords.startX
-    const diffY = coords.endY - coords.startY
-    // assume vertical swipe event
-    if (Math.abs(diffY) > Math.abs(diffX) || Math.abs(diffX) < 10) {
-      return
-    }
     let nextViewState = viewStateIdx
-    // right
-    if (diffX > 0) {
+    if (direction == 'right') {
       nextViewState--
     }
-    // left
-    if (diffX < 0) {
+    if (direction == 'left') {
       nextViewState++
     }
     if (nextViewState > profileViews.length - 1) {
