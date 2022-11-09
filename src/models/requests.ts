@@ -8,7 +8,7 @@ export interface ITopItemsRequest {
   token: string
   type: SpotifyItemType
   range: SpotifyTopRange
-  limit?: number
+  offset: number
 }
 export interface ISubmitQuizRequest {
   token: string

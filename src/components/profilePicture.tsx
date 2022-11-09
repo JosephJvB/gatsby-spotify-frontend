@@ -51,7 +51,7 @@ const ProfilePicture = (props: IProfilePictureProps) => {
       }
       { authService.loggedInUser && !props.src &&
         <div className={imgClass + " emptyProfileImg"} style={emptyStyle}>
-          <p>{props.name?.substr(0, 1)}</p>
+          <p>{props.name?.substring(0, 1)}</p>
         </div>
       }
     </>

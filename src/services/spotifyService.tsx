@@ -39,11 +39,12 @@ export default class SpotifyService {
   constructor(http: HttpClient) {
     this.http = http
   }
-  async getTopItems(type: SpotifyItemType, range: SpotifyTopRange): Promise<void> {
+  async getTopItems(type: SpotifyItemType, range: SpotifyTopRange, offset: number): Promise<void> {
     const { token, items } = await this.http.getTopItems({
       token: localStorage.getItem(JafToken)!,
       type,
-      range
+      range,
+      offset,
     })
     localStorage.setItem(JafToken, token)
     switch (type) {
