@@ -29,13 +29,25 @@ export default class SpotifyService {
   http: HttpClient
   topTracksMap: {
     [timeRange: string]: ISpotifyTrack[]
-  } = {}
+  } = {
+    [SpotifyTopRange.shortTerm]: [],
+    [SpotifyTopRange.mediumTerm]: [],
+    [SpotifyTopRange.longTerm]: [],
+  }
   topArtistsMap: {
     [timeRange: string]: ISpotifyArtist[]
-  } = {}
+  } = {
+    [SpotifyTopRange.shortTerm]: [],
+    [SpotifyTopRange.mediumTerm]: [],
+    [SpotifyTopRange.longTerm]: [],
+  }
   audioFeaturesMap: {
     [timeRange: string]: IFeatureAverage[]
-  } = {}
+  } = {
+    [SpotifyTopRange.shortTerm]: [],
+    [SpotifyTopRange.mediumTerm]: [],
+    [SpotifyTopRange.longTerm]: [],
+  }
   constructor(http: HttpClient) {
     this.http = http
   }
@@ -49,10 +61,10 @@ export default class SpotifyService {
     localStorage.setItem(JafToken, token)
     switch (type) {
       case SpotifyItemType.artists:
-        this.topArtistsMap[range] = items as ISpotifyArtist[]
+        this.topArtistsMap[range].push(...items as ISpotifyArtist[])
         break
       case SpotifyItemType.tracks:
-        this.topTracksMap[range] = items as ISpotifyTrack[]
+        this.topTracksMap[range].push(...items as ISpotifyTrack[])
         break
     }
   }
@@ -68,7 +80,7 @@ export default class SpotifyService {
       trackIds,
     })
     localStorage.setItem(JafToken, token)
-    this.audioFeaturesMap[range] = this.mapAudioFeatures(audioFeatures)
+    this.audioFeaturesMap[range].push(...this.mapAudioFeatures(audioFeatures))
   }
   mapAudioFeatures(audioFeatures: IAudioFeatures[]): IFeatureAverage[] {
     const avgs: AudioFeaturesDisplay = {

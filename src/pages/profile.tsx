@@ -71,7 +71,7 @@ const ProfilePage = () => {
     })
   }
   const loadArtists = async () => {
-    if (spotifyService.topArtistsMap[timeRange]) {
+    if (spotifyService.topArtistsMap[timeRange].length == offset - CHUNK_SIZE) {
       return
     }
     setLoading(true)
@@ -80,7 +80,7 @@ const ProfilePage = () => {
     scrollToLastItem()
   }
   const loadTracks = async () => {
-    if (spotifyService.topTracksMap[timeRange] && spotifyService.topTracksMap[timeRange].length == offset - CHUNK_SIZE) {
+    if (spotifyService.topTracksMap[timeRange].length == offset - CHUNK_SIZE) {
       return
     }
     setLoading(true)
@@ -158,7 +158,7 @@ const ProfilePage = () => {
                 <TopItem key={i} title={a.name} imageUrl={a.images[0].url} popularity={a.popularity}/>
             ))}
             { itemsViews[itemViewIndex] == itemsViewState.tracks &&
-              spotifyService.topTracksMap[timeRange]?.map((t: ISpotifyTrack, i: number) => (
+              spotifyService.topTracksMap[timeRange].map((t: ISpotifyTrack, i: number) => (
                 <TopItem key={i} title={t.name} subTitle={t.artists[0].name} imageUrl={t.album.images[0].url} popularity={t.popularity} />
             ))}
             { loading && Array(CHUNK_SIZE).fill(0).map((_, idx: number) => (
