@@ -19,7 +19,7 @@ body {
 main {
   height: 100%;
   overflow: auto;
-  padding: 50px 0 20px 0;
+  padding: 35px 0 20px 0;
   display: flex;
   flex-direction: column;
 }
@@ -216,9 +216,9 @@ footer {
   position: absolute;
 }
 .imgFull {
-  height: 200px;
-  width: 200px;
-  font-size: 90px;
+  height: 75px;
+  width: 75px;
+  font-size: 50px;
 }
 .imgThumb {
   height: 35px;
@@ -386,4 +386,33 @@ footer {
   border-radius: 15px;
   padding: 5px 0;
   cursor: pointer;
+}
+.profileControls {
+  padding: 0 25px;
+  margin: 20px 0 10px 0;
+}
+.profileHeader {
+  padding: 0 25px;
+  display: flex;
+  flex-direction: row;
+}
+.profileControls {
+  gap: 10px;
+}
+.profileControls > * {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+}
+/* .profileControls .option {
+  border-bottom: none;
+  transition: border-bottom .3s;
+} */
+.profileControls .option.selected {
+  border-bottom: solid 5px white;
+}
+.loadMore {
+  text-align: center;
+  margin-top: 10px;
 }
