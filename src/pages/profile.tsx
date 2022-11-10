@@ -31,6 +31,11 @@ const ProfilePage = () => {
     return null
   }
 
+  const listMap: any[] = [
+    spotifyService.topTracksMap,
+    spotifyService.topArtistsMap,
+  ]
+
   const [loading, setLoading] = React.useState(false)
   const [itemViewIndex, setItemViewIndex] = React.useState(0)
   const [timeRangeIndex, setTimeRangeIndex] = React.useState(0)
@@ -71,7 +76,8 @@ const ProfilePage = () => {
     })
   }
   const loadArtists = async () => {
-    if (spotifyService.topArtistsMap[timeRange].length == offset - CHUNK_SIZE) {
+    // review
+    if (offset == 0 && spotifyService.topArtistsMap[timeRange].length == offset - CHUNK_SIZE) {
       return
     }
     setLoading(true)
@@ -80,7 +86,8 @@ const ProfilePage = () => {
     scrollToLastItem()
   }
   const loadTracks = async () => {
-    if (spotifyService.topTracksMap[timeRange].length == offset - CHUNK_SIZE) {
+    // review
+    if (offset == 0 && spotifyService.topTracksMap[timeRange].length == offset - CHUNK_SIZE) {
       return
     }
     setLoading(true)
@@ -122,9 +129,25 @@ const ProfilePage = () => {
     }
 
     if (nextTimeRange != timeRangeIndex) {
-      setTimeRangeIndex(nextTimeRange)
+      updateTimeRange(nextTimeRange)
     }
   })
+
+  const updateItemView = (idx: number) => {
+    const nextOffset = listMap[idx][timeRange].length
+    if (nextOffset != offset) {
+      setOffset(nextOffset)
+    }
+    setItemViewIndex(idx)
+  }
+  const updateTimeRange = (idx: number) => {
+    const nextRange = timeRanges[idx]
+    const nextOffset = listMap[itemViewIndex][nextRange].length
+    if (nextOffset != offset) {
+      setOffset(nextOffset)
+    }
+    setTimeRangeIndex(idx)
+  }
 
   return (
     <>
@@ -138,13 +161,13 @@ const ProfilePage = () => {
           <div className="itemTypes">
             {itemsViews.map((v, i) => (
               <span key={i} className={'option' + (i == itemViewIndex ? ' selected' : '')}
-                onClick={() => setItemViewIndex(i)}>{v}</span>
+                onClick={() => updateItemView(i)}>{v}</span>
             ))}
           </div>
           <div className="timeRanges">
             {timeRanges.map((t, i) => (
               <span key={i} className={'option' + (i == timeRangeIndex ? ' selected' : '')}
-                onClick={() => setTimeRangeIndex(i)}>{timeRangeMessages[i]}</span>
+                onClick={() => updateTimeRange(i)}>{timeRangeMessages[i]}</span>
             ))}
           </div>
         </section>

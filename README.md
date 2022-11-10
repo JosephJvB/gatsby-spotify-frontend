@@ -1,4 +1,9 @@
 ### Todos
+- Fix load more offset bug
+  - offset = 0
+  - loadmore on timerange1, offset = 10
+  - go to timerange2 - load songs 10-20.
+  - offset should reset on timerange, itemtype change
 - profile view redesign
   - loading should be grey bars
     - randomised gradient moving thru them if ya want
