@@ -7,7 +7,7 @@ import Footer from "../components/footer"
 import Header from "../components/header"
 import ProfilePicture, { ProfilePicSize } from "../components/profilePicture"
 import TopItem from "../components/topItem"
-import SwipeListener, { ISwipeCoords, ISwipeDirection } from '../helpers/swipe'
+import SwipeListener, { ISwipeDirection } from '../helpers/swipe'
 
 const CHUNK_SIZE = 10
 
@@ -55,7 +55,7 @@ const ProfilePage = () => {
       return
     }
     // have loaded at least first 10 && current offset for view has loaded
-    if (offset > 0 && currentMap[currentTimeRange].length == offset) {
+    if (currentMap[currentTimeRange].length >= CHUNK_SIZE && currentMap[currentTimeRange].length == offset) {
       return
     }
     loadCurrentDisplay()
@@ -106,6 +106,9 @@ const ProfilePage = () => {
   }
 
   const loadMore = () => {
+    if (loading) {
+      return
+    }
     const nextOffset = offset + CHUNK_SIZE
     setOffset(nextOffset)
   }
@@ -135,6 +138,9 @@ const ProfilePage = () => {
 
   // check next type range for current timerange
   const updateItemView = (idx: number) => {
+    if (loading) {
+      return
+    }
     const nextOffset = listMap[idx][currentTimeRange].length
     if (nextOffset != offset) {
       setOffset(nextOffset)
@@ -143,6 +149,9 @@ const ProfilePage = () => {
   }
   // check next time range for current type
   const updateTimeRange = (idx: number) => {
+    if (loading) {
+      return
+    }
     const nextRange = timeRanges[idx]
     const nextOffset = currentMap[nextRange].length
     if (nextOffset != offset) {
