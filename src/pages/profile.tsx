@@ -31,11 +31,6 @@ const ProfilePage = () => {
     return null
   }
 
-  const listMap: any[] = [
-    spotifyService.topTracksMap,
-    spotifyService.topArtistsMap,
-  ]
-
   const [loading, setLoading] = React.useState(false)
   const [itemViewIndex, setItemViewIndex] = React.useState(0)
   const [timeRangeIndex, setTimeRangeIndex] = React.useState(0)
@@ -46,12 +41,24 @@ const ProfilePage = () => {
     '6 months',
     'all time'
   ]
-  const timeRange = timeRanges[timeRangeIndex]
+  const currentTimeRange = timeRanges[timeRangeIndex]
+  const listMap: {
+    [timeRange: string]: any[]
+  }[] = [
+    spotifyService.topTracksMap,
+    spotifyService.topArtistsMap,
+  ]
+  const currentMap = listMap[itemViewIndex]
 
   React.useEffect(() => {
-    if (!loading) {
-      loadCurrentDisplay()
+    if (loading) {
+      return
     }
+    // have loaded at least first 10 && current offset for view has loaded
+    if (offset > 0 && currentMap[currentTimeRange].length == offset) {
+      return
+    }
+    loadCurrentDisplay()
   }, [offset, timeRangeIndex, itemViewIndex])
   
   const loadCurrentDisplay = async () => {
@@ -64,6 +71,7 @@ const ProfilePage = () => {
         break
     }
   }
+
   const scrollToLastItem = () => {
     // could use refs to make it more react-like but I'm OK with this for now
     const allListItems = document.querySelectorAll('li')
@@ -76,31 +84,23 @@ const ProfilePage = () => {
     })
   }
   const loadArtists = async () => {
-    // review
-    if (offset == 0 && spotifyService.topArtistsMap[timeRange].length == offset - CHUNK_SIZE) {
-      return
-    }
     setLoading(true)
-    await spotifyService.getTopItems(SpotifyItemType.artists, timeRange, offset)
+    await spotifyService.getTopItems(SpotifyItemType.artists, currentTimeRange, offset)
     setLoading(false)
     scrollToLastItem()
   }
   const loadTracks = async () => {
-    // review
-    if (offset == 0 && spotifyService.topTracksMap[timeRange].length == offset - CHUNK_SIZE) {
-      return
-    }
     setLoading(true)
-    await spotifyService.getTopItems(SpotifyItemType.tracks, timeRange, offset)
+    await spotifyService.getTopItems(SpotifyItemType.tracks, currentTimeRange, offset)
     setLoading(false)
     scrollToLastItem()
   }
   const loadAudioFeatures = async () => {
-    if (spotifyService.audioFeaturesMap[timeRange]) {
+    if (spotifyService.audioFeaturesMap[currentTimeRange]) {
       return
     }
     setLoading(true)
-    await spotifyService.getAudioFeatures(timeRange)
+    await spotifyService.getAudioFeatures(currentTimeRange)
     setLoading(false)
     scrollToLastItem()
   }
@@ -133,16 +133,18 @@ const ProfilePage = () => {
     }
   })
 
+  // check next type range for current timerange
   const updateItemView = (idx: number) => {
-    const nextOffset = listMap[idx][timeRange].length
+    const nextOffset = listMap[idx][currentTimeRange].length
     if (nextOffset != offset) {
       setOffset(nextOffset)
     }
     setItemViewIndex(idx)
   }
+  // check next time range for current type
   const updateTimeRange = (idx: number) => {
     const nextRange = timeRanges[idx]
-    const nextOffset = listMap[itemViewIndex][nextRange].length
+    const nextOffset = currentMap[nextRange].length
     if (nextOffset != offset) {
       setOffset(nextOffset)
     }
@@ -177,11 +179,11 @@ const ProfilePage = () => {
           onTouchEnd={() => swipeListener.onTouchEnd()}>
           <ul className="carousel-item active">
             { itemsViews[itemViewIndex] == itemsViewState.artists &&
-              spotifyService.topArtistsMap[timeRange]?.map((a: ISpotifyArtist, i: number) => (
+              spotifyService.topArtistsMap[currentTimeRange]?.map((a: ISpotifyArtist, i: number) => (
                 <TopItem key={i} title={a.name} imageUrl={a.images[0].url} popularity={a.popularity}/>
             ))}
             { itemsViews[itemViewIndex] == itemsViewState.tracks &&
-              spotifyService.topTracksMap[timeRange].map((t: ISpotifyTrack, i: number) => (
+              spotifyService.topTracksMap[currentTimeRange].map((t: ISpotifyTrack, i: number) => (
                 <TopItem key={i} title={t.name} subTitle={t.artists[0].name} imageUrl={t.album.images[0].url} popularity={t.popularity} />
             ))}
             { loading && Array(CHUNK_SIZE).fill(0).map((_, idx: number) => (
