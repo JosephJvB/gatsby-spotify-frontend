@@ -26,6 +26,7 @@ main {
 ul {
   padding-inline-start: 0;
   margin-block-start: 0;
+  list-style-type: none;
 }
 #___gatsby,#gatsby-focus-wrapper {
   width: 100%;
@@ -89,18 +90,20 @@ input {
 .itemsTitle {
   margin: 20px 25px 0 25px;
 }
-.topItem {
-  margin-top: 10px;
-  display: flex;
-}
-.topItem.placeholder {
-  height: 40px;
+.placeholder {
   border-radius: 2px;
   background: linear-gradient(130deg, #6d6d6d, #828282, #afafaf, #828282, #6d6d6d);
   background-size: 280% 100%;
   -webkit-animation: placeholder-animation .5s ease infinite alternate;
   -moz-animation: placeholder-animation .5s ease infinite alternate;
   animation: placeholder-animation .5s ease infinite alternate;
+}
+.topItem {
+  margin-top: 10px;
+  display: flex;
+}
+.topItem.placeholder {
+  height: 40px;
 }
 @-webkit-keyframes placeholder-animation {
   0%{background-position:10% 0%}
@@ -415,4 +418,24 @@ footer {
 .loadMore {
   text-align: center;
   margin-top: 10px;
+}
+.profileDataView {
+  max-width: 330px;
+}
+.dataList {
+  
+}
+.audioFeature {
+  margin-top: 10px;
+  height: 60px;
+  width: 100%;
+}
+.audioFeature.placeholder {
+  height: 60px;
+}
+.progressBar {
+  height: 35px;
+  border-radius: 2px;
+  border: solid white 1px;
+  display: flex;
 }

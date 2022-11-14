@@ -2,6 +2,7 @@ import { navigate } from "gatsby-link"
 import { ISpotifyArtist, ISpotifyTrack, SpotifyItemType, SpotifyTopRange } from "jvb-spotty-models"
 import * as React from "react"
 import { ServiceContext } from "../../gatsby-browser"
+import AudioFeatures from '../components/audioFeatures'
 import Footer from "../components/footer"
 
 import Header from "../components/header"
@@ -35,6 +36,7 @@ const ProfilePage = () => {
   const [itemViewIndex, setItemViewIndex] = React.useState(0)
   const [timeRangeIndex, setTimeRangeIndex] = React.useState(0)
   const [offset, setOffset] = React.useState(0)
+  const [showAudioFeatures, setShowAudioFeatures] = React.useState(false)
 
   const timeRangeMessages = [
     '4 weeks',
@@ -49,6 +51,7 @@ const ProfilePage = () => {
     spotifyService.topArtistsMap,
   ]
   const currentMap = listMap[itemViewIndex]
+  const currentView = itemsViews[itemViewIndex]
 
   React.useEffect(() => {
     if (loading) {
@@ -62,7 +65,7 @@ const ProfilePage = () => {
   }, [offset, timeRangeIndex, itemViewIndex])
   
   const loadCurrentDisplay = async () => {
-    switch (itemsViews[itemViewIndex]) {
+    switch (currentView) {
       case itemsViewState.artists:
         await loadArtists()
         break
@@ -96,7 +99,9 @@ const ProfilePage = () => {
     scrollToLastItem()
   }
   const loadAudioFeatures = async () => {
-    if (spotifyService.audioFeaturesMap[currentTimeRange]) {
+    const featuresLoaded = spotifyService.audioFeaturesMap[currentTimeRange]
+    const tracksLoaded = spotifyService.topTracksMap[currentTimeRange]
+    if (featuresLoaded.length == tracksLoaded.length) {
       return
     }
     setLoading(true)
@@ -117,22 +122,14 @@ const ProfilePage = () => {
     if (loading) {
       return
     }
-    let nextTimeRange = timeRangeIndex
+    if (currentView != itemsViewState.tracks) {
+      return
+    }
     if (direction == 'right') {
-      nextTimeRange--
+      toggleFeatures(false)
     }
     if (direction == 'left') {
-      nextTimeRange++
-    }
-    if (nextTimeRange > timeRanges.length - 1) {
-      return
-    }
-    if (nextTimeRange < 0) {
-      return
-    }
-
-    if (nextTimeRange != timeRangeIndex) {
-      updateTimeRange(nextTimeRange)
+      toggleFeatures(true)
     }
   })
 
@@ -140,6 +137,9 @@ const ProfilePage = () => {
   const updateItemView = (idx: number) => {
     if (loading) {
       return
+    }
+    if (showAudioFeatures) {
+      setShowAudioFeatures(false)
     }
     const nextOffset = listMap[idx][currentTimeRange].length
     if (nextOffset != offset) {
@@ -152,12 +152,28 @@ const ProfilePage = () => {
     if (loading) {
       return
     }
+    if (showAudioFeatures) {
+      setShowAudioFeatures(false)
+    }
     const nextRange = timeRanges[idx]
     const nextOffset = currentMap[nextRange].length
     if (nextOffset != offset) {
       setOffset(nextOffset)
     }
     setTimeRangeIndex(idx)
+  }
+
+  const toggleFeatures = async (nextState: boolean) => {
+    if (currentView != itemsViewState.tracks) {
+      return
+    }
+    if (nextState == showAudioFeatures) {
+      return
+    }
+    setShowAudioFeatures(nextState)
+    if (nextState) {
+      await loadAudioFeatures()
+    }
   }
 
   return (
@@ -182,25 +198,28 @@ const ProfilePage = () => {
             ))}
           </div>
         </section>
-        <section className="profileDataView carousel"
+        <section className="profileDataView"
           onTouchStart={e => swipeListener.onTouchStart(e.nativeEvent)}
           onTouchMove={e => swipeListener.onTouchMove(e.nativeEvent)}
           onTouchEnd={() => swipeListener.onTouchEnd()}>
-          <ul className="carousel-item active">
-            { itemsViews[itemViewIndex] == itemsViewState.artists &&
+          <ul className="dataList">
+            { currentView == itemsViewState.artists &&
               spotifyService.topArtistsMap[currentTimeRange]?.map((a: ISpotifyArtist, i: number) => (
                 <TopItem key={i} title={a.name} imageUrl={a.images[0].url} popularity={a.popularity}/>
             ))}
-            { itemsViews[itemViewIndex] == itemsViewState.tracks &&
+            { currentView == itemsViewState.tracks && !showAudioFeatures &&
               spotifyService.topTracksMap[currentTimeRange].map((t: ISpotifyTrack, i: number) => (
                 <TopItem key={i} title={t.name} subTitle={t.artists[0].name} imageUrl={t.album.images[0].url} popularity={t.popularity} />
             ))}
-            { loading && Array(CHUNK_SIZE).fill(0).map((_, idx: number) => (
+            { currentView == itemsViewState.tracks && showAudioFeatures &&
+              <AudioFeatures timeRange={currentTimeRange} loading={loading} />
+            }
+            { loading && !showAudioFeatures && Array(CHUNK_SIZE).fill(0).map((_, idx: number) => (
                 <li key={idx} className="topItem placeholder"></li>
             ))}
           </ul>
           {/* must hide loadMore for AudioFeatures */}
-          { !loading && <p className="loadMore" onClick={loadMore}>load more</p>}
+          { !loading && !showAudioFeatures && <p className="loadMore" onClick={loadMore}>load more</p>}
         </section>
       </main>
       <Footer />
