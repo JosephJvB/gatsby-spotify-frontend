@@ -1,20 +1,7 @@
 ### Todos
-- Fix load more offset bug
-  - offset = 0
-  - loadmore on timerange1, offset = 10
-  - go to timerange2 - load songs 10-20.
-  - offset should reset on timerange, itemtype change
-- profile view redesign
-  - loading should be grey bars
-    - randomised gradient moving thru them if ya want
-  - tracks / artists buttons on bottom row
-  - swipe changes time frame
-- create track breakdown view
-  - handle view logic (artists or (tracks or breakdown))
-- swipe slide animation
-- track breakdown styling
-- track breakdown values display red, orange, green based on upper / lower limits.
-  - didn't see anything in spotify api ay?
+- update track breakdown view
+  - Click on track -> show single track audio features with track title & artists name (track idx / total loaded)
+  - Swipe up and down to go to next track features
 
 carousel notes
 https://dev.to/cooljasonmelton/css-transitions-in-react-build-a-root-beer-carousel-1mnb
