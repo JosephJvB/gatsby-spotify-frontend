@@ -430,12 +430,16 @@ footer {
   height: 60px;
   width: 100%;
 }
-.audioFeature.placeholder {
-  height: 60px;
+.audioFeature .placeholder {
+  width: 100%;
 }
 .progressBar {
   height: 35px;
   border-radius: 2px;
   border: solid white 1px;
   display: flex;
+}
+.progress {
+  width: 0%;
+  transition: width 1s;
 }

@@ -28,10 +28,10 @@ export interface IFeatureAverage {
   min: number
   max: number
   value: number
-  percentage: string
-  width: string
+  percent: number
+  colour: string
+  percentageDisplay: string
   valueDisplay: string
-  color: string
 }
 
 export const featureLabelMap: {
@@ -48,9 +48,27 @@ export const featureLabelMap: {
 const AudioFeatures = (props: IAudioFeatureProps) => {
   const { spotifyService } = React.useContext(ServiceContext)
 
+  const [widthLoaded, setWidthLoaded] = React.useState(false)
+
+  React.useEffect(() => {
+    if (!props.loading) {
+      setWidthLoaded(true)
+    }
+  }, [props.loading])
+
   const red = '#eb1e32'
   const yellow = '#fbe719'
   const green = '#1db954'
+  const getColour = (percent: number): string => {
+    let colour = red
+    if (percent > 40) {
+      colour = yellow
+    }
+    if (percent > 70) {
+      colour = green
+    }
+    return colour
+  }
 
   const avgs: DisplayFeatures = {
     acousticness: 0,
@@ -76,40 +94,34 @@ const AudioFeatures = (props: IAudioFeatureProps) => {
     const min = key == 'tempo' ? 50 : 0
     const max = key == 'tempo' ? 250 : 1
     const percent = (value / max * 100)
-    let color = red
-    if (percent > 40) {
-      color = yellow
-    }
-    if (percent > 70) {
-      color = green
-    }
     return {
       featureName: key,
       label: featureLabelMap[key] || key,
       min,
       max,
-      percentage: percent.toFixed(2),
-      width: percent.toFixed(0) + '%',
+      percent,
+      percentageDisplay: percent.toFixed(2),
+      colour: getColour(percent),
       value,
       valueDisplay: value.toFixed(2),
-      color,
     }
   })
-
   return (
     <>
-      { !props.loading && averages.map((a: IFeatureAverage, i: number) => (
+      { averages.map((a: IFeatureAverage, i: number) => (
         <li className="audioFeature" key={i}>
           <div className="title">
             <span className="label">{a.label}</span>
           </div>
           <div className="progressBar">
-            <span className="progress" style={{ width: a.width, background: a.color }}></span>
+            { props.loading && <div className="placeholder"></div>}
+            { !props.loading &&
+              <span className="progress" style={{
+                width: widthLoaded ? a.percent + '%' : '0%',
+                background: a.colour
+              }}></span>}
           </div>
         </li>
-      ))}
-      { props.loading && averages.map((_, idx: number) => (
-        <li key={idx} className="audioFeature placeholder"></li>
       ))}
     </>
   )
