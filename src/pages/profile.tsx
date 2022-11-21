@@ -8,7 +8,6 @@ import Footer from "../components/footer"
 import Header from "../components/header"
 import ProfilePicture, { ProfilePicSize } from "../components/profilePicture"
 import TopItem from "../components/topItem"
-import SwipeListener, { ISwipeDirection } from '../helpers/swipe'
 
 const CHUNK_SIZE = 10
 
@@ -37,6 +36,7 @@ const ProfilePage = () => {
   const [timeRangeIndex, setTimeRangeIndex] = React.useState(0)
   const [offset, setOffset] = React.useState(0)
   const [showAudioFeatures, setShowAudioFeatures] = React.useState(false)
+  const [trackIndex, setTrackIndex] = React.useState(0)
 
   const timeRangeMessages = [
     '4 weeks',
@@ -118,21 +118,6 @@ const ProfilePage = () => {
     setOffset(nextOffset)
   }
 
-  const swipeListener = new SwipeListener(['left', 'right'], (direction: ISwipeDirection) => {
-    if (loading) {
-      return
-    }
-    if (currentView != itemsViewState.tracks) {
-      return
-    }
-    if (direction == 'right') {
-      toggleFeatures(false)
-    }
-    if (direction == 'left') {
-      toggleFeatures(true)
-    }
-  })
-
   // check next type range for current timerange
   const updateItemView = (idx: number) => {
     if (loading) {
@@ -163,17 +148,10 @@ const ProfilePage = () => {
     setTimeRangeIndex(idx)
   }
 
-  const toggleFeatures = async (nextState: boolean) => {
-    if (currentView != itemsViewState.tracks) {
-      return
-    }
-    if (nextState == showAudioFeatures) {
-      return
-    }
-    setShowAudioFeatures(nextState)
-    if (nextState) {
-      await loadAudioFeatures()
-    }
+  const clickTrack = async (index: number) => {
+    setTrackIndex(index)
+    setShowAudioFeatures(true)
+    await loadAudioFeatures()
   }
 
   return (
@@ -198,28 +176,29 @@ const ProfilePage = () => {
             ))}
           </div>
         </section>
-        <section className="profileDataView"
-          onTouchStart={e => swipeListener.onTouchStart(e.nativeEvent)}
-          onTouchMove={e => swipeListener.onTouchMove(e.nativeEvent)}
-          onTouchEnd={() => swipeListener.onTouchEnd()}>
-          <ul className="dataList">
+        <section className="profileDataView">
+          { currentView == itemsViewState.tracks && showAudioFeatures &&
+            <AudioFeatures
+              timeRange={currentTimeRange}
+              trackIndex={trackIndex}
+              setShowAudioFeatures={setShowAudioFeatures}
+              loading={loading} />
+          }
+          { !showAudioFeatures && <ul className="dataList">
             { currentView == itemsViewState.artists &&
               spotifyService.topArtistsMap[currentTimeRange]?.map((a: ISpotifyArtist, i: number) => (
-                <TopItem key={i} title={a.name} imageUrl={a.images[0].url} popularity={a.popularity}/>
+                <TopItem clickHandler={() => null} key={i} title={a.name} imageUrl={a.images[0].url} popularity={a.popularity}/>
             ))}
             { currentView == itemsViewState.tracks && !showAudioFeatures &&
               spotifyService.topTracksMap[currentTimeRange].map((t: ISpotifyTrack, i: number) => (
-                <TopItem key={i} title={t.name} subTitle={t.artists[0].name} imageUrl={t.album.images[0].url} popularity={t.popularity} />
+                <TopItem clickHandler={() => clickTrack(i)} key={i} title={t.name} subTitle={t.artists[0].name} imageUrl={t.album.images[0].url} popularity={t.popularity} />
             ))}
-            { currentView == itemsViewState.tracks && showAudioFeatures &&
-              <AudioFeatures timeRange={currentTimeRange} loading={loading} />
-            }
             { loading && !showAudioFeatures && Array(CHUNK_SIZE).fill(0).map((_, idx: number) => (
                 <li key={idx} className="topItem placeholder"></li>
             ))}
-          </ul>
+          </ul>}
+          { !loading && !showAudioFeatures && <p className="loadMore" onClick={loadMore}>load more</p> }
           {/* must hide loadMore for AudioFeatures */}
-          { !loading && !showAudioFeatures && <p className="loadMore" onClick={loadMore}>load more</p>}
         </section>
       </main>
       <Footer />

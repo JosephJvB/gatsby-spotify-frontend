@@ -420,7 +420,6 @@ footer {
   margin-top: 10px;
 }
 .profileDataView {
-  max-width: 330px;
 }
 .dataList {
   
@@ -442,4 +441,6 @@ footer {
 .progress {
   width: 0%;
   transition: width 1s;
+  background: linear-gradient(90deg, #eb1e32 0%,  #f59b23 20%, #fbe719 40%, #1db954 100%);
+  background-size: 330px;
 }

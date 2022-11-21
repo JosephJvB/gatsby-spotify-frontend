@@ -1,37 +1,13 @@
 import { SpotifyTopRange } from 'jvb-spotty-models'
 import React from 'react'
 import { ServiceContext } from '../../gatsby-browser'
-
-
+import SwipeListener, { ISwipeDirection } from '../helpers/swipe'
 
 export interface IAudioFeatureProps {
   timeRange: SpotifyTopRange
   loading: boolean
-}
-
-export interface DisplayFeatures {
-  acousticness: 0,
-  danceability: 0,
-  energy: 0,
-  instrumentalness: 0,
-  // key: 0,
-  // liveness: 0,
-  // mode: 0,
-  // speechiness: 0,
-  // tempo: 0,
-  // time_signature: 0,
-  valence: 0,
-}
-export interface IFeatureAverage {
-  featureName: string
-  label: string
-  min: number
-  max: number
-  value: number
-  percent: number
-  colour: string
-  percentageDisplay: string
-  valueDisplay: string
+  trackIndex: number
+  setShowAudioFeatures: (state: boolean) => void
 }
 
 export const featureLabelMap: {
@@ -45,10 +21,18 @@ export const featureLabelMap: {
   tempo: 'tempo',
 }
 
+export interface IDisplayFeature {
+  label: string
+  percentage: number
+}
+
 const AudioFeatures = (props: IAudioFeatureProps) => {
   const { spotifyService } = React.useContext(ServiceContext)
 
   const [widthLoaded, setWidthLoaded] = React.useState(false)
+  const [idx, setIdx] = React.useState(props.trackIndex)
+
+  console.log('props.index', props.trackIndex)
 
   React.useEffect(() => {
     if (!props.loading) {
@@ -56,74 +40,84 @@ const AudioFeatures = (props: IAudioFeatureProps) => {
     }
   }, [props.loading])
 
-  const red = '#eb1e32'
-  const yellow = '#fbe719'
-  const green = '#1db954'
-  const getColour = (percent: number): string => {
-    let colour = red
-    if (percent > 40) {
-      colour = yellow
+  const swipeListener = new SwipeListener(['right', 'up', 'down'], (direction: ISwipeDirection) => {
+    if (props.loading) {
+      return
     }
-    if (percent > 70) {
-      colour = green
+    if (direction == 'right') {
+      console.log('trying to close')
+      props.setShowAudioFeatures(false)
+      return
     }
-    return colour
-  }
-
-  const avgs: DisplayFeatures = {
-    acousticness: 0,
-    danceability: 0,
-    energy: 0,
-    instrumentalness: 0,
-    // key: 0,
-    // liveness: 0,
-    // mode: 0,
-    // speechiness: 0,
-    // tempo: 0,
-    // time_signature: 0,
-    valence: 0,
-  }
-  for (const trackFeature of spotifyService.audioFeaturesMap[props.timeRange]) {
-    for (const key in avgs) {
-      (avgs as any)[key] += (trackFeature as any)[key]
+    let nextIdx = idx
+    if (direction == 'up') {
+      nextIdx++
     }
-  }
-  const displayKeys = Object.keys(avgs)
-  const averages: IFeatureAverage[] = displayKeys.map(key => {
-    const value: number = (avgs as any)[key] / spotifyService.audioFeaturesMap[props.timeRange].length
-    const min = key == 'tempo' ? 50 : 0
-    const max = key == 'tempo' ? 250 : 1
-    const percent = (value / max * 100)
-    return {
-      featureName: key,
-      label: featureLabelMap[key] || key,
-      min,
-      max,
-      percent,
-      percentageDisplay: percent.toFixed(2),
-      colour: getColour(percent),
-      value,
-      valueDisplay: value.toFixed(2),
+    if (direction == 'down') {
+      nextIdx--
+    }
+    if (nextIdx != idx && spotifyService.audioFeaturesMap[props.timeRange][nextIdx]) {
+      setIdx(nextIdx)
     }
   })
+
+  const trackDetails = spotifyService.topTracksMap[props.timeRange][idx]
+  const trackFeatures = spotifyService.audioFeaturesMap[props.timeRange][idx]
+
+  const displayFeatures: IDisplayFeature[] = [
+    { label: 'popularity ', percentage: trackDetails.popularity }
+  ]
+  const featureKeys = [
+    // 'acousticness',
+    'danceability',
+    'energy',
+    // 'instrumentalness',
+    // 'key',
+    // 'liveness',
+    // 'mode',
+    // 'speechiness',
+    // 'tempo',
+    // 'time_signature',
+    'valence',
+  ]
+  for (const key of featureKeys) {
+    const value = trackFeatures ? (trackFeatures as any)[key] : 0
+    displayFeatures.push({
+      label: featureLabelMap[key],
+      percentage: value * 100
+    })
+  }
+
   return (
-    <>
-      { averages.map((a: IFeatureAverage, i: number) => (
-        <li className="audioFeature" key={i}>
-          <div className="title">
-            <span className="label">{a.label}</span>
-          </div>
-          <div className="progressBar">
-            { props.loading && <div className="placeholder"></div>}
-            { !props.loading &&
-              <span className="progress" style={{
-                width: widthLoaded ? a.percent + '%' : '0%',
-                background: a.colour
-              }}></span>}
-          </div>
-        </li>
-      ))}
-    </>
+    <div className="audioFeatureDisplay"
+      style={{ display: 'flex', flexDirection: 'column', paddingTop: '15px' }}
+      onTouchStart={e => swipeListener.onTouchStart(e.nativeEvent)}
+      onTouchMove={e => swipeListener.onTouchMove(e.nativeEvent)}
+      onTouchEnd={() => swipeListener.onTouchEnd()}>
+      <img style={{
+        height: '80px',
+        width: 'auto',
+        margin: '0 auto'
+      }} src={trackDetails.album.images[0].url} alt="track album image" />
+      <h3 style={{textAlign: 'center'}}>{trackDetails.name}</h3>
+      <ul className="dataList">
+        { displayFeatures.map((feat: IDisplayFeature) => (
+          <li className="audioFeature" key={feat.label}>
+            <div className="title">
+              <span className="label">{feat.label}</span>
+            </div>
+            <div className="progressBar">
+              { props.loading && <div className="placeholder"></div>}
+              { !props.loading &&
+                <span className="progress" style={{
+                  width: widthLoaded ? feat.percentage + '%' : '0%',
+                }}></span>}
+            </div>
+          </li>
+        ))}
+      </ul>
+
+    </div>
   )
 }
 
